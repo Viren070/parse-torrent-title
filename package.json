@@ -1,0 +1,51 @@
+{
+  "name": "@viren070/parse-torrent-title",
+  "version": "0.0.0",
+  "description": "A TypeScript library for parsing torrent titles",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "prepublishOnly": "pnpm build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Viren070/parse-torrent-title.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Viren070/parse-torrent-title/issues"
+  },
+  "homepage": "https://github.com/Viren070/parse-torrent-title#readme",
+  "keywords": [
+    "torrent",
+    "parser",
+    "title",
+    "typescript",
+    "esm"
+  ],
+  "author": "Viren070",
+  "license": "MIT",
+  "packageManager": "pnpm@10.15.0",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.0.0",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
+    "typescript": "^5.3.0"
+  }
+}
