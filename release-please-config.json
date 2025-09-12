@@ -1,0 +1,13 @@
+{
+  "bump-minor-pre-major": true, 
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "pull-request-title-pattern": "chore: release ${version}",
+      "exclude-paths": [
+        ".release-please-manifest.json",
+        "release-please-config.json"
+      ]
+    }
+  }
+}
