@@ -31,6 +31,6 @@ export function getPartialParser(fieldNames: string[]): (title: string) => Parse
 }
 
 // Export types for consumers
-export * from './types';
+export { ParsedResult } from './types.js';
 export { handlers };
 
