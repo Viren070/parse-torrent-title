@@ -1257,8 +1257,20 @@ export const handlers: Handler[] = [
   },
   {
     field: 'seasons',
-    pattern: /(?:(?:\bthe\W)?\bcomplete\W)?season[. ]?[(\[]?((?:\d{1,2} ?[.\-]+ ?)+0?\d{1,2}\b)[)\]]?(?:.*\.\w{2,4}$)?/i,
-    validateMatch: validateNotMatch(/(?:.*\.\w{2,4}$)/i),
+    pattern: /(?:(?:\bthe\W)?\bcomplete\W)?season[. ]?[(\[]?((?:\d{1,2}[. -]+)+0?\d{1,2}\b)[)\]]?(?:.*\.\w{2,4}$)?/i,
+    validateMatch: (input: string, idxs: number[]): boolean => {
+      // First check: reject if match contains file extension
+      if (/(?:.*\.\w{2,4}$)/i.test(input)) {
+        return false
+      }
+      // Second check: reject if there are 2 or more consecutive spaces in the captured season range part
+      // This prevents matching "Season 2  009" (after "Complete" is removed) as a range
+      const capturedRange = input.substring(idxs[2], idxs[3])
+      if (/\s{2,}/.test(capturedRange)) {
+        return false
+      }
+      return true
+    },
     transform: toIntRange(),
     remove: true
   },
@@ -1581,6 +1593,7 @@ export const handlers: Handler[] = [
   {
     field: 'episodes',
     pattern: /season\s*\d{1,2}\s*(\d{1,4}\s*-\s*\d{1,4})/i,
+    validateMatch: validateNotMatch(/season\s*\d{1,2}\s*-/i),
     transform: toIntRange()
   },
   {
