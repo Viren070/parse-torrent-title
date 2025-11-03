@@ -259,6 +259,7 @@ describe('parseTorrentTitle - seasons', () => {
   test('[Erai-raws] Granblue Fantasy The Animation Season 2 - 08 [1080p][Multiple Subtitle].mkv', () => {
     const result = parseTorrentTitle('[Erai-raws] Granblue Fantasy The Animation Season 2 - 08 [1080p][Multiple Subtitle].mkv');
     expect(result.seasons).toEqual([2]);
+    expect(result.episodes).toEqual([8]);
   });
 
   test('The Nile Egypts Great River with Bettany Hughes Series 1 4of4 10', () => {
@@ -334,16 +335,19 @@ describe('parseTorrentTitle - seasons', () => {
   test('single season and not range in filename', () => {
     const result = parseTorrentTitle('[FFA] Kiratto Pri☆chan Season 3 - 11 [1080p][HEVC].mkv');
     expect(result.seasons).toEqual([3]);
+    expect(result.episodes).toEqual([11]);
   });
 
   test('single season and not range in filename v2', () => {
     const result = parseTorrentTitle('[Erai-raws] Granblue Fantasy The Animation Season 2 - 10 [1080p][Multiple Subtitle].mkv');
     expect(result.seasons).toEqual([2]);
+    expect(result.episodes).toEqual([10]);
   });
 
   test('single season and not range in filename v3', () => {
     const result = parseTorrentTitle('[SCY] Attack on Titan Season 3 - 11 (BD 1080p Hi10 FLAC) [1FA13150].mkv');
     expect(result.seasons).toEqual([3]);
+    expect(result.episodes).toEqual([11]);
   });
 
   test('single zero season', () => {
@@ -637,4 +641,24 @@ describe('parseTorrentTitle - seasons', () => {
     const result = parseTorrentTitle('[AniDub]_Love.Scout.s01');
     expect(result.seasons).toEqual([1]);
   });
+
+  test('season range with leading zeros in pack without extension', () => {
+    const result = parseTorrentTitle('Example Show Season 01-06 Complete');
+    expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
+    expect(result.episodes).toBeUndefined();
+  });
+
+
+  test('multiple season notations should not duplicate', () => {
+    const result = parseTorrentTitle('Example Show Season 1-6 S01-06 (WEB-DL)');
+    expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
+    expect(result.episodes).toBeUndefined();
+  });
+
+  test('season range should not be parsed as episodes when season word is present', () => {
+    const result = parseTorrentTitle('Show Name Season 3-5 Complete');
+    expect(result.seasons).toEqual([3, 4, 5]);
+    expect(result.episodes).toBeUndefined();
+  });
+
 });
