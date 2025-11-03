@@ -650,11 +650,16 @@ describe('parseTorrentTitle - seasons', () => {
 
 
   test('multiple season notations should not duplicate', () => {
-    const result = parseTorrentTitle('Example Show Season 1-6 S01-06 (WEB-DL)');
+    const result = parseTorrentTitle('Cougar Town (2009) Season 1-6 S01-06 (1080p AMZN WEB-DL x265 HEVC 10bit AAC 5.1 MONOLITH) [QxR]');
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
     expect(result.episodes).toBeUndefined();
   });
 
+  test('multiple season notations should not duplicate', () => {
+    const result = parseTorrentTitle('Cougar Town (2009) Season 01-6 S01-06 (1080p AMZN WEB-DL x265 HEVC 10bit AAC 5.1 MONOLITH) [QxR]');
+    expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
+    expect(result.episodes).toBeUndefined();
+  });
   test('season range should not be parsed as episodes when season word is present', () => {
     const result = parseTorrentTitle('Show Name Season 3-5 Complete');
     expect(result.seasons).toEqual([3, 4, 5]);
