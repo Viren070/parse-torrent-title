@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/Viren070/parse-torrent-title/compare/v0.1.1...v0.1.2) (2025-11-03)
+
+
+### Bug Fixes
+
+* improve season/episode parsing ([9a7091b](https://github.com/Viren070/parse-torrent-title/commit/9a7091bc18823e8cbb92c2102d71448e72f61ec0))
+
 ## [0.1.1](https://github.com/Viren070/parse-torrent-title/compare/v0.1.0...v0.1.1) (2025-11-01)
 
 
