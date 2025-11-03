@@ -1257,7 +1257,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'seasons',
-    pattern: /(?:(?:\bthe\W)?\bcomplete\W)?season[. ]?[(\[]?((?:\d{1,2}[. -]+)+[1-9]\d?\b)[)\]]?(?:.*\.\w{2,4}$)?/i,
+    pattern: /(?:(?:\bthe\W)?\bcomplete\W)?season[. ]?[(\[]?((?:\d{1,2} ?[.\-]+ ?)+0?\d{1,2}\b)[)\]]?(?:.*\.\w{2,4}$)?/i,
     validateMatch: validateNotMatch(/(?:.*\.\w{2,4}$)/i),
     transform: toIntRange(),
     remove: true
@@ -1481,7 +1481,7 @@ export const handlers: Handler[] = [
   {
     field: 'episodes',
     pattern: /(?:(?:seasons?|[Сс]езони?)\W*)?(?:20-20)?(?:[ .(\[-]|^)(\d{1,4}(?:-\d{1,4})+)(?:[ .)(\]]|[+-]\D|$)/i,
-    validateMatch: validateNotMatch(/(?:(?:seasons?|[Сс]езони?)\W*|^)(?:20-20)/i),
+    validateMatch: validateNotMatch(/(?:seasons?|[Сс]езони?)\W*|^(?:20-20)/i),
     transform: toIntRange()
   },
   {
@@ -1638,12 +1638,14 @@ export const handlers: Handler[] = [
       
       if (!mStr) {
         match = middleTitle.match(mtRe);
-        if (match && match.index !== undefined) {
-          const afterMatch = middleTitle.substring(match.index + match[0].length);
-          if (mtReNegAfter.test(afterMatch) || commonResolutionNeg.test(mStr)) {
+        if (match && match.index !== undefined && match[1]) {
+          // Check from the start of capture group 1 (the number) to the end
+          const captureGroupIndex = match[0].indexOf(match[1]);
+          const fromCaptureGroup = middleTitle.substring(match.index + captureGroupIndex);
+          if (mtReNegAfter.test(fromCaptureGroup) || commonResolutionNeg.test(mStr)) {
             match = null;
             mStr = '';
-          } else if (match[1]) {
+          } else {
             mStr = match[1];
           }
         }
