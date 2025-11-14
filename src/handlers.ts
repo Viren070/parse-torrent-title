@@ -763,7 +763,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'quality',
-    pattern: /\bHD(?:.?TV)?\b/i,
+    pattern: /\bHD(?:.?TV)?\b(?!-ELITE\.NET)/i,
     transform: toValue('HDTV'),
     remove: true
   },
