@@ -2708,7 +2708,21 @@ export const handlers: Handler[] = [
   // Site handlers
   {
     field: 'site',
-    pattern: /\[([^\[\].]+\.[^\].]+)\](?:\.\w{2,4}$|\s)/i,
+    pattern: /\[eztv\]/i,
+    transform: toValue('eztv.re'),
+    remove: true,
+    skipFromTitle: true
+  },
+  {
+    field: 'site',
+    pattern: /\beztv\b/i,
+    transform: toValue('eztv.re'),
+    remove: true,
+    skipFromTitle: true
+  },
+  {
+    field: 'site',
+    pattern: /^\[([^\[\]]+\.[^\[\]]+)\]/i,
     transform: toTrimmed(),
     remove: true,
     skipFromTitle: true,
@@ -2716,9 +2730,27 @@ export const handlers: Handler[] = [
   },
   {
     field: 'site',
-    pattern: /[\[{(](www.\w*.\w+)[)}\]]/i,
+    pattern: /-(www\.[\w-]+\.[\w-]+(?:\.[\w-]+)*)\.(\w{2,4})$/i,
+    transform: toTrimmed(),
     remove: true,
-    skipFromTitle: true
+    skipFromTitle: true,
+    matchGroup: 1
+  },
+  {
+    field: 'site',
+    pattern: /\[([^\[\].]+\.[^\].]+)\](?:\.\w{2,4})?(?:$|\s)/i,
+    transform: toTrimmed(),
+    remove: true,
+    skipFromTitle: true,
+    matchGroup: 1
+  },
+  {
+    field: 'site',
+    pattern: /[\[{(](www\.[\w-]+\.[\w-]+(?:\.[\w-]+)*)[)}\]]/i,
+    transform: toTrimmed(),
+    remove: true,
+    skipFromTitle: true,
+    matchGroup: 1
   },
   {
     field: 'site',
