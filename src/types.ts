@@ -13,6 +13,7 @@ export interface ParsedResult {
   convert?: boolean;
   date?: string;
   documentary?: boolean;
+  ppv?: boolean;
   dubbed?: boolean;
   edition?: string;
   episodeCode?: string;

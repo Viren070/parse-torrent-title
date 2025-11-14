@@ -223,6 +223,9 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       case 'documentary':
         finalResult.documentary = v as boolean;
         break;
+      case 'ppv':
+        finalResult.ppv = v as boolean;
+        break;
       case 'dubbed':
         finalResult.dubbed = v as boolean;
         break;

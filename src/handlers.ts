@@ -53,13 +53,15 @@ export const handlers: Handler[] = [
   // PPV handlers (lines 294-300 in handlers.go)
   {
     field: 'ppv',
-    pattern: /\bPPV\b/i,
+    pattern: /\bPPV(?:HD)?\b/i,
+    transform: toBoolean(),
     remove: true,
     skipFromTitle: true
   },
   {
     field: 'ppv',
     pattern: /\b\W?Fight.?Nights?\W?\b/i,
+    transform: toBoolean(),
     skipFromTitle: true
   },
 
