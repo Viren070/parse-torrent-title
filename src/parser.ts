@@ -257,7 +257,13 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
         break;
       case 'languages':
         if (v instanceof ValueSet) {
-          finalResult.languages = v.values as string[];
+          const languages = v.values as string[];
+          // If Latin American Spanish (es-419) is present, remove generic Spanish (es)
+          if (languages.includes('es-419') && languages.includes('es')) {
+            finalResult.languages = languages.filter(lang => lang !== 'es');
+          } else {
+            finalResult.languages = languages;
+          }
         }
         break;
       case 'network':
