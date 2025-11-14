@@ -767,6 +767,12 @@ export const handlers: Handler[] = [
     transform: toValue('HDTV'),
     remove: true
   },
+  {
+    field: 'quality',
+    pattern: /\bSD(?:.?TV)?\b/i,
+    transform: toValue('SDTV'),
+    remove: true
+  },
 
   // Bit Depth handlers (lines 1056-1077 in handlers.go)
   {
