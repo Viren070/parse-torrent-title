@@ -745,7 +745,9 @@ export const handlers: Handler[] = [
   },
   {
     field: 'quality',
-    pattern: /\b(DivX|XviD)\b/
+    pattern: /\b(W(?:ORK)P(?:RINT))\b/,
+    transform: toValue('WORKPRINT'),
+    remove: true
   },
   {
     field: 'quality',
