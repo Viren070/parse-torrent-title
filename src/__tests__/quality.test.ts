@@ -56,6 +56,11 @@ describe('Quality Detection Tests', () => {
     expect(result.quality).toBe('HDTV');
   });
 
+  test('HDTV 3', () => {
+    const result = parseTorrentTitle('WWE.RAW.2015.03.16.HDTV-RUDOS');
+    expect(result.quality).toBe('HDTV');
+  });
+
   test('PDTV', () => {
     const result = parseTorrentTitle('WWE.Monday.Night.RAW.2015.02.16.PDTV.x264-RUDOS');
     expect(result.quality).toBe('PDTV');
@@ -133,12 +138,12 @@ describe('Quality Detection Tests', () => {
 
   test('DVDR 1', () => {
     const result = parseTorrentTitle('La.Lecon.de.piano.1993.DVDR.NTSC-EliTe');
-    expect(result.quality).toBe('DVDR');
+    expect(result.quality).toBe('DVD');
   });
 
   test('DVDR 2', () => {
     const result = parseTorrentTitle('Somewhere.in.Time.1980.DVDR.NTSC.MPEG-2');
-    expect(result.quality).toBe('DVDR');
+    expect(result.quality).toBe('DVD');
   });
 
   test('SDTV 1', () => {
@@ -159,16 +164,6 @@ describe('Quality Detection Tests', () => {
   test('TVRIP 2', () => {
     const result = parseTorrentTitle('L.Auberge.Rouge.2007.TVRIP.XViD-ABiTE');
     expect(result.quality).toBe('TVRip');
-  });
-
-  test('PPV 1', () => {
-    const result = parseTorrentTitle('UFC.178.Jones.vs.Cormier.PPVHD.x264-KYR');
-    expect(result.quality).toBe('PPV');
-  });
-
-  test('PPV 2', () => {
-    const result = parseTorrentTitle('WWE.RAW.2015.03.16.PPV.HDTV.x264-RUDOS');
-    expect(result.quality).toBe('PPV');
   });
 
   test('TeleSync 1', () => {

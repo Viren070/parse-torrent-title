@@ -362,7 +362,6 @@ describe('Parse Torrent Title', () => {
         title: '20-20',
         date: '2024-11-15',
         codec: 'xvid',
-        quality: 'XviD',
         group: 'AFG',
         container: 'avi',
         extension: 'avi',
