@@ -722,6 +722,12 @@ export const handlers: Handler[] = [
   },
   {
     field: 'quality',
+    pattern: /\bWEB[ .-]?Cap\b/i,
+    transform: toValue('WEBCap'),
+    remove: true
+  },
+  {
+    field: 'quality',
     pattern: /\bWEB[ .-]?DL[ .-]?Rip\b/i,
     transform: toValue('WEB-DLRip'),
     remove: true
