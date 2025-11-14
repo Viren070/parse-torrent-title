@@ -34,9 +34,9 @@ jobs:
       - name: Build
         run: pnpm build
       
-      # - name: Run tests
-      #   run: pnpm test
+      - name: Run tests
+        run: pnpm test
       
-      # - name: Run test coverage
-      #   if: matrix.node-version == 20
-      #   run: pnpm test:coverage
+      - name: Run test coverage
+        if: matrix.node-version == 20
+        run: pnpm test:coverage
