@@ -316,6 +316,10 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       case 'year':
         finalResult.year = v as string;
         break;
+      default:
+        // Handle custom fields not in the predefined list
+        (finalResult as any)[field] = v;
+        break;
     }
   }
 
