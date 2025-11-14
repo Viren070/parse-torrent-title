@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parse Torrent Title - Interactive Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Parse Torrent Title</h1>
+            <p class="subtitle">Extract metadata from torrent filenames</p>
+            <div class="links">
+                <a href="https://github.com/Viren070/parse-torrent-title" target="_blank">GitHub</a>
+                <a href="https://www.npmjs.com/package/@viren070/parse-torrent-title" target="_blank">npm</a>
+            </div>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <h2>Enter Torrent Filename</h2>
+                <textarea 
+                    id="input" 
+                    placeholder="The.Matrix.1999.1080p.BluRay.x264.DTS-HD.MA.5.1"
+                    rows="3"
+                ></textarea>
+                <div class="examples">
+                    <span>Try these examples:</span>
+                    <button class="example-btn" data-example="The.Matrix.1999.1080p.BluRay.x264.DTS-HD.MA.5.1">Movie</button>
+                    <button class="example-btn" data-example="Breaking.Bad.S05E16.Felina.1080p.10bit.BluRay.6CH.x265.HEVC-PSA">TV Show</button>
+                    <button class="example-btn" data-example="Game.of.Thrones.Season.1-8.Complete.2160p.UHD.BluRay.x265.HDR.DV.10bit">Season Pack</button>
+                    <button class="example-btn" data-example="[Erai-raws] Demon Slayer - S02E01 [1080p][Multiple Subtitle][1F5B1E7D].mkv">Anime</button>
+                </div>
+            </section>
+
+            <section class="output-section">
+                <div class="output-header">
+                    <h2>Parsed Result</h2>
+                    <button id="copy-btn" class="copy-btn" title="Copy JSON">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy JSON
+                    </button>
+                </div>
+                
+                <div id="output" class="output-grid">
+                    <div class="empty-state">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <p>Enter a torrent filename to see the parsed results</p>
+                    </div>
+                </div>
+
+                <div id="json-output" class="json-output">
+                    <pre><code id="json-code">{}</code></pre>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>TypeScript port of <a href="https://github.com/MunifTanjim/go-ptt" target="_blank">go-ptt</a></p>
+        </footer>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
