@@ -77,7 +77,7 @@ interface ParsedResult {
   volumes?: number[];       // Volume numbers
   
   // Languages and Subtitles
-  languages?: string[];     // e.g., ['English', 'Japanese', 'Multi']
+  languages?: string[];     // e.g., ['en', 'jp', 'multi subs', 'multi audio', 'dual audio', 'es-419']
   dubbed?: boolean;         // Whether content is dubbed
   subbed?: boolean;         // Whether subtitles are included
   hardcoded?: boolean;      // Hardcoded subtitles
@@ -127,9 +127,77 @@ const result = parser.parse('The.Matrix.1999.1080p.BluRay.x264');
 // Only extracts: title, year, resolution, quality
 ```
 
-### Adding Custom Handlers
+## Writing Custom Handlers
 
-You can create custom handlers to extract additional information:
+You can extend the parser's capabilities by writing your own handlers. A handler is an object that defines how to find and process a piece of metadata in the torrent title.
+
+### Handler Interface
+
+Here is the structure of a `Handler` object:
+
+```typescript
+interface Handler {
+  field: string;
+  pattern?: RegExp;
+  validateMatch?: (input: string, idxs: number[]) => boolean;
+  transform?: (title: string, m: ParseMeta, result: Map<string, ParseMeta>) => void;
+  process?: (title: string, m: ParseMeta, result: Map<string, ParseMeta>) => ParseMeta;
+  remove?: boolean;
+  keepMatching?: boolean;
+  skipIfFirst?: boolean;
+  skipIfBefore?: string[];
+  skipFromTitle?: boolean;
+  matchGroup?: number;
+  valueGroup?: number;
+}
+```
+
+### Handler Properties
+
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| `field` | `string` | **Required.** The key this handler will populate in the result object (e.g., `'resolution'`, `'quality'`). |
+| `pattern` | `RegExp` | A regular expression used to find a value in the title. |
+| `transform` | `function` | A function to process the matched value. See the [Transformers](#transformers) section for available utilities. |
+| `validateMatch` | `function` | A function that returns `true` or `false` to determine if a match is valid. Use this to prevent a handler from running on a bad match. See [Validators](#validators) for available utilities to aid in writing validation logic. |
+| `process` | `function` | For complex logic that can't be handled by `pattern` and `transform`. It can create or modify the entire metadata object for a field. |
+| `remove` | `boolean` | If `true`, the matched text is removed from the title string. Defaults to `false`. |
+| `keepMatching` | `boolean` | If `true`, the parser will keep searching for this field even if a value has already been found. Useful for fields that can have multiple values (e.g., `languages`). Defaults to `false`. |
+| `skipFromTitle` | `boolean` | If `true`, this match will not be used to determine the end of the main `title` property. Useful for metadata at the end of the string (e.g., release group). Defaults to `false`. |
+| `skipIfFirst` | `boolean` | If `true`, the handler will be skipped if its match is the very first piece of metadata found in the title. |
+| `skipIfBefore` | `string[]` | An array of field names. The handler will be skipped if its match appears before any of those fields have been matched. |
+| `matchGroup` | `number` | The regex capture group to use as the "full match" text. This is the part that gets removed from the title if `remove` is `true`. |
+| `valueGroup` | `number` | The regex capture group to use as the "value" for the field. If not set, it defaults to capture group 1 if it exists. |
+
+### Custom Handler Example
+
+Here is an example of a custom handler that finds a fictional "Source" tag (e.g., `[SRC-XYZ]`) and adds it to a custom field:
+
+```javascript
+import { Parser, toTrimmed } from '@viren070/parse-torrent-title';
+
+const parser = new Parser();
+
+// Add a custom handler
+parser.addHandler({
+  field: 'sourceId',
+  pattern: /\[SRC-([\w]+)\]/i,
+  transform: toTrimmed(), // Trim whitespace from the matched value
+  remove: true, // Remove "[SRC-XYZ]" from the title
+  valueGroup: 1, // Use the first capture group "XYZ" as the value
+});
+
+parser.addDefaultHandlers();
+
+const result = parser.parse('My.Movie.2023.1080p.[SRC-WIKIPEDIA].mkv');
+
+console.log(result.sourceId); // "WIKIPEDIA"
+console.log(result.title); // "My Movie"
+```
+
+### Type-Safe Custom Fields
+
+You can use TypeScript generics to get full type safety for your custom fields:
 
 ```typescript
 import { Parser, Handler, toIntArray } from '@viren070/parse-torrent-title';
@@ -144,17 +212,12 @@ const parser = new Parser()
   .addDefaultHandlers() // Add all default handlers
   .addHandler(customHandler); // Add your custom handler
 
-// Option 1: Without type parameter (custom fields are typed as 'any')
-const result = parser.parse('Movie.2024.custom-123.1080p');
-console.log(result.customId); // [123]
-
-// Option 2: With type parameter for type-safe custom fields
 type CustomFields = { customId: number[] };
 const typedResult = parser.parse<CustomFields>('Movie.2024.custom-123.1080p');
 console.log(typedResult.customId); // [123] - fully type-safe!
 ```
 
-### Available Transformers
+### Transformers
 
 Transformers modify the captured value before it's stored in the result. All transformers are functions that return a `HandlerTransformer`.
 
@@ -184,7 +247,7 @@ Transformers modify the captured value before it's stored in the result. All tra
 **Processor:**
 - `removeFromValue(regex: RegExp)` - Remove matching patterns from the captured value
 
-### Available Validators
+### Validators
 
 Validators determine whether a match should be accepted. They're used with the `validateMatch` property.
 
