@@ -1,29 +1,43 @@
-import { HandlerMatchValidator, HandlerTransformer, HandlerProcessor, ParseMeta, ValueSet } from './types.js';
+import {
+  HandlerMatchValidator,
+  HandlerTransformer,
+  HandlerProcessor,
+  ParseMeta,
+  ValueSet
+} from './types.js';
 import { nonDigitsRegex } from './utils.js';
 
 /**
  * Validators - matching Go validate_* functions
  */
 
-export function validateOr(...validators: HandlerMatchValidator[]): HandlerMatchValidator {
+export function validateOr(
+  ...validators: HandlerMatchValidator[]
+): HandlerMatchValidator {
   return (input: string, idxs: number[]): boolean => {
-    return validators.some(v => v(input, idxs));
+    return validators.some((v) => v(input, idxs));
   };
 }
 
-export function validateAnd(...validators: HandlerMatchValidator[]): HandlerMatchValidator {
+export function validateAnd(
+  ...validators: HandlerMatchValidator[]
+): HandlerMatchValidator {
   return (input: string, idxs: number[]): boolean => {
-    return validators.every(v => v(input, idxs));
+    return validators.every((v) => v(input, idxs));
   };
 }
 
-export function validateLookbehind(pattern: string, flags: string, polarity: boolean): HandlerMatchValidator {
+export function validateLookbehind(
+  pattern: string,
+  flags: string,
+  polarity: boolean
+): HandlerMatchValidator {
   const flagStr = flags.toLowerCase().replace(/[^gimsuy]/g, '');
   const re = new RegExp(pattern + '$', flagStr);
-  
+
   return (input: string, match: number[]): boolean => {
     const rv = input.substring(0, match[0]);
-    
+
     if (polarity) {
       return re.test(rv);
     }
@@ -31,13 +45,17 @@ export function validateLookbehind(pattern: string, flags: string, polarity: boo
   };
 }
 
-export function validateLookahead(pattern: string, flags: string, polarity: boolean): HandlerMatchValidator {
+export function validateLookahead(
+  pattern: string,
+  flags: string,
+  polarity: boolean
+): HandlerMatchValidator {
   const flagStr = flags.toLowerCase().replace(/[^gimsuy]/g, '');
   const re = new RegExp('^' + pattern, flagStr);
-  
+
   return (input: string, match: number[]): boolean => {
     const rv = input.substring(match[1]);
-    
+
     if (polarity) {
       return re.test(rv);
     }
@@ -71,9 +89,14 @@ export function validateMatch(re: RegExp): HandlerMatchValidator {
   };
 }
 
-export function validateMatchedGroupsAreSame(...indices: number[]): HandlerMatchValidator {
+export function validateMatchedGroupsAreSame(
+  ...indices: number[]
+): HandlerMatchValidator {
   return (input: string, match: number[]): boolean => {
-    const first = input.substring(match[indices[0] * 2], match[indices[0] * 2 + 1]);
+    const first = input.substring(
+      match[indices[0] * 2],
+      match[indices[0] * 2 + 1]
+    );
     for (let i = 1; i < indices.length; i++) {
       const index = indices[i];
       const other = input.substring(match[index * 2], match[index * 2 + 1]);
@@ -123,7 +146,8 @@ export function toCleanDate(): HandlerTransformer {
 }
 
 export function toCleanMonth(): HandlerTransformer {
-  const re = /(?:feb(?:ruary)?|jan(?:uary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)/gi;
+  const re =
+    /(?:feb(?:ruary)?|jan(?:uary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)/gi;
   return (title: string, m: ParseMeta): void => {
     if (typeof m.value === 'string') {
       m.value = m.value.replace(re, (str: string) => str.substring(0, 3));
@@ -160,18 +184,20 @@ function parseDate(dateStr: string, format: string): string | null {
       }
       return null;
     }
-    
+
     // Map Go format to JS parsing
     // This is a simplified version - you may need to enhance this
     const parts = dateStr.trim().split(/\s+/);
     const formatParts = format.split(/\s+/);
-    
-    let year = 0, month = 0, day = 0;
-    
+
+    let year = 0,
+      month = 0,
+      day = 0;
+
     for (let i = 0; i < formatParts.length && i < parts.length; i++) {
       const fmt = formatParts[i];
       const val = parts[i];
-      
+
       if (fmt === '2006' || fmt === 'YYYY') {
         year = parseInt(val);
       } else if (fmt === '06' || fmt === 'YY') {
@@ -182,7 +208,20 @@ function parseDate(dateStr: string, format: string): string | null {
       } else if (fmt === '02' || fmt === 'DD' || fmt === '_2') {
         day = parseInt(val);
       } else if (fmt === 'Jan' || fmt === 'MMM') {
-        const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+        const months = [
+          'jan',
+          'feb',
+          'mar',
+          'apr',
+          'may',
+          'jun',
+          'jul',
+          'aug',
+          'sep',
+          'oct',
+          'nov',
+          'dec'
+        ];
         month = months.indexOf(val.toLowerCase().substring(0, 3)) + 1;
       } else if (fmt === 'YYYYMMDD') {
         year = parseInt(val.substring(0, 4));
@@ -190,7 +229,7 @@ function parseDate(dateStr: string, format: string): string | null {
         day = parseInt(val.substring(6, 8));
       }
     }
-    
+
     if (year && month && day) {
       // Use Date.UTC to avoid timezone conversion issues
       const date = new Date(Date.UTC(year, month - 1, day));
@@ -210,37 +249,37 @@ export function toYear(): HandlerTransformer {
       m.value = '';
       return;
     }
-    
-    const parts = m.value.split(nonDigitsRegex).filter(p => p);
+
+    const parts = m.value.split(nonDigitsRegex).filter((p) => p);
     if (parts.length === 1) {
       m.value = parts[0];
       return;
     }
-    
+
     const start = parts[0];
     const end = parts[1];
     let endYear = parseInt(end);
-    
+
     if (isNaN(endYear)) {
       m.value = start;
       return;
     }
-    
+
     const startYear = parseInt(start);
     if (isNaN(startYear)) {
       m.value = '';
       return;
     }
-    
+
     if (endYear < 100) {
       endYear = endYear + startYear - (startYear % 100);
     }
-    
+
     if (endYear <= startYear) {
       m.value = '';
       return;
     }
-    
+
     m.value = `${startYear}-${endYear}`;
   };
 }
@@ -251,10 +290,14 @@ export function toIntRange(): HandlerTransformer {
       m.value = null;
       return;
     }
-    
-    const parts = m.value.replace(nonDigitsRegex, ' ').trim().split(' ').filter(p => p);
-    const nums = parts.map(p => parseInt(p)).filter(n => !isNaN(n));
-    
+
+    const parts = m.value
+      .replace(nonDigitsRegex, ' ')
+      .trim()
+      .split(' ')
+      .filter((p) => p);
+    const nums = parts.map((p) => parseInt(p)).filter((n) => !isNaN(n));
+
     if (nums.length === 2 && nums[0] < nums[1]) {
       const seq: number[] = [];
       for (let i = nums[0]; i <= nums[1]; i++) {
@@ -263,7 +306,7 @@ export function toIntRange(): HandlerTransformer {
       m.value = seq;
       return;
     }
-    
+
     // Check if in sequence and ascending order
     for (let i = 0; i < nums.length - 1; i++) {
       if (nums[i] + 1 !== nums[i + 1]) {
@@ -271,7 +314,7 @@ export function toIntRange(): HandlerTransformer {
         return;
       }
     }
-    
+
     m.value = nums;
   };
 }
@@ -300,7 +343,9 @@ export function toValueSet(v: any): HandlerTransformer {
   };
 }
 
-export function toValueSetWithTransform(toV: (v: string) => any): HandlerTransformer {
+export function toValueSetWithTransform(
+  toV: (v: string) => any
+): HandlerTransformer {
   return (title: string, m: ParseMeta): void => {
     if (m.value instanceof ValueSet) {
       m.value.append(toV(m.mValue));
@@ -308,7 +353,9 @@ export function toValueSetWithTransform(toV: (v: string) => any): HandlerTransfo
   };
 }
 
-export function toValueSetMultiWithTransform(toV: (v: string) => any[]): HandlerTransformer {
+export function toValueSetMultiWithTransform(
+  toV: (v: string) => any[]
+): HandlerTransformer {
   return (title: string, m: ParseMeta): void => {
     if (m.value instanceof ValueSet) {
       const values = toV(m.mValue);

@@ -1,5 +1,11 @@
 import { Handler, ParsedResult, ParseMeta, ValueSet } from './types.js';
-import { cleanTitle, beforeTitleRegex, whitespacesRegex, underscoresRegex, getMatchIndices } from './utils.js';
+import {
+  cleanTitle,
+  beforeTitleRegex,
+  whitespacesRegex,
+  underscoresRegex,
+  getMatchIndices
+} from './utils.js';
 
 /**
  * Fields that use value sets
@@ -21,10 +27,10 @@ function hasValueSet(field: string): boolean {
  */
 export function parse(title: string, handlers: Handler[]): ParsedResult {
   const result = new Map<string, ParseMeta>();
-  
+
   title = title.replace(whitespacesRegex, ' ');
   title = title.replace(underscoresRegex, ' ');
-  
+
   let endOfTitle = title.length;
 
   for (const handler of handlers) {
@@ -83,7 +89,7 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
 
       const rawMatchedPart = title.substring(idxs[0], idxs[1]);
       let matchedPart = rawMatchedPart;
-      
+
       if (idxs.length > 2) {
         // Default to capture group 1 if valueGroup is not specified
         if (handler.valueGroup === undefined || handler.valueGroup === 0) {
@@ -160,13 +166,18 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       continue;
     }
 
-    if (!result.has(field) || (m.processed && !handler.keepMatching && !hasValueSet(field))) {
+    if (
+      !result.has(field) ||
+      (m.processed && !handler.keepMatching && !hasValueSet(field))
+    ) {
       continue;
     }
 
     if (handler.remove || m.remove) {
       m.remove = true;
-      title = title.substring(0, m.mIndex) + title.substring(m.mIndex + m.mValue.length);
+      title =
+        title.substring(0, m.mIndex) +
+        title.substring(m.mIndex + m.mValue.length);
     }
 
     if (!skipFromTitle && m.mIndex !== 0 && m.mIndex < endOfTitle) {
@@ -187,7 +198,7 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
 
   for (const [field, fieldMeta] of result) {
     const v = fieldMeta.value;
-    
+
     switch (field) {
       case 'audio':
         if (v instanceof ValueSet) {
@@ -260,7 +271,7 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
           const languages = v.values as string[];
           // If Latin American Spanish (es-419) is present, remove generic Spanish (es)
           if (languages.includes('es-419') && languages.includes('es')) {
-            finalResult.languages = languages.filter(lang => lang !== 'es');
+            finalResult.languages = languages.filter((lang) => lang !== 'es');
           } else {
             finalResult.languages = languages;
           }

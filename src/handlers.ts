@@ -1,6 +1,6 @@
 /**
  * Handler definitions matching handlers.go
- * 
+ *
  * IMPORTANT: The order of handlers matters! They must match the exact order in handlers.go
  * to ensure 1:1 parsing behavior.
  */
@@ -37,7 +37,7 @@ import {
 
 /**
  * All handlers in the exact order as handlers.go
- * 
+ *
  * Start porting from line 284 of handlers.go
  */
 export const handlers: Handler[] = [
@@ -108,7 +108,8 @@ export const handlers: Handler[] = [
   // Resolution handlers (lines 330-378 in handlers.go)
   {
     field: 'resolution',
-    pattern: /\b(?:4k|2160p|1080p|720p|480p)\b.+\b(4k|2160p|1080p|720p|480p)\b/i,
+    pattern:
+      /\b(?:4k|2160p|1080p|720p|480p)\b.+\b(4k|2160p|1080p|720p|480p)\b/i,
     transform: toLowercase(),
     remove: true,
     matchGroup: 1
@@ -178,7 +179,8 @@ export const handlers: Handler[] = [
   // Date handlers (lines 380-451 in handlers.go)
   {
     field: 'date',
-    pattern: /(?:\W|^)([(\[]?((?:19[6-9]|20[012])[0-9]([. \-/\\])(?:0[1-9]|1[012])([. \-/\\])(?:0[1-9]|[12][0-9]|3[01]))[)\]]?)(?:\W|$)/,
+    pattern:
+      /(?:\W|^)([(\[]?((?:19[6-9]|20[012])[0-9]([. \-/\\])(?:0[1-9]|1[012])([. \-/\\])(?:0[1-9]|[12][0-9]|3[01]))[)\]]?)(?:\W|$)/,
     validateMatch: validateMatchedGroupsAreSame(3, 4),
     transform: toDate('2006 01 02'),
     remove: true,
@@ -187,28 +189,32 @@ export const handlers: Handler[] = [
   },
   {
     field: 'date',
-    pattern: /(?:\W|^)[(\[]?((?:0[1-9]|[12][0-9]|3[01])([. \-/\\])(?:0[1-9]|1[012])([. \-/\\])(?:19[6-9]|20[012])[0-9])[)\]]?(?:\W|$)/,
+    pattern:
+      /(?:\W|^)[(\[]?((?:0[1-9]|[12][0-9]|3[01])([. \-/\\])(?:0[1-9]|1[012])([. \-/\\])(?:19[6-9]|20[012])[0-9])[)\]]?(?:\W|$)/,
     validateMatch: validateMatchedGroupsAreSame(2, 3),
     transform: toDate('02 01 2006'),
     remove: true
   },
   {
     field: 'date',
-    pattern: /(?:\W)[(\[]?((?:0[1-9]|1[012])([. \-/\\])(?:0[1-9]|[12][0-9]|3[01])([. \-/\\])(?:19[6-9]|20[012])[0-9])[)\]]?(?:\W|$)/,
+    pattern:
+      /(?:\W)[(\[]?((?:0[1-9]|1[012])([. \-/\\])(?:0[1-9]|[12][0-9]|3[01])([. \-/\\])(?:19[6-9]|20[012])[0-9])[)\]]?(?:\W|$)/,
     validateMatch: validateMatchedGroupsAreSame(2, 3),
     transform: toDate('01 02 2006'),
     remove: true
   },
   {
     field: 'date',
-    pattern: /(?:\W)[(\[]?((?:0[1-9]|1[012])([. \-/\\])(?:0[1-9]|[12][0-9]|3[01])([. \-/\\])(?:[0][1-9]|[0126789][0-9]))[)\]]?(?:\W|$)/,
+    pattern:
+      /(?:\W)[(\[]?((?:0[1-9]|1[012])([. \-/\\])(?:0[1-9]|[12][0-9]|3[01])([. \-/\\])(?:[0][1-9]|[0126789][0-9]))[)\]]?(?:\W|$)/,
     validateMatch: validateMatchedGroupsAreSame(2, 3),
     transform: toDate('01 02 06'),
     remove: true
   },
   {
     field: 'date',
-    pattern: /(?:\W)[(\[]?((?:0[1-9]|[12][0-9]|3[01])([. \-/\\])(?:0[1-9]|1[012])([. \-/\\])(?:[0][1-9]|[0126789][0-9]))[)\]]?(?:\W|$)/,
+    pattern:
+      /(?:\W)[(\[]?((?:0[1-9]|[12][0-9]|3[01])([. \-/\\])(?:0[1-9]|1[012])([. \-/\\])(?:[0][1-9]|[0126789][0-9]))[)\]]?(?:\W|$)/,
     validateMatch: validateMatchedGroupsAreSame(2, 3),
     transform: toDate('02 01 06'),
     matchGroup: 1,
@@ -216,7 +222,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'date',
-    pattern: /(?:\W|^)[(\[]?((?:0?[1-9]|[12][0-9]|3[01])[. ]?(?:st|nd|rd|th)?([. \-/\\])(?:feb(?:ruary)?|jan(?:uary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)([. \-/\\])(?:19[7-9]|20[012])[0-9])[)\]]?(?:\W|$)/i,
+    pattern:
+      /(?:\W|^)[(\[]?((?:0?[1-9]|[12][0-9]|3[01])[. ]?(?:st|nd|rd|th)?([. \-/\\])(?:feb(?:ruary)?|jan(?:uary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)([. \-/\\])(?:19[7-9]|20[012])[0-9])[)\]]?(?:\W|$)/i,
     validateMatch: validateMatchedGroupsAreSame(2, 3),
     transform: (title, m, result) => {
       toCleanDate()(title, m, result);
@@ -227,7 +234,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'date',
-    pattern: /(?:\W|^)[(\[]?((?:0?[1-9]|[12][0-9]|3[01])[. ]?(?:st|nd|rd|th)?([. \-/\\])(?:feb(?:ruary)?|jan(?:uary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)([. \-/\\])(?:0[1-9]|[0126789][0-9]))[)\]]?(?:\W|$)/i,
+    pattern:
+      /(?:\W|^)[(\[]?((?:0?[1-9]|[12][0-9]|3[01])[. ]?(?:st|nd|rd|th)?([. \-/\\])(?:feb(?:ruary)?|jan(?:uary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)([. \-/\\])(?:0[1-9]|[0126789][0-9]))[)\]]?(?:\W|$)/i,
     validateMatch: validateMatchedGroupsAreSame(2, 3),
     transform: (title, m, result) => {
       toCleanDate()(title, m, result);
@@ -238,7 +246,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'date',
-    pattern: /(?:\W|^)[(\[]?(20[012][0-9](?:0[1-9]|1[012])(?:0[1-9]|[12][0-9]|3[01]))[)\]]?(?:\W|$)/,
+    pattern:
+      /(?:\W|^)[(\[]?(20[012][0-9](?:0[1-9]|1[012])(?:0[1-9]|[12][0-9]|3[01]))[)\]]?(?:\W|$)/,
     transform: toDate('20060102'),
     remove: true
   },
@@ -246,10 +255,15 @@ export const handlers: Handler[] = [
   // Year handlers (lines 456-542 in handlers.go)
   {
     field: 'year',
-    pattern: /[ .]?([(\[*]?((?:19\d|20[012])\d[ .]?-[ .]?(?:19\d|20[012])\d)[*)\]]?)[ .]?/,
+    pattern:
+      /[ .]?([(\[*]?((?:19\d|20[012])\d[ .]?-[ .]?(?:19\d|20[012])\d)[*)\]]?)[ .]?/,
     transform: (title, m, result) => {
       toYear()(title, m, result);
-      if (!result.has('complete') && typeof m.value === 'string' && m.value.includes('-')) {
+      if (
+        !result.has('complete') &&
+        typeof m.value === 'string' &&
+        m.value.includes('-')
+      ) {
         result.set('complete', {
           mIndex: m.mIndex,
           mValue: m.mValue,
@@ -268,7 +282,11 @@ export const handlers: Handler[] = [
     pattern: /[(\[*][ .]?((?:19\d|20[012])\d[ .]?-[ .]?\d{2})(?:\s?[*)\]])?/,
     transform: (title, m, result) => {
       toYear()(title, m, result);
-      if (!result.has('complete') && typeof m.value === 'string' && m.value.includes('-')) {
+      if (
+        !result.has('complete') &&
+        typeof m.value === 'string' &&
+        m.value.includes('-')
+      ) {
         result.set('complete', {
           mIndex: m.mIndex,
           mValue: m.mValue,
@@ -292,7 +310,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'year',
-    pattern: /(?:[(\[*]|.)((?:\d|Cap[. ]?)?(?:19\d|20[012])\d(?:\d|kbps)?)[*)\]]?/,
+    pattern:
+      /(?:[(\[*]|.)((?:\d|Cap[. ]?)?(?:19\d|20[012])\d(?:\d|kbps)?)[*)\]]?/,
     validateMatch: (input: string, match: number[]): boolean => {
       if (match[0] < 2) {
         return false;
@@ -332,9 +351,10 @@ export const handlers: Handler[] = [
   // Edition handlers (lines 551-606 in handlers.go)
   {
     field: 'edition',
-    pattern: /\b\d{2,3}(?:th)?[\.\s\-\+_\/(),]Anniversary[\.\s\-\+_\/(),](?:Edition|Ed)?\b/i,
+    pattern:
+      /\b\d{2,3}(?:th)?[\.\s\-\+_\/(),]Anniversary[\.\s\-\+_\/(),](?:Edition|Ed)?\b/i,
     transform: toValue('Anniversary Edition'),
-    remove: true,
+    remove: true
   },
   {
     field: 'edition',
@@ -420,7 +440,8 @@ export const handlers: Handler[] = [
   // Release Types handlers (lines 608-623 in handlers.go)
   {
     field: 'releaseTypes',
-    pattern: /\b((?:OAD|OAV|ODA|ONA|OVA)\b(?:[+&]\b(?:OAD|OAV|ODA|ONA|OVA)\b)?)/i,
+    pattern:
+      /\b((?:OAD|OAV|ODA|ONA|OVA)\b(?:[+&]\b(?:OAD|OAV|ODA|ONA|OVA)\b)?)/i,
     transform: toValueSetMultiWithTransform((v: string) => {
       const values: any[] = [];
       for (const part of v.split(nonAlphasRegex)) {
@@ -755,7 +776,9 @@ export const handlers: Handler[] = [
   {
     field: 'quality',
     pattern: /\b(?:\w.)?WEB\b|\bWEB(?:(?:[ \.\-\(\],]+\d))?\b/i,
-    validateMatch: validateNotMatch(/\b(?:\w.)WEB\b|\bWEB(?:(?:[ \.\-\(\],]+\d))\b/i),
+    validateMatch: validateNotMatch(
+      /\b(?:\w.)WEB\b|\bWEB(?:(?:[ \.\-\(\],]+\d))\b/i
+    ),
     transform: toValue('WEB'),
     remove: true,
     skipFromTitle: true
@@ -1077,7 +1100,8 @@ export const handlers: Handler[] = [
   // Group handler (lines 1523-1528 in handlers.go)
   {
     field: 'group',
-    pattern: /(- ?([^\-. \[]+[^\-. \[)\]\d][^\-. \[)\]]*))(?:\[[\w.-]+])?(?:\.\w{2,4}$|$)/i,
+    pattern:
+      /(- ?([^\-. \[]+[^\-. \[)\]\d][^\-. \[)\]]*))(?:\[[\w.-]+])?(?:\.\w{2,4}$|$)/i,
     validateMatch: validateNotMatch(/- ?(?:\d+$|S\d+|\d+x|ep?\d+|[^\[]+]$)/i),
     matchGroup: 1,
     valueGroup: 2
@@ -1091,7 +1115,7 @@ export const handlers: Handler[] = [
   },
 
   // Batch 6: Volumes, Languages, Complete handlers (lines 1536-1749 in handlers.go)
-  
+
   // Volumes handlers (lines 1548-1591 in handlers.go)
   {
     field: 'volumes',
@@ -1158,17 +1182,20 @@ export const handlers: Handler[] = [
   },
   {
     field: 'complete',
-    pattern: /(?:\bthe\W)?(?:\bcomplete|collection|dvd)?\b[ .]?\bbox[ .-]?set\b/i,
+    pattern:
+      /(?:\bthe\W)?(?:\bcomplete|collection|dvd)?\b[ .]?\bbox[ .-]?set\b/i,
     transform: toBoolean()
   },
   {
     field: 'complete',
-    pattern: /(?:\bthe\W)?(?:\bcomplete|collection|dvd)?\b[ .]?\bmini[ .-]?series\b/i,
+    pattern:
+      /(?:\bthe\W)?(?:\bcomplete|collection|dvd)?\b[ .]?\bmini[ .-]?series\b/i,
     transform: toBoolean()
   },
   {
     field: 'complete',
-    pattern: /(?:\bthe\W)?(?:\bcomplete|full|all)\b.*\b(?:series|seasons|collection|episodes|set|pack|movies)\b/i,
+    pattern:
+      /(?:\bthe\W)?(?:\bcomplete|full|all)\b.*\b(?:series|seasons|collection|episodes|set|pack|movies)\b/i,
     transform: toBoolean()
   },
   {
@@ -1201,7 +1228,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'complete',
-    pattern: /duology|trilogy|quadr[oi]logy|tetralogy|pentalogy|hexalogy|heptalogy|anthology/i,
+    pattern:
+      /duology|trilogy|quadr[oi]logy|tetralogy|pentalogy|hexalogy|heptalogy|anthology/i,
     transform: toBoolean(),
     keepMatching: true
   },
@@ -1241,7 +1269,8 @@ export const handlers: Handler[] = [
   // Batch 7: Seasons handlers (lines 1727-1868 in handlers.go)
   {
     field: 'seasons',
-    pattern: /(?:complete\W|seasons?\W|\W|^)((?:s\d{1,2}[., +/\\&-]+)+s\d{1,2}\b)/i,
+    pattern:
+      /(?:complete\W|seasons?\W|\W|^)((?:s\d{1,2}[., +/\\&-]+)+s\d{1,2}\b)/i,
     transform: toIntRange(),
     remove: true
   },
@@ -1265,43 +1294,48 @@ export const handlers: Handler[] = [
   },
   {
     field: 'seasons',
-    pattern: /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons?|[Сс]езони?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2} ?(?:[,/\\&]+ ?)+)+\d{1,2}\b)[)\]]?/i,
+    pattern:
+      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons?|[Сс]езони?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2} ?(?:[,/\\&]+ ?)+)+\d{1,2}\b)[)\]]?/i,
     transform: toIntRange()
   },
   {
     field: 'seasons',
-    pattern: /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons|[Сс]езони?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2}[. -]+)+0?[1-9]\d?\b)[)\]]?/i,
+    pattern:
+      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons|[Сс]езони?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2}[. -]+)+0?[1-9]\d?\b)[)\]]?/i,
     transform: toIntRange(),
     remove: true
   },
   {
     field: 'seasons',
-    pattern: /(?:(?:\bthe\W)?\bcomplete\W)?season[. ]?[(\[]?((?:\d{1,2}[. -]+)+0?\d{1,2}\b)[)\]]?(?:.*\.\w{2,4}$)?/i,
+    pattern:
+      /(?:(?:\bthe\W)?\bcomplete\W)?season[. ]?[(\[]?((?:\d{1,2}[. -]+)+0?\d{1,2}\b)[)\]]?(?:.*\.\w{2,4}$)?/i,
     validateMatch: (input: string, idxs: number[]): boolean => {
       // First check: reject if match contains file extension
       if (/(?:.*\.\w{2,4}$)/i.test(input)) {
-        return false
+        return false;
       }
       // Second check: reject if there are 2 or more consecutive spaces in the captured season range part
       // This prevents matching "Season 2  009" (after "Complete" is removed) as a range
-      const capturedRange = input.substring(idxs[2], idxs[3])
+      const capturedRange = input.substring(idxs[2], idxs[3]);
       if (/\s{2,}/.test(capturedRange)) {
-        return false
+        return false;
       }
-      return true
+      return true;
     },
     transform: toIntRange(),
     remove: true
   },
   {
     field: 'seasons',
-    pattern: /(?:(?:\bthe\W)?\bcomplete\W)?\bseasons?\b[. -]?(\d{1,2}[. -]?(?:to|thru|and|\+|:)[. -]?\d{1,2})\b/i,
+    pattern:
+      /(?:(?:\bthe\W)?\bcomplete\W)?\bseasons?\b[. -]?(\d{1,2}[. -]?(?:to|thru|and|\+|:)[. -]?\d{1,2})\b/i,
     transform: toIntRange(),
     remove: true
   },
   {
     field: 'seasons',
-    pattern: /\bseason\b[ .-]?(\d{1,2}[ .-]?(?:to|thru|and|\+)[ .-]?\bseason\b[ .-]?\d{1,2})/i,
+    pattern:
+      /\bseason\b[ .-]?(\d{1,2}[ .-]?(?:to|thru|and|\+)[ .-]?\bseason\b[ .-]?\d{1,2})/i,
     transform: toIntRange()
   },
   {
@@ -1312,7 +1346,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'seasons',
-    pattern: /(?:(?:\bthe\W)?\bcomplete\W)?(?:saison|seizoen|sezon(?:SO?)?|stagione|season|series|temp(?:orada)?):?[. ]?(\d{1,2})/i,
+    pattern:
+      /(?:(?:\bthe\W)?\bcomplete\W)?(?:saison|seizoen|sezon(?:SO?)?|stagione|season|series|temp(?:orada)?):?[. ]?(\d{1,2})/i,
     transform: toIntArray()
   },
   {
@@ -1336,18 +1371,21 @@ export const handlers: Handler[] = [
   },
   {
     field: 'seasons',
-    pattern: /(?:(?:\bthe\W)?\bcomplete)?(?:\W|^)so?([01]?[0-5]?[1-9])(?:[\Wex]|\d{2}\b)/i,
+    pattern:
+      /(?:(?:\bthe\W)?\bcomplete)?(?:\W|^)so?([01]?[0-5]?[1-9])(?:[\Wex]|\d{2}\b)/i,
     transform: toIntArray(),
     keepMatching: true
   },
   {
     field: 'seasons',
-    pattern: /(?:so?|t)(\d{1,2})[. ]?[xх-]?[. ]?(?:e|x|х|ep|-|\.)[. ]?\d{1,4}(?:[abc]|v0?[1-4]|\D|$)/i,
+    pattern:
+      /(?:so?|t)(\d{1,2})[. ]?[xх-]?[. ]?(?:e|x|х|ep|-|\.)[. ]?\d{1,4}(?:[abc]|v0?[1-4]|\D|$)/i,
     transform: toIntArray()
   },
   {
     field: 'seasons',
-    pattern: /(?:(?:\bthe\W)?\bcomplete\W)?(?:\W|^)(\d{1,2})[. ]?(?:st|nd|rd|th)[. ]*season/i,
+    pattern:
+      /(?:(?:\bthe\W)?\bcomplete\W)?(?:\W|^)(\d{1,2})[. ]?(?:st|nd|rd|th)[. ]*season/i,
     transform: toIntArray()
   },
   {
@@ -1389,7 +1427,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'seasons',
-    pattern: /(?:\bEp?(?:isode)? ?\d+\b.*)?\b(\d{2})[ ._]\d{2}(?:.F)?\.\w{2,4}$/,
+    pattern:
+      /(?:\bEp?(?:isode)? ?\d+\b.*)?\b(\d{2})[ ._]\d{2}(?:.F)?\.\w{2,4}$/,
     validateMatch: validateNotMatch(/(?:\bEp?(?:isode)? ?\d+\b.*)/),
     transform: toIntArray()
   },
@@ -1400,7 +1439,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'seasons',
-    pattern: /(?:(?:\bthe\W)?\bcomplete)?(?:[a-z])?\bs(\d{1,3})(?:[\Wex]|\d{2}\b|$)/i,
+    pattern:
+      /(?:(?:\bthe\W)?\bcomplete)?(?:[a-z])?\bs(\d{1,3})(?:[\Wex]|\d{2}\b|$)/i,
     validateMatch: validateNotMatch(/(?:[a-z])\bs\d{1,3}/i),
     transform: toIntArray(),
     keepMatching: true
@@ -1419,22 +1459,26 @@ export const handlers: Handler[] = [
   // Batch 8: Episodes handlers (lines 1870-2125 in handlers.go)
   {
     field: 'episodes',
-    pattern: /(?:[\W\d]|^)e[ .]?[(\[]?(\d{1,3}(?:[à .-]*(?:[&+]|e){1,2}[ .]?\d{1,3})+)(?:\W|$)/i,
+    pattern:
+      /(?:[\W\d]|^)e[ .]?[(\[]?(\d{1,3}(?:[à .-]*(?:[&+]|e){1,2}[ .]?\d{1,3})+)(?:\W|$)/i,
     transform: toIntRange()
   },
   {
     field: 'episodes',
-    pattern: /(?:[\W\d]|^)ep[ .]?[(\[]?(\d{1,3}(?:[ .-]*(?:[&+]|ep){1,2}[ .]?\d{1,3})+)(?:\W|$)/i,
+    pattern:
+      /(?:[\W\d]|^)ep[ .]?[(\[]?(\d{1,3}(?:[ .-]*(?:[&+]|ep){1,2}[ .]?\d{1,3})+)(?:\W|$)/i,
     transform: toIntRange()
   },
   {
     field: 'episodes',
-    pattern: /(?:[\W\d]|^)\d+[xх][ .]?[(\[]?(\d{1,3}(?:[ .]?[xх][ .]?\d{1,3})+)(?:\W|$)/i,
+    pattern:
+      /(?:[\W\d]|^)\d+[xх][ .]?[(\[]?(\d{1,3}(?:[ .]?[xх][ .]?\d{1,3})+)(?:\W|$)/i,
     transform: toIntRange()
   },
   {
     field: 'episodes',
-    pattern: /(?:[\W\d]|^)(?:episodes?|[Сс]ерии:?)[ .]?[(\[]?(\d{1,3}(?:[ .+]*[&+][ .]?\d{1,3})+)(?:\W|$)/i,
+    pattern:
+      /(?:[\W\d]|^)(?:episodes?|[Сс]ерии:?)[ .]?[(\[]?(\d{1,3}(?:[ .+]*[&+][ .]?\d{1,3})+)(?:\W|$)/i,
     transform: toIntRange()
   },
   {
@@ -1444,7 +1488,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
-    pattern: /(?:[\W\d]|^)(?:e|eps?|episodes?|[Сс]ерии:?|\d+[xх])[ .]*[(\[]?(\d{1,3}(?:-\d{1,3})+)(?:\W|$)/i,
+    pattern:
+      /(?:[\W\d]|^)(?:e|eps?|episodes?|[Сс]ерии:?|\d+[xх])[ .]*[(\[]?(\d{1,3}(?:-\d{1,3})+)(?:\W|$)/i,
     transform: toIntRange()
   },
   {
@@ -1454,7 +1499,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
-    pattern: /(?:so?|t)\d{1,3}[. ]?[xх-]?[. ]?(?:e|x|х|ep)[. ]?(\d{1,4})(?:[abc]|v0?[1-4]|\D|$)/i,
+    pattern:
+      /(?:so?|t)\d{1,3}[. ]?[xх-]?[. ]?(?:e|x|х|ep)[. ]?(\d{1,4})(?:[abc]|v0?[1-4]|\D|$)/i,
     remove: true,
     transform: toIntArray()
   },
@@ -1505,13 +1551,15 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
-    pattern: /(?:(?:seasons?|[Сс]езони?)\W*)?(?:[ .(\[-]|^)(\d{1,3}(?:[ .]?[,&+~][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i,
+    pattern:
+      /(?:(?:seasons?|[Сс]езони?)\W*)?(?:[ .(\[-]|^)(\d{1,3}(?:[ .]?[,&+~][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i,
     validateMatch: validateNotMatch(/(?:(?:seasons?|[Сс]езони?)\W*)/i),
     transform: toIntRange()
   },
   {
     field: 'episodes',
-    pattern: /(?:(?:seasons?|[Сс]езони?)\W*)?(?:20-20)?(?:[ .(\[-]|^)(\d{1,4}(?:-\d{1,4})+)(?:[ .)(\]]|[+-]\D|$)/i,
+    pattern:
+      /(?:(?:seasons?|[Сс]езони?)\W*)?(?:20-20)?(?:[ .(\[-]|^)(\d{1,4}(?:-\d{1,4})+)(?:[ .)(\]]|[+-]\D|$)/i,
     validateMatch: validateNotMatch(/(?:seasons?|[Сс]езони?)\W*|^(?:20-20)/i),
     transform: toIntRange()
   },
@@ -1528,12 +1576,14 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
-    pattern: /(?:\b[ée]p?(?:isode)?|[Ээ]пизод|[Сс]ер(?:ии|ия|\.)?|caa?p(?:itulo)?|epis[oó]dio)[. ]?[-:#№]?[. ]?(\d{1,4})(?:[abc]|v0?[1-4]|\W|$)/i,
+    pattern:
+      /(?:\b[ée]p?(?:isode)?|[Ээ]пизод|[Сс]ер(?:ии|ия|\.)?|caa?p(?:itulo)?|epis[oó]dio)[. ]?[-:#№]?[. ]?(\d{1,4})(?:[abc]|v0?[1-4]|\W|$)/i,
     transform: toIntArray()
   },
   {
     field: 'episodes',
-    pattern: /\b(\d{1,3})(?:-?я)?[ ._-]*(?:ser(?:i?[iyj]a|\b)|[Сс]ер(?:ии|ия|\.)?)/i,
+    pattern:
+      /\b(\d{1,3})(?:-?я)?[ ._-]*(?:ser(?:i?[iyj]a|\b)|[Сс]ер(?:ии|ия|\.)?)/i,
     transform: toIntArray()
   },
   {
@@ -1621,15 +1671,19 @@ export const handlers: Handler[] = [
       if (m.value !== null && m.value !== undefined) {
         return m;
       }
-      
-      const btRe = /(?:movie\W*|film\W*|^)?(?:[ .]+-[ .]+|[(\[][ .]*)(\d{1,4})(?:a|b|v\d|\.\d)?(?:\W|$)(?:movie|film|\d+)?/i;
-      const btReNegBefore = /(?:movie\W*|film\W*)(?:[ .]+-[ .]+|[(\[][ .]*)(\d{1,4})/i;
-      const btReNegAfter = /(?:movie|film)|(\d{1,4})(?:a|b|v\d|\.\d)(?:\W)(?:\d+)/i;
-      const mtRe = /^(?:[(\[-][ .]?)?(\d{1,4})(?:a|b|v\d)?(?:\Wmovie|\Wfilm|-\d)?(?:\W|$)/i;
+
+      const btRe =
+        /(?:movie\W*|film\W*|^)?(?:[ .]+-[ .]+|[(\[][ .]*)(\d{1,4})(?:a|b|v\d|\.\d)?(?:\W|$)(?:movie|film|\d+)?/i;
+      const btReNegBefore =
+        /(?:movie\W*|film\W*)(?:[ .]+-[ .]+|[(\[][ .]*)(\d{1,4})/i;
+      const btReNegAfter =
+        /(?:movie|film)|(\d{1,4})(?:a|b|v\d|\.\d)(?:\W)(?:\d+)/i;
+      const mtRe =
+        /^(?:[(\[-][ .]?)?(\d{1,4})(?:a|b|v\d)?(?:\Wmovie|\Wfilm|-\d)?(?:\W|$)/i;
       const mtReNegAfter = /(\d{1,4})(?:a|b|v\d)?(?:\Wmovie|\Wfilm|-\d)/i;
       const commonResolutionNeg = /\[(?:480|720|1080)\]/;
       const commonFPSNeg = /\d+(?:fps|帧率?)/i;
-      
+
       let startIndex = 0;
       for (const component of ['year', 'seasons']) {
         if (result.has(component)) {
@@ -1639,7 +1693,7 @@ export const handlers: Handler[] = [
           }
         }
       }
-      
+
       let endIndex = title.length;
       for (const component of ['resolution', 'quality', 'codec', 'audio']) {
         if (result.has(component)) {
@@ -1649,32 +1703,45 @@ export const handlers: Handler[] = [
           }
         }
       }
-      
+
       const beginningTitle = title.substring(0, endIndex);
       startIndex = Math.min(startIndex, title.length);
-      const middleTitle = title.substring(startIndex, Math.max(endIndex, startIndex));
-      
+      const middleTitle = title.substring(
+        startIndex,
+        Math.max(endIndex, startIndex)
+      );
+
       let match = beginningTitle.match(btRe);
       let mStr = '';
-      
+
       if (match && match.index !== undefined) {
         mStr = match[0];
-        if (match.index === 0 || btReNegBefore.test(mStr) || btReNegAfter.test(mStr) || 
-            commonResolutionNeg.test(mStr) || commonFPSNeg.test(mStr)) {
+        if (
+          match.index === 0 ||
+          btReNegBefore.test(mStr) ||
+          btReNegAfter.test(mStr) ||
+          commonResolutionNeg.test(mStr) ||
+          commonFPSNeg.test(mStr)
+        ) {
           match = null;
           mStr = '';
         } else if (match[1]) {
           mStr = match[1];
         }
       }
-      
+
       if (!mStr) {
         match = middleTitle.match(mtRe);
         if (match && match.index !== undefined && match[1]) {
           // Check from the start of capture group 1 (the number) to the end
           const captureGroupIndex = match[0].indexOf(match[1]);
-          const fromCaptureGroup = middleTitle.substring(match.index + captureGroupIndex);
-          if (mtReNegAfter.test(fromCaptureGroup) || commonResolutionNeg.test(mStr)) {
+          const fromCaptureGroup = middleTitle.substring(
+            match.index + captureGroupIndex
+          );
+          if (
+            mtReNegAfter.test(fromCaptureGroup) ||
+            commonResolutionNeg.test(mStr)
+          ) {
             match = null;
             mStr = '';
           } else {
@@ -1682,7 +1749,7 @@ export const handlers: Handler[] = [
           }
         }
       }
-      
+
       if (mStr) {
         mStr = mStr.replace(/\D/g, '');
         const ep = parseInt(mStr, 10);
@@ -1692,7 +1759,7 @@ export const handlers: Handler[] = [
           m.value = [ep];
         }
       }
-      
+
       return m;
     }
   },
@@ -1737,7 +1804,7 @@ export const handlers: Handler[] = [
   },
 
   // Batch 10: Detailed language handlers, subbed/dubbed, network, size, group, extension (lines 2291-3592)
-  
+
   // English language handlers
   {
     field: 'languages',
@@ -1870,14 +1937,14 @@ export const handlers: Handler[] = [
     pattern: /\b(?:TRUE|SUB).?FRENCH\b|\bFRENCH\b|\bFre?\b/,
     transform: toValueSet('fr'),
     keepMatching: true,
-    remove: true,
+    remove: true
   },
   {
     field: 'languages',
     pattern: /\b\[?(?:VF[FQRIB2]?\]?\b|(?:VOST)?FR2?)\b/,
     transform: toValueSet('fr'),
     keepMatching: true,
-    remove: true,
+    remove: true
   },
   {
     field: 'languages',
@@ -1905,7 +1972,7 @@ export const handlers: Handler[] = [
     field: 'languages',
     pattern: /\b(?:audio.)?(?:ESP?|spa|(?:en[ .]+)?espa[nñ]ola?|castellano)\b/i,
     transform: toValueSet('es'),
-    keepMatching: true,
+    keepMatching: true
   },
   {
     field: 'languages',
@@ -1952,7 +2019,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'languages',
-    pattern: /\b(?:leg(?:endado|endas?)?|dub(?:lado)?|portugu[eèê]se?)[. -]*BR\b/i,
+    pattern:
+      /\b(?:leg(?:endado|endas?)?|dub(?:lado)?|portugu[eèê]se?)[. -]*BR\b/i,
     transform: toValueSet('pt'),
     keepMatching: true
   },
@@ -1986,7 +2054,7 @@ export const handlers: Handler[] = [
     pattern: /\bpt\b/i,
     transform: toValueSet('pt'),
     keepMatching: true,
-    remove: true,
+    remove: true
   },
   {
     field: 'languages',
@@ -2003,14 +2071,14 @@ export const handlers: Handler[] = [
     transform: toValueSet('it'),
     keepMatching: true
   },
-    {
+  {
     field: 'languages',
     pattern: /\bIT\b/i,
     validateMatch: validateAnd(
       validateLookbehind('(?:w{3}\\.\\w+\\.)', 'i', false),
       validateOr(
         validateLookahead('(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})', 'i', true),
-        validateLookbehind('(?:(?:[ .,/-]*[A-Z]{2}){2,}[ .,/-]+)', 'i', true),
+        validateLookbehind('(?:(?:[ .,/-]*[A-Z]{2}){2,}[ .,/-]+)', 'i', true)
       )
     ),
     transform: toValueSet('it'),
@@ -2020,7 +2088,11 @@ export const handlers: Handler[] = [
   {
     field: 'languages',
     pattern: /\bit/i,
-    validateMatch: validateLookahead('(?:\\.(?:ass|ssa|srt|sub|idx)$)','i', true),
+    validateMatch: validateLookahead(
+      '(?:\\.(?:ass|ssa|srt|sub|idx)$)',
+      'i',
+      true
+    ),
     transform: toValueSet('it'),
     keepMatching: true,
     skipFromTitle: true
@@ -2053,7 +2125,11 @@ export const handlers: Handler[] = [
   {
     field: 'languages',
     pattern: /\bde\b/i,
-    validateMatch: validateLookahead('(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})','i', true),
+    validateMatch: validateLookahead(
+      '(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})',
+      'i',
+      true
+    ),
     transform: toValueSet('de'),
     keepMatching: true,
     skipFromTitle: true
@@ -2062,7 +2138,11 @@ export const handlers: Handler[] = [
     field: 'languages',
     pattern: /\bde\b/i,
     transform: toValueSet('de'),
-    validateMatch: validateLookbehind('(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})','i', true),
+    validateMatch: validateLookbehind(
+      '(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})',
+      'i',
+      true
+    ),
     keepMatching: true,
     skipFromTitle: true
   },
@@ -2071,8 +2151,8 @@ export const handlers: Handler[] = [
     pattern: /\bde\b/i,
     transform: toValueSet('de'),
     validateMatch: validateAnd(
-      validateLookbehind('(?:[ .,/-]+[A-Z]{2}[ .,/-]+)','i', true),
-      validateLookahead('(?:[ .,/-]+[A-Z]{2}[ .,/-]+)','i', true)
+      validateLookbehind('(?:[ .,/-]+[A-Z]{2}[ .,/-]+)', 'i', true),
+      validateLookahead('(?:[ .,/-]+[A-Z]{2}[ .,/-]+)', 'i', true)
     ),
     keepMatching: true,
     skipFromTitle: true
@@ -2132,7 +2212,9 @@ export const handlers: Handler[] = [
   {
     field: 'languages',
     pattern: /\b(?:(?:w{3}\.\w+\.)?tel(?:\W*aviv)?|telugu)\b/i,
-    validateMatch: validateNotMatch(/(?:(?:w{3}\.\w+\.)tel)|(?:tel(?:\W*aviv))/i),
+    validateMatch: validateNotMatch(
+      /(?:(?:w{3}\.\w+\.)tel)|(?:tel(?:\W*aviv))/i
+    ),
     transform: toValueSet('te'),
     keepMatching: true
   },
@@ -2182,8 +2264,11 @@ export const handlers: Handler[] = [
   },
   {
     field: 'languages',
-    pattern: /\b(?:(?:w{3}\.\w+\.)?BEN(?:.\bThe|and|of\b)?(?:gali)?|bengali)\b/i,
-    validateMatch: validateNotMatch(/\b(?:(?:w{3}\.\w+\.)BEN)|(?:BEN)(?:.\bThe|and|of\b)\b/i),
+    pattern:
+      /\b(?:(?:w{3}\.\w+\.)?BEN(?:.\bThe|and|of\b)?(?:gali)?|bengali)\b/i,
+    validateMatch: validateNotMatch(
+      /\b(?:(?:w{3}\.\w+\.)BEN)|(?:BEN)(?:.\bThe|and|of\b)\b/i
+    ),
     transform: toValueSet('bn'),
     keepMatching: true,
     skipIfFirst: true
@@ -2425,7 +2510,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'languages',
-    pattern: /\b(norwegian|noruegu[eê]s|bokm[aå]l|nob|nor(?:[\]_)]?\.\w{2,4}$))\b/i,
+    pattern:
+      /\b(norwegian|noruegu[eê]s|bokm[aå]l|nob|nor(?:[\]_)]?\.\w{2,4}$))\b/i,
     transform: toValueSet('no'),
     keepMatching: true,
     skipFromTitle: true
@@ -2636,15 +2722,15 @@ export const handlers: Handler[] = [
     process: (title: string, m, result) => {
       const ere = /capitulo|ao/i;
       const tre = /dublado/i;
-      
+
       m.mIndex = 0;
       m.mValue = '';
-      
+
       const vs = m.value as any;
       if (vs && vs.exists && (vs.exists('pt') || vs.exists('es'))) {
         return m;
       }
-      
+
       const em = result.get('episodes');
       if ((em && em.mValue && ere.test(em.mValue)) || tre.test(title)) {
         if (!vs || !vs.append) {
@@ -2654,7 +2740,7 @@ export const handlers: Handler[] = [
           m.value = vs.append('pt');
         }
       }
-      
+
       return m;
     }
   },
@@ -2703,7 +2789,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'dubbed',
-    pattern: /\b(?:.*\bsub(?:s|bed)?\b)?(?:[ _\-\[(\.])?(dual|multi)(?:[ _\-\[(\.])?(?:audio)\b/i,
+    pattern:
+      /\b(?:.*\bsub(?:s|bed)?\b)?(?:[ _\-\[(\.])?(dual|multi)(?:[ _\-\[(\.])?(?:audio)\b/i,
     validateMatch: validateNotMatch(/\b(?:.*\bsub(s|bed)?\b)/i),
     transform: toBoolean(),
     remove: true
@@ -2721,7 +2808,11 @@ export const handlers: Handler[] = [
         return m;
       }
       const s = lm.value as any;
-      if (s && s.exists && (s.exists('multi audio') || s.exists('dual audio'))) {
+      if (
+        s &&
+        s.exists &&
+        (s.exists('multi audio') || s.exists('dual audio'))
+      ) {
         m.value = true;
       }
       return m;
@@ -2784,7 +2875,8 @@ export const handlers: Handler[] = [
   },
   {
     field: 'site',
-    pattern: /\b(?:www?.?)?(?:\w+\-)?\w+[\.\s](?:com|org|net|ms|tv|mx|co|party|vip|nu|pics)\b/i,
+    pattern:
+      /\b(?:www?.?)?(?:\w+\-)?\w+[\.\s](?:com|org|net|ms|tv|mx|co|party|vip|nu|pics)\b/i,
     remove: true,
     skipFromTitle: true
   },
@@ -2942,7 +3034,8 @@ export const handlers: Handler[] = [
   // Extension handler
   {
     field: 'extension',
-    pattern: /\.(3g2|3gp|avi|flv|mkv|mk3d|mov|mp2|mp4|m4v|mpe|mpeg|mpg|mpv|webm|wmv|ogm|divx|ts|m2ts|iso|vob|sub|idx|ttxt|txt|smi|srt|ssa|ass|vtt|nfo|html)$/i,
+    pattern:
+      /\.(3g2|3gp|avi|flv|mkv|mk3d|mov|mp2|mp4|m4v|mpe|mpeg|mpg|mpv|webm|wmv|ogm|divx|ts|m2ts|iso|vob|sub|idx|ttxt|txt|smi|srt|ssa|ass|vtt|nfo|html)$/i,
     transform: toLowercase()
   },
 

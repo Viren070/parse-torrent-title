@@ -1,6 +1,6 @@
 /**
  * Parse Torrent Title - TypeScript Port
- * 
+ *
  * A 1:1 port of the Go torrent title parser
  */
 
@@ -36,8 +36,10 @@ export class Parser {
     if (!handlers || handlers.length === 0) {
       throw new Error('Handlers array cannot be undefined, null, or empty');
     }
-    if (handlers.some(h => h === null || h === undefined)) {
-      throw new Error('Handlers array cannot contain null or undefined handlers');
+    if (handlers.some((h) => h === null || h === undefined)) {
+      throw new Error(
+        'Handlers array cannot contain null or undefined handlers'
+      );
     }
     this.handlers.push(...handlers);
     return this;
@@ -54,7 +56,9 @@ export class Parser {
     } else {
       // Add only handlers for specified fields
       const selectedFieldMap = new Set(fields);
-      const selectedHandlers = defaultHandlers.filter(h => selectedFieldMap.has(h.field));
+      const selectedHandlers = defaultHandlers.filter((h) =>
+        selectedFieldMap.has(h.field)
+      );
       this.handlers.push(...selectedHandlers);
     }
     return this;
@@ -65,11 +69,11 @@ export class Parser {
    * @param title - The torrent title to parse
    * @returns Parsed result with extracted metadata and any custom fields
    * @template T - Optional type for custom fields added by custom handlers
-   * 
+   *
    * @example
    * // Without custom fields
    * const result = parser.parse('Movie.2024.1080p');
-   * 
+   *
    * @example
    * // With typed custom fields
    * const result = parser.parse<{ customId: number[] }>('Movie.2024.custom-123.1080p');
@@ -96,11 +100,15 @@ export function parseTorrentTitle(title: string): ParsedResult {
  * @param fieldNames - Array of field names to parse
  * @returns A parser function that only extracts the specified fields
  */
-export function getPartialParser(fieldNames: string[]): (title: string) => ParsedResult {
+export function getPartialParser(
+  fieldNames: string[]
+): (title: string) => ParsedResult {
   const selectedFieldMap = new Set(fieldNames);
-  
-  const selectedHandlers = defaultHandlers.filter(h => selectedFieldMap.has(h.field));
-  
+
+  const selectedHandlers = defaultHandlers.filter((h) =>
+    selectedFieldMap.has(h.field)
+  );
+
   return (title: string) => parse(title, selectedHandlers);
 }
 

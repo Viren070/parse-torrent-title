@@ -16,17 +16,23 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('season in series type format', () => {
-    const result = parseTorrentTitle('Game Of Thrones Complete Season 1,2,3,4,5,6,7 406p mkv + Subs');
+    const result = parseTorrentTitle(
+      'Game Of Thrones Complete Season 1,2,3,4,5,6,7 406p mkv + Subs'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6, 7]);
   });
 
   test('season in S01 format with one digit', () => {
-    const result = parseTorrentTitle('Breaking.Bad.S0615.400p.WEB-DL.Rus.Eng.avi');
+    const result = parseTorrentTitle(
+      'Breaking.Bad.S0615.400p.WEB-DL.Rus.Eng.avi'
+    );
     expect(result.seasons).toEqual([6]);
   });
 
   test('season in S01 format', () => {
-    const result = parseTorrentTitle('Game of Thrones - S02E07 - A Man Without Honor [2160p] [HDR] [5.1, 7.1, 5.1] [ger, eng, eng] [Vio].mkv');
+    const result = parseTorrentTitle(
+      'Game of Thrones - S02E07 - A Man Without Honor [2160p] [HDR] [5.1, 7.1, 5.1] [ger, eng, eng] [Vio].mkv'
+    );
     expect(result.seasons).toEqual([2]);
   });
 
@@ -36,27 +42,37 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('season in xxx format', () => {
-    const result = parseTorrentTitle('clny.3x11m720p.es[www.planetatorrent.com].mkv');
+    const result = parseTorrentTitle(
+      'clny.3x11m720p.es[www.planetatorrent.com].mkv'
+    );
     expect(result.seasons).toEqual([3]);
   });
 
   test('season in xxx format with 0 padding', () => {
-    const result = parseTorrentTitle('Doctor.Who.2005.8x11.Dark.Water.720p.HDTV.x264-FoV');
+    const result = parseTorrentTitle(
+      'Doctor.Who.2005.8x11.Dark.Water.720p.HDTV.x264-FoV'
+    );
     expect(result.seasons).toEqual([8]);
   });
 
   test('season in pxp format', () => {
-    const result = parseTorrentTitle('Doctor Who S01--S07--Complete with holiday episodes');
+    const result = parseTorrentTitle(
+      'Doctor Who S01--S07--Complete with holiday episodes'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6, 7]);
   });
 
   test('season in pxp format russian style', () => {
-    const result = parseTorrentTitle('Discovery. Парни с Юкона / Yokon Men [06х01-08] (2017) HDTVRip от GeneralFilm | P1');
+    const result = parseTorrentTitle(
+      'Discovery. Парни с Юкона / Yokon Men [06х01-08] (2017) HDTVRip от GeneralFilm | P1'
+    );
     expect(result.seasons).toEqual([6]);
   });
 
   test('season with a dot in between', () => {
-    const result = parseTorrentTitle('My Little Pony FiM - 6.01 - No Second Prances.mkv');
+    const result = parseTorrentTitle(
+      'My Little Pony FiM - 6.01 - No Second Prances.mkv'
+    );
     expect(result.seasons).toEqual([6]);
   });
 
@@ -76,7 +92,9 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('season with dot notation', () => {
-    const result = parseTorrentTitle('Dragon Ball [5.134] Preliminary Peril.mp4');
+    const result = parseTorrentTitle(
+      'Dragon Ball [5.134] Preliminary Peril.mp4'
+    );
     expect(result.seasons).toEqual([5]);
   });
 
@@ -86,42 +104,58 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('season with episode prefix Ep notation', () => {
-    const result = parseTorrentTitle('Desperate Housewives - Episode 1.22 - Goodbye for now.avi');
+    const result = parseTorrentTitle(
+      'Desperate Housewives - Episode 1.22 - Goodbye for now.avi'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('season with episode prefix sxep notation', () => {
-    const result = parseTorrentTitle('Dragon Ball Super S01 E23 French 1080p HDTV H264-Kesni');
+    const result = parseTorrentTitle(
+      'Dragon Ball Super S01 E23 French 1080p HDTV H264-Kesni'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('season with episode prefix SeEp notation', () => {
-    const result = parseTorrentTitle('Mash S10E01b Thats Show Biz Part 2 1080p H.264 (moviesbyrizzo upload).mp4');
+    const result = parseTorrentTitle(
+      'Mash S10E01b Thats Show Biz Part 2 1080p H.264 (moviesbyrizzo upload).mp4'
+    );
     expect(result.seasons).toEqual([10]);
   });
 
   test('season with suffix e', () => {
-    const result = parseTorrentTitle('The Twilight Zone 1985 S01E22c The Library.mp4');
+    const result = parseTorrentTitle(
+      'The Twilight Zone 1985 S01E22c The Library.mp4'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('season with suffix a', () => {
-    const result = parseTorrentTitle('The Twilight Zone 1985 S01E23a Shadow Play.mp4');
+    const result = parseTorrentTitle(
+      'The Twilight Zone 1985 S01E23a Shadow Play.mp4'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('season with prefix and suffix', () => {
-    const result = parseTorrentTitle('The.Man.In.The.High.Castle1x01.HDTV.XviD[www.DivxTotaL.com].avi');
+    const result = parseTorrentTitle(
+      'The.Man.In.The.High.Castle1x01.HDTV.XviD[www.DivxTotaL.com].avi'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('season range with zero padding', () => {
-    const result = parseTorrentTitle('Skam.S01-S02-S03.SweSub.720p.WEB-DL.H264');
+    const result = parseTorrentTitle(
+      'Skam.S01-S02-S03.SweSub.720p.WEB-DL.H264'
+    );
     expect(result.seasons).toEqual([1, 2, 3]);
   });
 
   test('season range with slashes separator', () => {
-    const result = parseTorrentTitle('Stargate Atlantis ALL Seasons - S01 / S02 / S03 / S04 / S05');
+    const result = parseTorrentTitle(
+      'Stargate Atlantis ALL Seasons - S01 / S02 / S03 / S04 / S05'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5]);
   });
 
@@ -141,7 +175,9 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('season range with to separator', () => {
-    const result = parseTorrentTitle('Game Of Thrones - Season 1 to 6 (Eng Subs)');
+    const result = parseTorrentTitle(
+      'Game Of Thrones - Season 1 to 6 (Eng Subs)'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
   });
 
@@ -156,12 +192,16 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('season with russian season word and underscore', () => {
-    const result = parseTorrentTitle('2. Discovery-Kak_ustroena_Vselennaya.(2.sezon_8.serii.iz.8).2012.XviD.HDTVRip.Krasnodarka');
+    const result = parseTorrentTitle(
+      '2. Discovery-Kak_ustroena_Vselennaya.(2.sezon_8.serii.iz.8).2012.XviD.HDTVRip.Krasnodarka'
+    );
     expect(result.seasons).toEqual([2]);
   });
 
   test('season with russian season shortened word', () => {
-    const result = parseTorrentTitle('Otchayannie.domochozyaiki.(8.sez.21.ser.iz.23).2012.XviD.HDTVRip.avi');
+    const result = parseTorrentTitle(
+      'Otchayannie.domochozyaiki.(8.sez.21.ser.iz.23).2012.XviD.HDTVRip.avi'
+    );
     expect(result.seasons).toEqual([8]);
   });
 
@@ -171,12 +211,16 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('season with russian x separator', () => {
-    const result = parseTorrentTitle('Discovery. Парни с Юкона / Yokon Men [06х01-08] (2017) HDTVRip от GeneralFilm | P1');
+    const result = parseTorrentTitle(
+      'Discovery. Парни с Юкона / Yokon Men [06х01-08] (2017) HDTVRip от GeneralFilm | P1'
+    );
     expect(result.seasons).toEqual([6]);
   });
 
   test('season with russian season word in araic letters', () => {
-    const result = parseTorrentTitle('Zvezdnie.Voiny.Voina.Klonov.3.sezon.22.seria.iz.22.XviD.HDRip.avi');
+    const result = parseTorrentTitle(
+      'Zvezdnie.Voiny.Voina.Klonov.3.sezon.22.seria.iz.22.XviD.HDRip.avi'
+    );
     expect(result.seasons).toEqual([3]);
   });
 
@@ -200,39 +244,51 @@ describe('parseTorrentTitle - seasons', () => {
     expect(result.seasons).toEqual([11]);
   });
 
-  test('not season with hyphen separator when it\'s the title', () => {
+  test("not season with hyphen separator when it's the title", () => {
     const result = parseTorrentTitle('13-13-13 2013 DVDrip x264 AAC-MiLLENiUM');
     expect(result.seasons).toBeUndefined();
     expect(result.title).toBe('13-13-13');
   });
 
   test('correct season with eps prefix and hyphen separator', () => {
-    const result = parseTorrentTitle('MARATHON EPISODES/Orphan Black S3 Eps.05-08.mp4');
+    const result = parseTorrentTitle(
+      'MARATHON EPISODES/Orphan Black S3 Eps.05-08.mp4'
+    );
     expect(result.seasons).toEqual([3]);
   });
 
   test('multiple seasons with end season without s symbol', () => {
-    const result = parseTorrentTitle('Once Upon a Time [S01-07] (2011-2017) WEB-DLRip by Generalfilm');
+    const result = parseTorrentTitle(
+      'Once Upon a Time [S01-07] (2011-2017) WEB-DLRip by Generalfilm'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6, 7]);
   });
 
   test('multiple seasons with one space and hyphen separator', () => {
-    const result = parseTorrentTitle('[F-D] Fairy Tail Season 1 -6 + Extras [480P][Dual-Audio]');
+    const result = parseTorrentTitle(
+      '[F-D] Fairy Tail Season 1 -6 + Extras [480P][Dual-Audio]'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
   });
 
   test('multiple seasons with spaces and hyphen separator', () => {
-    const result = parseTorrentTitle('Coupling Season 1 - 4 Complete DVDRip - x264 - MKV by RiddlerA');
+    const result = parseTorrentTitle(
+      'Coupling Season 1 - 4 Complete DVDRip - x264 - MKV by RiddlerA'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4]);
   });
 
   test('single season with spaces and hyphen separator', () => {
-    const result = parseTorrentTitle('[HR] Boku no Hero Academia 87 (S4-24) [1080p HEVC Multi-Subs] HR-GZ');
+    const result = parseTorrentTitle(
+      '[HR] Boku no Hero Academia 87 (S4-24) [1080p HEVC Multi-Subs] HR-GZ'
+    );
     expect(result.seasons).toEqual([4]);
   });
 
   test('Tokyo Ghoul Root A - 07 [S2-07] [Eng Sub] 480p [email protected]', () => {
-    const result = parseTorrentTitle('Tokyo Ghoul Root A - 07 [S2-07] [Eng Sub] 480p [email protected]');
+    const result = parseTorrentTitle(
+      'Tokyo Ghoul Root A - 07 [S2-07] [Eng Sub] 480p [email protected]'
+    );
     expect(result.seasons).toEqual([2]);
   });
 
@@ -252,18 +308,24 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('Kyoukai no Rinne (TV) 3rd Season - 23 [1080p]', () => {
-    const result = parseTorrentTitle('Kyoukai no Rinne (TV) 3rd Season - 23 [1080p]');
+    const result = parseTorrentTitle(
+      'Kyoukai no Rinne (TV) 3rd Season - 23 [1080p]'
+    );
     expect(result.seasons).toEqual([3]);
   });
 
   test('[Erai-raws] Granblue Fantasy The Animation Season 2 - 08 [1080p][Multiple Subtitle].mkv', () => {
-    const result = parseTorrentTitle('[Erai-raws] Granblue Fantasy The Animation Season 2 - 08 [1080p][Multiple Subtitle].mkv');
+    const result = parseTorrentTitle(
+      '[Erai-raws] Granblue Fantasy The Animation Season 2 - 08 [1080p][Multiple Subtitle].mkv'
+    );
     expect(result.seasons).toEqual([2]);
     expect(result.episodes).toEqual([8]);
   });
 
   test('The Nile Egypts Great River with Bettany Hughes Series 1 4of4 10', () => {
-    const result = parseTorrentTitle('The Nile Egypts Great River with Bettany Hughes Series 1 4of4 10');
+    const result = parseTorrentTitle(
+      'The Nile Egypts Great River with Bettany Hughes Series 1 4of4 10'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
@@ -278,7 +340,9 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('Eu, a Patroa e as Crianças  4° Temporada Completa - HDTV - Dublado', () => {
-    const result = parseTorrentTitle('Eu, a Patroa e as Crianças  4° Temporada Completa - HDTV - Dublado');
+    const result = parseTorrentTitle(
+      'Eu, a Patroa e as Crianças  4° Temporada Completa - HDTV - Dublado'
+    );
     expect(result.seasons).toEqual([4]);
   });
 
@@ -303,22 +367,30 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('Juego de Tronos - Temp.2 [ALTA DEFINICION 720p][Cap.209][Spanish].mkv', () => {
-    const result = parseTorrentTitle('Juego de Tronos - Temp.2 [ALTA DEFINICION 720p][Cap.209][Spanish].mkv');
+    const result = parseTorrentTitle(
+      'Juego de Tronos - Temp.2 [ALTA DEFINICION 720p][Cap.209][Spanish].mkv'
+    );
     expect(result.seasons).toEqual([2]);
   });
 
   test('Los Simpsons Temp 7 DVDrip Espanol De Espana', () => {
-    const result = parseTorrentTitle('Los Simpsons Temp 7 DVDrip Espanol De Espana');
+    const result = parseTorrentTitle(
+      'Los Simpsons Temp 7 DVDrip Espanol De Espana'
+    );
     expect(result.seasons).toEqual([7]);
   });
 
   test('spanish season range with & separator', () => {
-    const result = parseTorrentTitle('The Walking Dead [Temporadas 1 & 2 Completas Em HDTV E Legena');
+    const result = parseTorrentTitle(
+      'The Walking Dead [Temporadas 1 & 2 Completas Em HDTV E Legena'
+    );
     expect(result.seasons).toEqual([1, 2]);
   });
 
   test('spanish short season identifier', () => {
-    const result = parseTorrentTitle('My Little Pony - A Amizade é Mágica - T02E22.mp4');
+    const result = parseTorrentTitle(
+      'My Little Pony - A Amizade é Mágica - T02E22.mp4'
+    );
     expect(result.seasons).toEqual([2]);
   });
 
@@ -328,112 +400,150 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('sn naming scheme', () => {
-    const result = parseTorrentTitle('Sons of Anarchy Sn4 Ep14 HD-TV - To Be, Act 2, By Cool Release');
+    const result = parseTorrentTitle(
+      'Sons of Anarchy Sn4 Ep14 HD-TV - To Be, Act 2, By Cool Release'
+    );
     expect(result.seasons).toEqual([4]);
   });
 
   test('single season and not range in filename', () => {
-    const result = parseTorrentTitle('[FFA] Kiratto Pri☆chan Season 3 - 11 [1080p][HEVC].mkv');
+    const result = parseTorrentTitle(
+      '[FFA] Kiratto Pri☆chan Season 3 - 11 [1080p][HEVC].mkv'
+    );
     expect(result.seasons).toEqual([3]);
     expect(result.episodes).toEqual([11]);
   });
 
   test('single season and not range in filename v2', () => {
-    const result = parseTorrentTitle('[Erai-raws] Granblue Fantasy The Animation Season 2 - 10 [1080p][Multiple Subtitle].mkv');
+    const result = parseTorrentTitle(
+      '[Erai-raws] Granblue Fantasy The Animation Season 2 - 10 [1080p][Multiple Subtitle].mkv'
+    );
     expect(result.seasons).toEqual([2]);
     expect(result.episodes).toEqual([10]);
   });
 
   test('single season and not range in filename v3', () => {
-    const result = parseTorrentTitle('[SCY] Attack on Titan Season 3 - 11 (BD 1080p Hi10 FLAC) [1FA13150].mkv');
+    const result = parseTorrentTitle(
+      '[SCY] Attack on Titan Season 3 - 11 (BD 1080p Hi10 FLAC) [1FA13150].mkv'
+    );
     expect(result.seasons).toEqual([3]);
     expect(result.episodes).toEqual([11]);
   });
 
   test('single zero season', () => {
-    const result = parseTorrentTitle('DARKER THAN BLACK - S00E04 - Darker Than Black Gaiden OVA 3.mkv');
+    const result = parseTorrentTitle(
+      'DARKER THAN BLACK - S00E04 - Darker Than Black Gaiden OVA 3.mkv'
+    );
     expect(result.seasons).toEqual([0]);
   });
 
   test('nl season word', () => {
-    const result = parseTorrentTitle('Seizoen 22 - Zon & Maan Ultra Legendes/afl.18 Je ogen op de bal houden!.mp4');
+    const result = parseTorrentTitle(
+      'Seizoen 22 - Zon & Maan Ultra Legendes/afl.18 Je ogen op de bal houden!.mp4'
+    );
     expect(result.seasons).toEqual([22]);
   });
 
   test('italian season word', () => {
-    const result = parseTorrentTitle('Nobody Wants This - Stagione 1 (2024) [COMPLETA] 720p H264 ITA AAC 2.0-Zer0landia');
+    const result = parseTorrentTitle(
+      'Nobody Wants This - Stagione 1 (2024) [COMPLETA] 720p H264 ITA AAC 2.0-Zer0landia'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('italian season range', () => {
-    const result = parseTorrentTitle('Red Oaks - Stagioni 01-03 (2014-2017) [COMPLETA] SD x264 AAC ITA SUB ITA - mkeagle3');
+    const result = parseTorrentTitle(
+      'Red Oaks - Stagioni 01-03 (2014-2017) [COMPLETA] SD x264 AAC ITA SUB ITA - mkeagle3'
+    );
     expect(result.seasons).toEqual([1, 2, 3]);
   });
 
   test('polish season', () => {
-    const result = parseTorrentTitle('Star.Wars.Skeleton.Crew.Sezon01.PLDUB.480p.DSNP.WEB-DL.H264.DDP5.1-K83');
+    const result = parseTorrentTitle(
+      'Star.Wars.Skeleton.Crew.Sezon01.PLDUB.480p.DSNP.WEB-DL.H264.DDP5.1-K83'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('polish season with S prefix', () => {
-    const result = parseTorrentTitle('Bitten.SezonSO3.PL.480p.NF.WEB-DL.DD5.1.XviD-Ralf');
+    const result = parseTorrentTitle(
+      'Bitten.SezonSO3.PL.480p.NF.WEB-DL.DD5.1.XviD-Ralf'
+    );
     expect(result.seasons).toEqual([3]);
   });
 
   test('regular season with year range before', () => {
-    const result = parseTorrentTitle("'Lucky.Luke.1983-1992.S01E04.PL.720p.WEB-DL.H264-zyl.mkv'");
+    const result = parseTorrentTitle(
+      "'Lucky.Luke.1983-1992.S01E04.PL.720p.WEB-DL.H264-zyl.mkv'"
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('polish season range', () => {
-    const result = parseTorrentTitle('Rizzoli & Isles 2010-2016 [Sezon 01-07] [1080p.WEB-DL.H265.EAC3-FT][Alusia]');
+    const result = parseTorrentTitle(
+      'Rizzoli & Isles 2010-2016 [Sezon 01-07] [1080p.WEB-DL.H265.EAC3-FT][Alusia]'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6, 7]);
   });
 
   test('season episode when not in boundary', () => {
-    const result = parseTorrentTitle('Those.About.to.DieS01E06.MULTi.720p.AMZN.WEB-DL.H264.DDP5.1-K83.mkv');
+    const result = parseTorrentTitle(
+      'Those.About.to.DieS01E06.MULTi.720p.AMZN.WEB-DL.H264.DDP5.1-K83.mkv'
+    );
     expect(result.seasons).toEqual([1]);
     expect(result.episodes).toEqual([6]);
   });
 
-  test('not season when it\'s part of the name', () => {
+  test("not season when it's part of the name", () => {
     const result = parseTorrentTitle('Ranma-12-86.mp4');
     expect(result.seasons).toBeUndefined();
   });
 
-  test('not season when it\'s part of group', () => {
-    const result = parseTorrentTitle('The Killer\'s Game 2024 PL 1080p WEB-DL H264 DD5.1-S56');
+  test("not season when it's part of group", () => {
+    const result = parseTorrentTitle(
+      "The Killer's Game 2024 PL 1080p WEB-DL H264 DD5.1-S56"
+    );
     expect(result.seasons).toBeUndefined();
   });
 
-  test('not season when it\'s part of group v2', () => {
-    const result = parseTorrentTitle('Apollo 13 (1995) [1080p] [WEB-DL] [x264] [E-AC3-S78] [Lektor PL]');
+  test("not season when it's part of group v2", () => {
+    const result = parseTorrentTitle(
+      'Apollo 13 (1995) [1080p] [WEB-DL] [x264] [E-AC3-S78] [Lektor PL]'
+    );
     expect(result.seasons).toBeUndefined();
   });
 
-  test('not season dot episode notation when it\'s a title', () => {
+  test("not season dot episode notation when it's a title", () => {
     const result = parseTorrentTitle('3.10 to Yuma (2007).mkv');
     expect(result.seasons).toBeUndefined();
   });
 
   test('not season dot episode notation when there is year in name', () => {
-    const result = parseTorrentTitle('18.11 - A Code Of Secrecy (2014) x264 1080p-AAC-ESUB [Parth].mkv');
+    const result = parseTorrentTitle(
+      '18.11 - A Code Of Secrecy (2014) x264 1080p-AAC-ESUB [Parth].mkv'
+    );
     expect(result.seasons).toBeUndefined();
   });
 
   // Additional comprehensive tests
   test('All of Us Are Dead . 2022 . S01 EP #1.2.mkv', () => {
-    const result = parseTorrentTitle('All of Us Are Dead . 2022 . S01 EP #1.2.mkv');
+    const result = parseTorrentTitle(
+      'All of Us Are Dead . 2022 . S01 EP #1.2.mkv'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('breaking.bad.s01e01.720p.bluray.x264-reward', () => {
-    const result = parseTorrentTitle('breaking.bad.s01e01.720p.bluray.x264-reward');
+    const result = parseTorrentTitle(
+      'breaking.bad.s01e01.720p.bluray.x264-reward'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('Breaking Bad Complete Season 1 , 2 , 3, 4 ,5 ,1080p HEVC', () => {
-    const result = parseTorrentTitle('Breaking Bad Complete Season 1 , 2 , 3, 4 ,5 ,1080p HEVC');
+    const result = parseTorrentTitle(
+      'Breaking Bad Complete Season 1 , 2 , 3, 4 ,5 ,1080p HEVC'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5]);
   });
 
@@ -443,67 +553,93 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('Empty Nest Season 1 (1988 - 89) fiveofseven', () => {
-    const result = parseTorrentTitle('Empty Nest Season 1 (1988 - 89) fiveofseven');
+    const result = parseTorrentTitle(
+      'Empty Nest Season 1 (1988 - 89) fiveofseven'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('Friends.Complete.Series.S01-S10.720p.BluRay.2CH.x265.HEVC-PSA', () => {
-    const result = parseTorrentTitle('Friends.Complete.Series.S01-S10.720p.BluRay.2CH.x265.HEVC-PSA');
+    const result = parseTorrentTitle(
+      'Friends.Complete.Series.S01-S10.720p.BluRay.2CH.x265.HEVC-PSA'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
 
   test('Friends S04 Season 4 1080p 5.1Ch BluRay ReEnc-DeeJayAhmed', () => {
-    const result = parseTorrentTitle('Friends S04 Season 4 1080p 5.1Ch BluRay ReEnc-DeeJayAhmed');
+    const result = parseTorrentTitle(
+      'Friends S04 Season 4 1080p 5.1Ch BluRay ReEnc-DeeJayAhmed'
+    );
     expect(result.seasons).toEqual([4]);
   });
 
   test('Futurama Season 1 2 3 4 5 6 7 + 4 Movies - threesixtyp', () => {
-    const result = parseTorrentTitle('Futurama Season 1 2 3 4 5 6 7 + 4 Movies - threesixtyp');
+    const result = parseTorrentTitle(
+      'Futurama Season 1 2 3 4 5 6 7 + 4 Movies - threesixtyp'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6, 7]);
   });
 
   test('Game of Thrones / Сезон: 1-8 / Серии: 1-73 из 73 [2011-2019, США, BDRip 1080p] MVO (LostFilm)', () => {
-    const result = parseTorrentTitle('Game of Thrones / Сезон: 1-8 / Серии: 1-73 из 73 [2011-2019, США, BDRip 1080p] MVO (LostFilm)');
+    const result = parseTorrentTitle(
+      'Game of Thrones / Сезон: 1-8 / Серии: 1-73 из 73 [2011-2019, США, BDRip 1080p] MVO (LostFilm)'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
   });
 
   test('House MD All Seasons (1-8) 720p Ultra-Compressed', () => {
-    const result = parseTorrentTitle('House MD All Seasons (1-8) 720p Ultra-Compressed');
+    const result = parseTorrentTitle(
+      'House MD All Seasons (1-8) 720p Ultra-Compressed'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
   });
 
   test('How I Met Your Mother Season 1, 2, 3, 4, 5, & 6 + Extras DVDRip', () => {
-    const result = parseTorrentTitle('How I Met Your Mother Season 1, 2, 3, 4, 5, & 6 + Extras DVDRip');
+    const result = parseTorrentTitle(
+      'How I Met Your Mother Season 1, 2, 3, 4, 5, & 6 + Extras DVDRip'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
   });
 
   test('Mad Men S02 Season 2 720p 5.1Ch BluRay ReEnc-DeeJayAhmed', () => {
-    const result = parseTorrentTitle('Mad Men S02 Season 2 720p 5.1Ch BluRay ReEnc-DeeJayAhmed');
+    const result = parseTorrentTitle(
+      'Mad Men S02 Season 2 720p 5.1Ch BluRay ReEnc-DeeJayAhmed'
+    );
     expect(result.seasons).toEqual([2]);
   });
 
   test('One Punch Man 01 - 12 Season 1 Complete [720p] [Eng Subs] [Xerxe:16', () => {
-    const result = parseTorrentTitle('One Punch Man 01 - 12 Season 1 Complete [720p] [Eng Subs] [Xerxe:16');
+    const result = parseTorrentTitle(
+      'One Punch Man 01 - 12 Season 1 Complete [720p] [Eng Subs] [Xerxe:16'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('Orange Is The New Black Season 5 Episodes 1-10 INCOMPLETE (LEAKED)', () => {
-    const result = parseTorrentTitle('Orange Is The New Black Season 5 Episodes 1-10 INCOMPLETE (LEAKED)');
+    const result = parseTorrentTitle(
+      'Orange Is The New Black Season 5 Episodes 1-10 INCOMPLETE (LEAKED)'
+    );
     expect(result.seasons).toEqual([5]);
   });
 
   test('Perdidos: Lost: Castellano: Temporadas 1 2 3 4 5 6 (Serie Com', () => {
-    const result = parseTorrentTitle('Perdidos: Lost: Castellano: Temporadas 1 2 3 4 5 6 (Serie Com');
+    const result = parseTorrentTitle(
+      'Perdidos: Lost: Castellano: Temporadas 1 2 3 4 5 6 (Serie Com'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
   });
 
   test('Seinfeld S02 Season 2 720p WebRip ReEnc-DeeJayAhmed', () => {
-    const result = parseTorrentTitle('Seinfeld S02 Season 2 720p WebRip ReEnc-DeeJayAhmed');
+    const result = parseTorrentTitle(
+      'Seinfeld S02 Season 2 720p WebRip ReEnc-DeeJayAhmed'
+    );
     expect(result.seasons).toEqual([2]);
   });
 
   test('Seinfeld Season 2 S02 720p AMZN WEBRip x265 HEVC Complete', () => {
-    const result = parseTorrentTitle('Seinfeld Season 2 S02 720p AMZN WEBRip x265 HEVC Complete');
+    const result = parseTorrentTitle(
+      'Seinfeld Season 2 S02 720p AMZN WEBRip x265 HEVC Complete'
+    );
     expect(result.seasons).toEqual([2]);
   });
 
@@ -513,7 +649,9 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('Stargate Atlantis Complete (Season 1 2 3 4 5) 720p HEVC x265', () => {
-    const result = parseTorrentTitle('Stargate Atlantis Complete (Season 1 2 3 4 5) 720p HEVC x265');
+    const result = parseTorrentTitle(
+      'Stargate Atlantis Complete (Season 1 2 3 4 5) 720p HEVC x265'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5]);
   });
 
@@ -523,7 +661,9 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('The Expanse Complete Seasons 01 & 02 1080p', () => {
-    const result = parseTorrentTitle('The Expanse Complete Seasons 01 & 02 1080p');
+    const result = parseTorrentTitle(
+      'The Expanse Complete Seasons 01 & 02 1080p'
+    );
     expect(result.seasons).toEqual([1, 2]);
   });
 
@@ -533,42 +673,58 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('The Simpsons Season 20 21 22 23 24 25 26 27 - threesixtyp', () => {
-    const result = parseTorrentTitle('The Simpsons Season 20 21 22 23 24 25 26 27 - threesixtyp');
+    const result = parseTorrentTitle(
+      'The Simpsons Season 20 21 22 23 24 25 26 27 - threesixtyp'
+    );
     expect(result.seasons).toEqual([20, 21, 22, 23, 24, 25, 26, 27]);
   });
 
   test('Travelers - Seasons 1 and 2 - Mp4 x264 AC3 1080p', () => {
-    const result = parseTorrentTitle('Travelers - Seasons 1 and 2 - Mp4 x264 AC3 1080p');
+    const result = parseTorrentTitle(
+      'Travelers - Seasons 1 and 2 - Mp4 x264 AC3 1080p'
+    );
     expect(result.seasons).toEqual([1, 2]);
   });
 
   test('True Blood Season 1, 2, 3, 4, 5 & 6 + Extras BDRip TSV', () => {
-    const result = parseTorrentTitle('True Blood Season 1, 2, 3, 4, 5 & 6 + Extras BDRip TSV');
+    const result = parseTorrentTitle(
+      'True Blood Season 1, 2, 3, 4, 5 & 6 + Extras BDRip TSV'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
   });
 
   test('Друзья / Friends / Сезон: 1 / Серии: 1-24 из 24 [1994-1995, США, BDRip 720p] MVO + Original + Sub (Rus, Eng)', () => {
-    const result = parseTorrentTitle('Друзья / Friends / Сезон: 1 / Серии: 1-24 из 24 [1994-1995, США, BDRip 720p] MVO + Original + Sub (Rus, Eng)');
+    const result = parseTorrentTitle(
+      'Друзья / Friends / Сезон: 1 / Серии: 1-24 из 24 [1994-1995, США, BDRip 720p] MVO + Original + Sub (Rus, Eng)'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('Друзья / Friends / Сезон: 1, 2 / Серии: 1-24 из 24 [1994-1999, США, BDRip 720p] MVO', () => {
-    const result = parseTorrentTitle('Друзья / Friends / Сезон: 1, 2 / Серии: 1-24 из 24 [1994-1999, США, BDRip 720p] MVO');
+    const result = parseTorrentTitle(
+      'Друзья / Friends / Сезон: 1, 2 / Серии: 1-24 из 24 [1994-1999, США, BDRip 720p] MVO'
+    );
     expect(result.seasons).toEqual([1, 2]);
   });
 
   test('Леди Баг и Супер-Кот – Сезон 3, Эпизод 21 – Кукловод 2 [1080p].mkv', () => {
-    const result = parseTorrentTitle('Леди Баг и Супер-Кот – Сезон 3, Эпизод 21 – Кукловод 2 [1080p].mkv');
+    const result = parseTorrentTitle(
+      'Леди Баг и Супер-Кот – Сезон 3, Эпизод 21 – Кукловод 2 [1080p].mkv'
+    );
     expect(result.seasons).toEqual([3]);
   });
 
   test('Проклятие острова ОУК_ 5-й сезон 09-я серия_ Прорыв Дэна.avi', () => {
-    const result = parseTorrentTitle('Проклятие острова ОУК_ 5-й сезон 09-я серия_ Прорыв Дэна.avi');
+    const result = parseTorrentTitle(
+      'Проклятие острова ОУК_ 5-й сезон 09-я серия_ Прорыв Дэна.avi'
+    );
     expect(result.seasons).toEqual([5]);
   });
 
   test('Разрушители легенд. MythBusters. Сезон 15. Эпизод 09. Скрытая угроза (2015).avi', () => {
-    const result = parseTorrentTitle('Разрушители легенд. MythBusters. Сезон 15. Эпизод 09. Скрытая угроза (2015).avi');
+    const result = parseTorrentTitle(
+      'Разрушители легенд. MythBusters. Сезон 15. Эпизод 09. Скрытая угроза (2015).avi'
+    );
     expect(result.seasons).toEqual([15]);
   });
 
@@ -583,17 +739,23 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('Swamp People 2010 Seasons 1 to 15 Complete 720p WEB x264 [i_c]', () => {
-    const result = parseTorrentTitle('Swamp People 2010 Seasons 1 to 15 Complete 720p WEB x264 [i_c]');
+    const result = parseTorrentTitle(
+      'Swamp People 2010 Seasons 1 to 15 Complete 720p WEB x264 [i_c]'
+    );
     expect(result.seasons).toEqual(intRange(1, 15));
   });
 
   test('Swamp People - Season 1 to 6 Plus Specials - 720P - HDTV - X265-HEVC - O69', () => {
-    const result = parseTorrentTitle('Swamp People - Season 1 to 6 Plus Specials - 720P - HDTV - X265-HEVC - O69');
+    const result = parseTorrentTitle(
+      'Swamp People - Season 1 to 6 Plus Specials - 720P - HDTV - X265-HEVC - O69'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
   });
 
   test('One.Piece.S004E111.Dash.For.a.Miracle!.Alabasta.Animal.Land!.1080p.NF.WEB-DL.DDP2.0.x264-KQRM.mkv', () => {
-    const result = parseTorrentTitle('One.Piece.S004E111.Dash.For.a.Miracle!.Alabasta.Animal.Land!.1080p.NF.WEB-DL.DDP2.0.x264-KQRM.mkv');
+    const result = parseTorrentTitle(
+      'One.Piece.S004E111.Dash.For.a.Miracle!.Alabasta.Animal.Land!.1080p.NF.WEB-DL.DDP2.0.x264-KQRM.mkv'
+    );
     expect(result.seasons).toEqual([4]);
   });
 
@@ -603,32 +765,44 @@ describe('parseTorrentTitle - seasons', () => {
   });
 
   test('The Simpsons S01E01 1080p BluRay x265 HEVC 10bit AAC 5.1 Tigole', () => {
-    const result = parseTorrentTitle('The Simpsons S01E01 1080p BluRay x265 HEVC 10bit AAC 5.1 Tigole');
+    const result = parseTorrentTitle(
+      'The Simpsons S01E01 1080p BluRay x265 HEVC 10bit AAC 5.1 Tigole'
+    );
     expect(result.seasons).toEqual([1]);
   });
 
   test('[F-D] Fairy Tail Season 1 - 6 + Extras [480P][Dual-Audio]', () => {
-    const result = parseTorrentTitle('[F-D] Fairy Tail Season 1 - 6 + Extras [480P][Dual-Audio]');
+    const result = parseTorrentTitle(
+      '[F-D] Fairy Tail Season 1 - 6 + Extras [480P][Dual-Audio]'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
   });
 
   test('Bleach 10º Temporada - 215 ao 220 - [DB-BR]', () => {
-    const result = parseTorrentTitle('Bleach 10º Temporada - 215 ao 220 - [DB-BR]');
+    const result = parseTorrentTitle(
+      'Bleach 10º Temporada - 215 ao 220 - [DB-BR]'
+    );
     expect(result.seasons).toEqual([10]);
   });
 
   test('Lost.[Perdidos].6x05.HDTV.XviD.[www.DivxTotaL.com]', () => {
-    const result = parseTorrentTitle('Lost.[Perdidos].6x05.HDTV.XviD.[www.DivxTotaL.com]');
+    const result = parseTorrentTitle(
+      'Lost.[Perdidos].6x05.HDTV.XviD.[www.DivxTotaL.com]'
+    );
     expect(result.seasons).toEqual([6]);
   });
 
   test('Dragon Ball Z Movie - 09 - Bojack Unbound - 1080p BluRay x264 DTS 5.1 -DDR', () => {
-    const result = parseTorrentTitle('Dragon Ball Z Movie - 09 - Bojack Unbound - 1080p BluRay x264 DTS 5.1 -DDR');
+    const result = parseTorrentTitle(
+      'Dragon Ball Z Movie - 09 - Bojack Unbound - 1080p BluRay x264 DTS 5.1 -DDR'
+    );
     expect(result.seasons).toBeUndefined();
   });
 
   test('BoJack Horseman [06x01-08 of 16] (2019-2020) WEB-DLRip 720p', () => {
-    const result = parseTorrentTitle('BoJack Horseman [06x01-08 of 16] (2019-2020) WEB-DLRip 720p');
+    const result = parseTorrentTitle(
+      'BoJack Horseman [06x01-08 of 16] (2019-2020) WEB-DLRip 720p'
+    );
     expect(result.seasons).toEqual([6]);
   });
 
@@ -648,15 +822,18 @@ describe('parseTorrentTitle - seasons', () => {
     expect(result.episodes).toBeUndefined();
   });
 
-
   test('multiple season notations should not duplicate', () => {
-    const result = parseTorrentTitle('Cougar Town (2009) Season 1-6 S01-06 (1080p AMZN WEB-DL x265 HEVC 10bit AAC 5.1 MONOLITH) [QxR]');
+    const result = parseTorrentTitle(
+      'Cougar Town (2009) Season 1-6 S01-06 (1080p AMZN WEB-DL x265 HEVC 10bit AAC 5.1 MONOLITH) [QxR]'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
     expect(result.episodes).toBeUndefined();
   });
 
   test('multiple season notations should not duplicate', () => {
-    const result = parseTorrentTitle('Cougar Town (2009) Season 01-6 S01-06 (1080p AMZN WEB-DL x265 HEVC 10bit AAC 5.1 MONOLITH) [QxR]');
+    const result = parseTorrentTitle(
+      'Cougar Town (2009) Season 01-6 S01-06 (1080p AMZN WEB-DL x265 HEVC 10bit AAC 5.1 MONOLITH) [QxR]'
+    );
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6]);
     expect(result.episodes).toBeUndefined();
   });
@@ -665,5 +842,4 @@ describe('parseTorrentTitle - seasons', () => {
     expect(result.seasons).toEqual([3, 4, 5]);
     expect(result.episodes).toBeUndefined();
   });
-
 });

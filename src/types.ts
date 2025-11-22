@@ -114,7 +114,7 @@ export interface Handler {
   transform?: HandlerTransformer;
   process?: HandlerProcessor;
   remove?: boolean;
-  keepMatching?: boolean;  // !skipIfAlreadyFound
+  keepMatching?: boolean; // !skipIfAlreadyFound
   skipIfFirst?: boolean;
   skipIfBefore?: string[];
   skipFromTitle?: boolean;
