@@ -1821,6 +1821,16 @@ describe('Parse Torrent Title - Anime Tests', () => {
         title: 'Shingeki no Kyojin',
       },
     },
+    // {
+    //   title: 'Что случилось, тигровая лилия[torrents.ru].avi',
+    //   expected: {
+    //     container: 'avi',
+    //     extension: 'avi',
+    //     languages: ['ru'],
+    //     site: 'torrents.ru',
+    //     title: 'Что случилось, тигровая лилия',
+    //   },
+    // },
     {
       title: '[Anime Time] Naruto - 116 - 360 Degrees of Vision The Byakugan\'s Blind Spot.mkv',
       expected: {
