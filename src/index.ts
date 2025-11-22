@@ -112,6 +112,10 @@ export function getPartialParser(
   return (title: string) => parse(title, selectedHandlers);
 }
 
+import * as transforms from './transforms.js';
+import * as processors from './processors.js';
+import * as validators from './validators.js';
+
 export { ParsedResult, Handler } from './types.js';
 export { handlers } from './handlers.js';
-export * from './transforms.js';
+export { transforms, processors, validators };

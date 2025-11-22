@@ -8,12 +8,6 @@
 import { Handler, ValueSet } from './types.js';
 import { nonAlphasRegex } from './utils.js';
 import {
-  validateAnd,
-  validateNotAtStart,
-  validateNotAtEnd,
-  validateNotMatch,
-  validateMatch,
-  validateMatchedGroupsAreSame,
   toValue,
   toLowercase,
   toUppercase,
@@ -28,12 +22,20 @@ import {
   toValueSet,
   toValueSetWithTransform,
   toValueSetMultiWithTransform,
-  toIntArray,
-  removeFromValue,
+  toIntArray
+} from './transforms.js';
+import {
+  validateAnd,
+  validateNotAtStart,
+  validateNotAtEnd,
+  validateNotMatch,
+  validateMatch,
+  validateMatchedGroupsAreSame,
   validateLookbehind,
   validateOr,
   validateLookahead
-} from './transforms.js';
+} from './validators.js';
+import { removeFromValue } from './processors.js';
 
 /**
  * All handlers in the exact order as handlers.go
