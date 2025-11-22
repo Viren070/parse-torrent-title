@@ -29,7 +29,10 @@ import {
   toValueSetWithTransform,
   toValueSetMultiWithTransform,
   toIntArray,
-  removeFromValue
+  removeFromValue,
+  validateLookbehind,
+  validateOr,
+  validateLookahead
 } from './transforms.js';
 
 /**
@@ -1857,22 +1860,24 @@ export const handlers: Handler[] = [
   // French language handlers
   {
     field: 'languages',
-    pattern: /\bFR(?:a|e|anc[eê]s|VF[FQIB2]?)?\b/i,
+    pattern: /\bFR(?:a|e|anc[eê]s|VF[FQIB2]?)\b/i,
     transform: toValueSet('fr'),
     keepMatching: true,
     skipFromTitle: true
   },
   {
     field: 'languages',
-    pattern: /\b(?:TRUE|SUB).?FRENCH\b|\bFRENCH\b/,
+    pattern: /\b(?:TRUE|SUB).?FRENCH\b|\bFRENCH\b|\bFre?\b/,
     transform: toValueSet('fr'),
-    keepMatching: true
+    keepMatching: true,
+    remove: true,
   },
   {
     field: 'languages',
     pattern: /\b\[?(?:VF[FQRIB2]?\]?\b|(?:VOST)?FR2?)\b/,
     transform: toValueSet('fr'),
-    keepMatching: true
+    keepMatching: true,
+    remove: true,
   },
   {
     field: 'languages',
@@ -1898,24 +1903,9 @@ export const handlers: Handler[] = [
   },
   {
     field: 'languages',
-    pattern: /\b(?:audio.)?(?:ESP|spa|(?:en[ .]+)?espa[nñ]ola?|castellano)\b/i,
+    pattern: /\b(?:audio.)?(?:ESP?|spa|(?:en[ .]+)?espa[nñ]ola?|castellano)\b/i,
     transform: toValueSet('es'),
     keepMatching: true,
-    remove: true
-  },
-  {
-    field: 'languages',
-    pattern: /\b(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})es\b/i,
-    transform: toValueSet('es'),
-    keepMatching: true,
-    skipFromTitle: true
-  },
-  {
-    field: 'languages',
-    pattern: /\b(?:[ .,/-]*[A-Z]{2}[ .,/-]+)es(?:[ .,/-]+[A-Z]{2}[ .,/-]+)\b/i,
-    transform: toValueSet('es'),
-    keepMatching: true,
-    skipFromTitle: true
   },
   {
     field: 'languages',
@@ -1936,6 +1926,13 @@ export const handlers: Handler[] = [
     transform: toValueSet('es'),
     keepMatching: true,
     skipIfFirst: true
+  },
+  {
+    field: 'languages',
+    pattern: /\b[\.\s\[]?Sp[\.\s\]]?\b/i,
+    transform: toValueSet('es'),
+    keepMatching: true,
+    remove: true
   },
 
   // Portuguese language handlers
@@ -1986,6 +1983,13 @@ export const handlers: Handler[] = [
   },
   {
     field: 'languages',
+    pattern: /\bpt\b/i,
+    transform: toValueSet('pt'),
+    keepMatching: true,
+    remove: true,
+  },
+  {
+    field: 'languages',
     pattern: /\bpor\b/i,
     transform: toValueSet('pt'),
     keepMatching: true,
@@ -1999,17 +2003,24 @@ export const handlers: Handler[] = [
     transform: toValueSet('it'),
     keepMatching: true
   },
-  {
+    {
     field: 'languages',
-    pattern: /\b(?:w{3}\.\w+\.)?IT(?:[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+){2,})\b/,
-    validateMatch: validateNotMatch(/(?:w{3}\.\w+\.)IT/),
+    pattern: /\bIT\b/i,
+    validateMatch: validateAnd(
+      validateLookbehind('(?:w{3}\\.\\w+\\.)', 'i', false),
+      validateOr(
+        validateLookahead('(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})', 'i', true),
+        validateLookbehind('(?:(?:[ .,/-]*[A-Z]{2}){2,}[ .,/-]+)', 'i', true),
+      )
+    ),
     transform: toValueSet('it'),
     keepMatching: true,
     skipFromTitle: true
   },
   {
     field: 'languages',
-    pattern: /\bit(?:\.(?:ass|ssa|srt|sub|idx)$)/i,
+    pattern: /\bit/i,
+    validateMatch: validateLookahead('(?:\\.(?:ass|ssa|srt|sub|idx)$)','i', true),
     transform: toValueSet('it'),
     keepMatching: true,
     skipFromTitle: true
@@ -2041,15 +2052,28 @@ export const handlers: Handler[] = [
   },
   {
     field: 'languages',
-    pattern: /\bde(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})\b/i,
+    pattern: /\bde\b/i,
+    validateMatch: validateLookahead('(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})','i', true),
     transform: toValueSet('de'),
     keepMatching: true,
     skipFromTitle: true
   },
   {
     field: 'languages',
-    pattern: /\b(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})de\b/i,
+    pattern: /\bde\b/i,
     transform: toValueSet('de'),
+    validateMatch: validateLookbehind('(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})','i', true),
+    keepMatching: true,
+    skipFromTitle: true
+  },
+  {
+    field: 'languages',
+    pattern: /\bde\b/i,
+    transform: toValueSet('de'),
+    validateMatch: validateAnd(
+      validateLookbehind('(?:[ .,/-]+[A-Z]{2}[ .,/-]+)','i', true),
+      validateLookahead('(?:[ .,/-]+[A-Z]{2}[ .,/-]+)','i', true)
+    ),
     keepMatching: true,
     skipFromTitle: true
   },
@@ -2664,6 +2688,12 @@ export const handlers: Handler[] = [
     transform: toBoolean(),
     remove: true,
     skipFromTitle: true
+  },
+  {
+    field: 'dubbed',
+    pattern: /\bMULTi\b/i,
+    transform: toBoolean(),
+    remove: true
   },
   {
     field: 'dubbed',

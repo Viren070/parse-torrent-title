@@ -5,9 +5,43 @@ import { nonDigitsRegex } from './utils.js';
  * Validators - matching Go validate_* functions
  */
 
+export function validateOr(...validators: HandlerMatchValidator[]): HandlerMatchValidator {
+  return (input: string, idxs: number[]): boolean => {
+    return validators.some(v => v(input, idxs));
+  };
+}
+
 export function validateAnd(...validators: HandlerMatchValidator[]): HandlerMatchValidator {
   return (input: string, idxs: number[]): boolean => {
     return validators.every(v => v(input, idxs));
+  };
+}
+
+export function validateLookbehind(pattern: string, flags: string, polarity: boolean): HandlerMatchValidator {
+  const flagStr = flags.toLowerCase().replace(/[^gimsuy]/g, '');
+  const re = new RegExp(pattern + '$', flagStr);
+  
+  return (input: string, match: number[]): boolean => {
+    const rv = input.substring(0, match[0]);
+    
+    if (polarity) {
+      return re.test(rv);
+    }
+    return !re.test(rv);
+  };
+}
+
+export function validateLookahead(pattern: string, flags: string, polarity: boolean): HandlerMatchValidator {
+  const flagStr = flags.toLowerCase().replace(/[^gimsuy]/g, '');
+  const re = new RegExp('^' + pattern, flagStr);
+  
+  return (input: string, match: number[]): boolean => {
+    const rv = input.substring(match[1]);
+    
+    if (polarity) {
+      return re.test(rv);
+    }
+    return !re.test(rv);
   };
 }
 
