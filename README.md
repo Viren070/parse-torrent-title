@@ -200,12 +200,12 @@ console.log(result.title); // "My Movie"
 You can use TypeScript generics to get full type safety for your custom fields:
 
 ```typescript
-import { Parser, Handler, toIntArray } from '@viren070/parse-torrent-title';
+import { Parser, Handler, transforms } from '@viren070/parse-torrent-title';
 
 const customHandler: Handler = {
   field: 'customId',
   pattern: /custom-(\d+)/i,
-  transform: toIntArray()
+  transform: transforms.toIntArray()
 };
 
 const parser = new Parser()
@@ -261,13 +261,13 @@ Validators determine whether a match should be accepted. They're used with the `
 Example with validators:
 
 ```typescript
-import { Parser, Handler, validateNotMatch, toIntArray } from '@viren070/parse-torrent-title';
+import { Parser, Handler, validators, transforms } from '@viren070/parse-torrent-title';
 
 const handler: Handler = {
   field: 'episodes',
   pattern: /episode[.\s]*(\d+)/i,
-  validateMatch: validateNotMatch(/season/i), // Don't match if "season" is present
-  transform: toIntArray()
+  validateMatch: validators.validateNotMatch(/season/i), // Don't match if "season" is present
+  transform: transforms.toIntArray()
 };
 ```
 
