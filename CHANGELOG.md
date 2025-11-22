@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/Viren070/parse-torrent-title/compare/v0.2.0...v0.3.0) (2025-11-22)
+
+
+### Features
+
+* improve language parsing ([6f4f339](https://github.com/Viren070/parse-torrent-title/commit/6f4f3390975bf6840f892c242e72a570cd35d8ab))
+
 ## [0.2.0](https://github.com/Viren070/parse-torrent-title/compare/v0.1.3...v0.2.0) (2025-11-15)
 
 
