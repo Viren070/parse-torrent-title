@@ -2874,12 +2874,12 @@ export const handlers: Handler[] = [
   {
     field: 'site',
     pattern:
-      /\b(?:www?.?)?(?:\w+\-)?\w+[\.\s](?:com|org|net|ms|tv|mx|co|party|vip|nu|pics)\b/i,
+      /[[(【]\s*((?:www?.?)?(?:\w+-)?\w+(?:[.\s](?:com|org|net|ms|tv|mx|co|party|vip|nu|pics))\b)\s*[\])】]/i,
+    matchGroup: 0,
     remove: true,
-    skipFromTitle: true,
-    validateMatch: validateNotAtStart()
+    skipFromTitle: true
   },
-    {
+  {
     field: 'site',
     pattern: /-(www\.[\w-]+\.[\w-]+(?:\.[\w-]+)*)\.(\w{2,4})$/i,
     transform: toTrimmed(),
