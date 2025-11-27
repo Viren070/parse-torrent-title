@@ -1599,15 +1599,22 @@ describe('Parse Torrent Title - Edge Cases', () => {
       }
     },
     {
-      title: 'Sausage.Party.2016.1080p.BluRay.x264.mp4',
+      title:
+        'The.Hunting.Party.S01E01.Richard.Harris.1080p.10bit.AMZN.WEB-DL.DDP5.1.HEVC-Vyndros.mkv',
       expected: {
-        codec: 'x264',
-        container: 'mp4',
-        extension: 'mp4',
-        quality: 'BluRay',
         resolution: '1080p',
-        title: 'Sausage Party',
-        year: '2016'
+        quality: 'WEB-DL',
+        bitDepth: '10bit',
+        codec: 'hevc',
+        channels: ['5.1'],
+        audio: ['DDP'],
+        group: 'Vyndros',
+        container: 'mkv',
+        seasons: [1],
+        episodes: [1],
+        network: 'Amazon',
+        extension: 'mkv',
+        title: 'The Hunting Party'
       }
     },
     {
@@ -1879,7 +1886,8 @@ describe('Parse Torrent Title - Anime Tests', () => {
       }
     },
     {
-      title: '[Lazyleido-Mini] DIGIMON BEATBREAK - 08 (S01E08) - (WEB 1080p AV1 10-bit AAC 2.0) [9FE6F0C7]',
+      title:
+        '[Lazyleido-Mini] DIGIMON BEATBREAK - 08 (S01E08) - (WEB 1080p AV1 10-bit AAC 2.0) [9FE6F0C7]',
       expected: {
         episodeCode: '9FE6F0C7',
         resolution: '1080p',
@@ -1912,8 +1920,8 @@ describe('Parse Torrent Title - Anime Tests', () => {
         extension: 'avi',
         languages: ['ru'],
         site: 'torrents.ru',
-        title: 'Что случилось, тигровая лилия',
-      },
+        title: 'Что случилось, тигровая лилия'
+      }
     },
     {
       title:
