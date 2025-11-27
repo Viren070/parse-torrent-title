@@ -2859,13 +2859,27 @@ export const handlers: Handler[] = [
   },
   {
     field: 'site',
-    pattern: /^\[([^\[\]]+\.[^\[\]]+)\]/i,
+    pattern: /(\[([^\[\].]+\.[^\].]+)\])(?:\.\w{2,4}$|\s)/i,
     transform: toTrimmed(),
     remove: true,
-    skipFromTitle: true,
-    matchGroup: 1
+    matchGroup: 1,
+    valueGroup: 2
   },
   {
+    field: 'site',
+    pattern: /[\[{(](www.\w*.\w+)[)}\]]/i,
+    remove: true,
+    skipFromTitle: true
+  },
+  {
+    field: 'site',
+    pattern:
+      /\b(?:www?.?)?(?:\w+\-)?\w+[\.\s](?:com|org|net|ms|tv|mx|co|party|vip|nu|pics)\b/i,
+    remove: true,
+    skipFromTitle: true,
+    validateMatch: validateNotAtStart()
+  },
+    {
     field: 'site',
     pattern: /-(www\.[\w-]+\.[\w-]+(?:\.[\w-]+)*)\.(\w{2,4})$/i,
     transform: toTrimmed(),
@@ -2888,13 +2902,6 @@ export const handlers: Handler[] = [
     remove: true,
     skipFromTitle: true,
     matchGroup: 1
-  },
-  {
-    field: 'site',
-    pattern:
-      /\b(?:www?.?)?(?:\w+\-)?\w+[\.\s](?:com|org|net|ms|tv|mx|co|party|vip|nu|pics)\b/i,
-    remove: true,
-    skipFromTitle: true
   },
 
   // Network handlers
