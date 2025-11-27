@@ -55,6 +55,27 @@ describe('Codec Detection', () => {
     expect(result.bitDepth).toBe('10bit');
   });
 
+  test('vp9', () => {
+    const result = parseTorrentTitle(
+      'The.Mandalorian.S02E01.1080p.WEB.HDR.DDP5.1.Atmos.VP9-RARBG'
+    );
+    expect(result.codec).toBe('vp9');
+  });
+
+  test('vp8', () => {
+    const result = parseTorrentTitle(
+      'Big.Buck.Bunny.2008.1080p.VP8.WebM.DD5.1-BTN'
+    );
+    expect(result.codec).toBe('vp8');
+  });
+
+  test('av1', () => {
+    const result = parseTorrentTitle(
+      'Example.Movie.2021.1080p.WEB.AV1.DDP5.1.x264-NTb'
+    );
+    expect(result.codec).toBe('av1');
+  });
+
   test('skip 264 from episode number', () => {
     const result = parseTorrentTitle('[DB]_Bleach_264_[012073FE].avi');
     expect(result.codec).toBeUndefined();
