@@ -1599,6 +1599,18 @@ describe('Parse Torrent Title - Edge Cases', () => {
       }
     },
     {
+      title: 'Sausage.Party.2016.1080p.BluRay.x264.mp4',
+      expected: {
+        codec: 'x264',
+        container: 'mp4',
+        extension: 'mp4',
+        quality: 'BluRay',
+        resolution: '1080p',
+        title: 'Sausage Party',
+        year: '2016'
+      }
+    },
+    {
       title: 'Search.WWW.S01.KOREAN.1080p.NF.WEBRip.DDP2.0.x264-ExREN[rartv]',
       expected: {
         audio: ['DDP'],
@@ -1867,6 +1879,22 @@ describe('Parse Torrent Title - Anime Tests', () => {
       }
     },
     {
+      title: '[Lazyleido-Mini] DIGIMON BEATBREAK - 08 (S01E08) - (WEB 1080p AV1 10-bit AAC 2.0) [9FE6F0C7]',
+      expected: {
+        episodeCode: '9FE6F0C7',
+        resolution: '1080p',
+        quality: 'WEB',
+        audio: ['AAC'],
+        bitDepth: '10bit',
+        codec: 'av1',
+        channels: ['2.0'],
+        seasons: [1],
+        episodes: [8],
+        group: 'Lazyleido-Mini',
+        title: 'DIGIMON BEATBREAK'
+      }
+    },
+    {
       title: '[Anipakku] Shingeki no Kyojin - Season 3 46.mkv',
       expected: {
         container: 'mkv',
@@ -1877,16 +1905,16 @@ describe('Parse Torrent Title - Anime Tests', () => {
         title: 'Shingeki no Kyojin'
       }
     },
-    // {
-    //   title: 'Что случилось, тигровая лилия[torrents.ru].avi',
-    //   expected: {
-    //     container: 'avi',
-    //     extension: 'avi',
-    //     languages: ['ru'],
-    //     site: 'torrents.ru',
-    //     title: 'Что случилось, тигровая лилия',
-    //   },
-    // },
+    {
+      title: 'Что случилось, тигровая лилия[torrents.ru].avi',
+      expected: {
+        container: 'avi',
+        extension: 'avi',
+        languages: ['ru'],
+        site: 'torrents.ru',
+        title: 'Что случилось, тигровая лилия',
+      },
+    },
     {
       title:
         "[Anime Time] Naruto - 116 - 360 Degrees of Vision The Byakugan's Blind Spot.mkv",
