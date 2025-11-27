@@ -932,6 +932,20 @@ export const handlers: Handler[] = [
   },
   {
     field: 'codec',
+    pattern: /\bvp[89]\b/i,
+    transform: toLowercase(),
+    remove: true,
+    keepMatching: true
+  },
+  {
+    field: 'codec',
+    pattern: /\bAV1\b/i,
+    transform: toValue('av1'),
+    remove: true,
+    keepMatching: true
+  },
+  {
+    field: 'codec',
     process: removeFromValue(/[ .-]/)
   },
 
