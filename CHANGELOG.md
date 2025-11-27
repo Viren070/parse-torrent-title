@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/Viren070/parse-torrent-title/compare/v0.3.0...v0.4.0) (2025-11-27)
+
+
+### Features
+
+* add av1, vp9/8 codec handlers ([c73ead7](https://github.com/Viren070/parse-torrent-title/commit/c73ead7360a6441616939d1c7424fa44cbd24505))
+
+
+### Bug Fixes
+
+* update site handlers ([1f4de65](https://github.com/Viren070/parse-torrent-title/commit/1f4de65463e1c1c569f2a4e645c201053abf3a0d))
+
 ## [0.3.0](https://github.com/Viren070/parse-torrent-title/compare/v0.2.0...v0.3.0) (2025-11-22)
 
 
