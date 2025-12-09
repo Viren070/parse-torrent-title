@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.0](https://github.com/Viren070/parse-torrent-title/compare/v0.4.1...v0.5.0) (2025-12-09)
+
+
+### Features
+
+* add iTunes and showtime network handlers ([9d91db8](https://github.com/Viren070/parse-torrent-title/commit/9d91db812130620c05bad9a0a9ed2e03bb3de82e))
+
+
+### Bug Fixes
+
+* make it language handler more strict to prevent false positive ([8453fee](https://github.com/Viren070/parse-torrent-title/commit/8453fee3b69cc89038b1631762586893137a169d))
+* only match sp when with other lang codes ([d04fc49](https://github.com/Viren070/parse-torrent-title/commit/d04fc4981270d6eff40e5fbb812b1665d6efe61f))
+
 ## [0.4.1](https://github.com/Viren070/parse-torrent-title/compare/v0.4.0...v0.4.1) (2025-11-27)
 
 
