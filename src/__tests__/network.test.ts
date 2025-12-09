@@ -102,4 +102,20 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('Amazon');
     expect(result.title).toBe('The Mummy');
   });
+
+  test('iTunes 1', () => {
+    const result = parseTorrentTitle(
+      'Tron.Ares.2025.2160p.iTunes.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-BYNDR.mkv'
+    );
+    expect(result.network).toBe('iTunes');
+    expect(result.title).toBe('Tron Ares');
+  });
+
+  test('iTunes 2', () => {
+    const result = parseTorrentTitle(
+      'Tron.Ares.2025.2160p.iT.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-BYNDR.mkv'
+    );
+    expect(result.network).toBe('iTunes');
+    expect(result.title).toBe('Tron Ares');
+  });
 });

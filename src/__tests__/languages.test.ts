@@ -504,6 +504,10 @@ describe('Language Detection Tests', () => {
       'The.Gorge.2025.PLSUB.1080p.ATVP.WEB-DL.DDP5.1.Atmos.H.264-APEX.mkv',
       ['pl']
     ],
+    [
+      'Tron.Ares.2025.2160p.iT.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-BYNDR.mkv',
+      undefined
+    ],
 
     // Go tests
     [
