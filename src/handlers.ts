@@ -2094,7 +2094,7 @@ export const handlers: Handler[] = [
       validateLookbehind('(?:w{3}\\.\\w+\\.)', 'i', false),
       validateOr(
         validateLookahead('(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})', 'i', true),
-        validateLookbehind('(?:(?:[ .,/-]*[A-Z]{2}){2,}[ .,/-]+)', 'i', true)
+        validateLookbehind('(?:(?:[ .,/\\[-]+[A-Z]{2}){2,}[ .,/-]+)', 'i', true)
       )
     ),
     transform: toValueSet('it'),
