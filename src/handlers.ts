@@ -2012,7 +2012,18 @@ export const handlers: Handler[] = [
   },
   {
     field: 'languages',
-    pattern: /\b[\.\s\[]?Sp[\.\s\]]?\b/i,
+    pattern: /\bSP\b/i,
+    validateMatch: validateAnd(
+      validateLookbehind('(?:w{3}\\.\\w+\\.)', 'i', false),
+      validateOr(
+        validateLookahead('(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})', 'i', true),
+        validateLookbehind('(?:(?:[ .,/\\[-]+[A-Z]{2}){2,}[ .,/-]+)', 'i', true),
+        validateAnd(
+          validateLookahead('(?:[ .,/-]+[A-Z]{2}(?:[ .,/-]|$))', 'i', true),
+          validateLookbehind('(?:[ .,/\\[-]+[A-Z]{2}[ .,/-]+)', 'i', true)
+        )
+      )
+    ),
     transform: toValueSet('es'),
     keepMatching: true,
     remove: true
