@@ -2943,6 +2943,24 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
+    pattern: /\bSHOWTIME\b/i,
+    transform: toValue('Showtime'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\bitunes\b/i,
+    transform: toValue('iTunes'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\biT\b/,
+    transform: toValue('iTunes'),
+    remove: true
+  },
+  {
+    field: 'network',
     pattern: /\bHULU\b/i,
     transform: toValue('Hulu'),
     remove: true
