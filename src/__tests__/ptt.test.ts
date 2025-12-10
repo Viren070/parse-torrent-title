@@ -517,6 +517,18 @@ describe('Parse Torrent Title', () => {
       }
     },
     {
+      title: 'Tyler.Perrys.The.Oval.S01E10.1080p.WEB.H264-CAKES[TGx]',
+      expected: {
+        title: "Tyler Perrys The Oval",
+        seasons: [1],
+        episodes: [10],
+        resolution: '1080p',
+        quality: 'WEB',
+        codec: 'h264',
+        group: 'CAKES'
+      }
+    },
+    {
       title:
         'Escaflowne (2000) (BDRip 1896x1048p x265 HEVC TrueHD, FLACx3, AC3 5.1x2+2.0x3)(Triple Audio)[sxales].mkv',
       expected: {
