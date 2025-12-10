@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 
 jobs:
   release-please:
@@ -34,6 +35,14 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
+      
+      - name: Update npm
+        if: ${{ steps.release.outputs.release_created }}
+        run: npm install -g npm@latest
+
+      - name: Update pnpm
+        if: ${{ steps.release.outputs.release_created }}
+        run: npm install -g pnpm@latest
       
       - name: Install dependencies
         if: ${{ steps.release.outputs.release_created }}
