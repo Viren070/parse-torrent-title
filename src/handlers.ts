@@ -458,7 +458,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'releaseTypes',
-    pattern: /\b(OAD|OAV|ODA|ONA|OVA)(?:[ .-]*\d{1,3})?(?:v\d)?/i,
+    pattern: /\b(OAD|OAV|ODA|ONA|OVA)(?:[ .-]*\d{1,3})?(?:v\d)?\b/i,
     transform: toValueSetWithTransform((v: string) => v.toUpperCase()),
     remove: true,
     matchGroup: 1
