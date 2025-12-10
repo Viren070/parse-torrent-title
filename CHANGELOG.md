@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/Viren070/parse-torrent-title/compare/v0.5.0...v0.5.1) (2025-12-10)
+
+
+### Bug Fixes
+
+* add missing boundary in releaseTypes handler ([9cf947f](https://github.com/Viren070/parse-torrent-title/commit/9cf947fc80d63a546d77612ecdc2260f75426753))
+
 ## [0.5.0](https://github.com/Viren070/parse-torrent-title/compare/v0.4.1...v0.5.0) (2025-12-09)
 
 
