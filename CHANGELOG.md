@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/Viren070/parse-torrent-title/compare/v0.5.1...v0.5.2) (2026-01-07)
+
+
+### Bug Fixes
+
+* allow absolute episode with version after for no space-hyphen-space separator ([80f673f](https://github.com/Viren070/parse-torrent-title/commit/80f673f58eff19dd3b3697da8546e9b9e7f394af))
+
 ## [0.5.1](https://github.com/Viren070/parse-torrent-title/compare/v0.5.0...v0.5.1) (2025-12-10)
 
 
