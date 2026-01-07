@@ -1689,9 +1689,9 @@ export const handlers: Handler[] = [
       }
 
       const btRe =
-        /(?:movie\W*|film\W*|^)?(?:[ .]+-[ .]+|[(\[][ .]*)(\d{1,4})(?:a|b|v\d|\.\d)?(?:\W|$)(?:movie|film|\d+)?/i;
+        /(?:movie\W*|film\W*|^)?(?:[ .]+-[ .]+|[(\[][ .]*|\.(?=\d{3}\.v\d(?:\W|$)))(\d{1,4})(?:a|b|v\d|\.\d)?(?:\W|$)(?:movie|film|\d+)?/i;
       const btReNegBefore =
-        /(?:movie\W*|film\W*)(?:[ .]+-[ .]+|[(\[][ .]*)(\d{1,4})/i;
+        /(?:movie\W*|film\W*)(?:[ .]+-[ .]+|[(\[][ .]*|\.(?=\d{3}\.v\d(?:\W|$)))(\d{1,4})/i;
       const btReNegAfter =
         /(?:movie|film)|(\d{1,4})(?:a|b|v\d|\.\d)(?:\W)(?:\d+)/i;
       const mtRe =

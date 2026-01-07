@@ -393,6 +393,13 @@ describe('Episode Detection Tests', () => {
     expect(result.episodes).toEqual([4]);
   });
 
+  test('detect absolute episode with dot separator with a version', () => {
+    const result = parseTorrentTitle(
+      'Naruto.001.v4.480p.DVD.Dual-Audio.FLAC2.0.Hi10P.x264-JySzE.mkv'
+    );
+    expect(result.episodes).toEqual([1]);
+  });
+
   test('detect anime episode when title contains number range', () => {
     const result = parseTorrentTitle(
       '[Erai-raws] 2-5 Jigen no Ririsa - 08 [480p][Multiple Subtitle][972D0669].mkv'
