@@ -400,6 +400,13 @@ describe('Episode Detection Tests', () => {
     expect(result.episodes).toEqual([13]);
   });
 
+  test('detect absolute episode with dot separator 2', () => {
+    const result = parseTorrentTitle(
+      'Dragon.Ball.001.DBOX.CC.480p.x264-SoM.mkv'
+    );
+    expect(result.episodes).toEqual([1]);
+  });
+
   test('detect correct episode with 3 digit number in title', () => {
     const result = parseTorrentTitle(
       'The.100.S01E01.Pilot.1080p.AVC.DTS-HD.MA.5.1.REMUX-FraMeSToR.mkv'
