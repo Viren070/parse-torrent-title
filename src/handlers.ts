@@ -360,6 +360,12 @@ export const handlers: Handler[] = [
   },
   {
     field: 'edition',
+    pattern: /\bCC\b/,
+    transform: toValue('Color Corrected'),
+    remove: true
+  },
+  {
+    field: 'edition',
     pattern: /\bUltimate[\.\s\-\+_\/(),]Edition\b/i,
     transform: toValue('Ultimate Edition'),
     remove: true
