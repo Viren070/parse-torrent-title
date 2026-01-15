@@ -400,6 +400,20 @@ describe('Episode Detection Tests', () => {
     expect(result.episodes).toEqual([13]);
   });
 
+  test('detect correct episode with 3 digit number in title', () => {
+    const result = parseTorrentTitle(
+      'The.100.S01E01.Pilot.1080p.AVC.DTS-HD.MA.5.1.REMUX-FraMeSToR.mkv'
+    );
+    expect(result.episodes).toEqual([1]);
+  });
+
+  test('dont detect episode from 3 digit number in title', () => {
+    const result = parseTorrentTitle(
+      'The.100.2025.1080p.AMZN.WEB-DL.MULTI.AAC2.0.H.265-Telly.mkv'
+    );
+    expect(result.episodes).toBeUndefined();
+  });
+
   test('detect absolute episode with dot separator with a version', () => {
     const result = parseTorrentTitle(
       'Naruto.001.v4.480p.DVD.Dual-Audio.FLAC2.0.Hi10P.x264-JySzE.mkv'
