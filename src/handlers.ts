@@ -1689,9 +1689,9 @@ export const handlers: Handler[] = [
       }
 
       const btRe =
-        /(?:movie\W*|film\W*|^)?(?:[ .]+-[ .]+|[(\[][ .]*|\.(?=\d{3}\.v\d(?:\W|$)))(\d{1,4})(?:a|b|v\d|\.\d)?(?:\W|$)(?:movie|film|\d+)?/i;
+        /(?:movie\W*|film\W*|^)?(?:[ .]+-[ .]+|[(\[][ .]*)(\d{1,4})(?:a|b|v\d|\.\d)?(?:\W|$)(?:movie|film|\d+)?/i;
       const btReNegBefore =
-        /(?:movie\W*|film\W*)(?:[ .]+-[ .]+|[(\[][ .]*|\.(?=\d{3}\.v\d(?:\W|$)))(\d{1,4})/i;
+        /(?:movie\W*|film\W*)(?:[ .]+-[ .]+|[(\[][ .]*)(\d{1,4})/i;
       const btReNegAfter =
         /(?:movie|film)|(\d{1,4})(?:a|b|v\d|\.\d)(?:\W)(?:\d+)/i;
       const mtRe =
@@ -1743,6 +1743,16 @@ export const handlers: Handler[] = [
           mStr = '';
         } else if (match[1]) {
           mStr = match[1];
+        }
+      }
+
+      // Check for 3-digit dot-separated episode at the end of title (right before resolution/quality/codec)
+      if (!mStr && endIndex > 0 && endIndex < title.length) {
+        const dotEpisodeRe = /\.(\d{3})(?:\.v\d)?\.?$/i;
+        const endSection = title.substring(0, endIndex);
+        const dotMatch = endSection.match(dotEpisodeRe);
+        if (dotMatch && dotMatch[1]) {
+          mStr = dotMatch[1];
         }
       }
 

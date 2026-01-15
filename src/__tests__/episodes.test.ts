@@ -393,6 +393,13 @@ describe('Episode Detection Tests', () => {
     expect(result.episodes).toEqual([4]);
   });
 
+  test('detect absolute episode with dot separator', () => {
+    const result = parseTorrentTitle(
+      'Dragon.Ball.Z.013.480p.DBox.DVD.REGRADE.Dual-Audio.FLAC2.0.x264-SoM.mkv'
+    );
+    expect(result.episodes).toEqual([13]);
+  });
+
   test('detect absolute episode with dot separator with a version', () => {
     const result = parseTorrentTitle(
       'Naruto.001.v4.480p.DVD.Dual-Audio.FLAC2.0.Hi10P.x264-JySzE.mkv'
