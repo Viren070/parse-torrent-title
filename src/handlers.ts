@@ -3012,7 +3012,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /\b(Crunchyroll|[. -]CR[. -])\b/i,
+    pattern: /\b(Crunchyroll|CR)\b/i,
     transform: toValue('Crunchyroll'),
     remove: true
   },
