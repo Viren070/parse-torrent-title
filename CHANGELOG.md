@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/Viren070/parse-torrent-title/compare/v0.5.3...v0.5.4) (2026-01-15)
+
+
+### Bug Fixes
+
+* fix crunchyrol handler ([cbdea92](https://github.com/Viren070/parse-torrent-title/commit/cbdea92aea8e1460f2635a0a8288d39bbb61190e))
+
 ## [0.5.3](https://github.com/Viren070/parse-torrent-title/compare/v0.5.2...v0.5.3) (2026-01-15)
 
 
