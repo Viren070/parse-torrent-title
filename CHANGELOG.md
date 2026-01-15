@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/Viren070/parse-torrent-title/compare/v0.5.2...v0.5.3) (2026-01-15)
+
+
+### Bug Fixes
+
+* allow 3 digit number as absolute episode at the end of title before res/quality/codec ([ea31871](https://github.com/Viren070/parse-torrent-title/commit/ea3187179d80d0ce5f9cbfa9312344a7013efd06))
+
 ## [0.5.2](https://github.com/Viren070/parse-torrent-title/compare/v0.5.1...v0.5.2) (2026-01-07)
 
 
