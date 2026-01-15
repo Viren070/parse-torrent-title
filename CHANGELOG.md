@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.5](https://github.com/Viren070/parse-torrent-title/compare/v0.5.4...v0.5.5) (2026-01-15)
+
+
+### Bug Fixes
+
+* add color corrected edition handler ([289e8cd](https://github.com/Viren070/parse-torrent-title/commit/289e8cd362b6c8c4b40bb8029228cc6d754ae3cd))
+* loosen check for separators between 3 digit number and add dbox handler ([5a4c815](https://github.com/Viren070/parse-torrent-title/commit/5a4c815b278c0fbab33cc9927956d450e9a1655c))
+
 ## [0.5.4](https://github.com/Viren070/parse-torrent-title/compare/v0.5.3...v0.5.4) (2026-01-15)
 
 
