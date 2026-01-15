@@ -118,4 +118,12 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('iTunes');
     expect(result.title).toBe('Tron Ares');
   });
+
+  test('Crunchyroll', () => {
+    const result = parseTorrentTitle(
+      '[Yameii] SPY x FAMILY - S03E11 [English Dub] [CR WEB-DL 1080p] [195797EF] (SPY x FAMILY Season 3 | S3)'
+    );
+    expect(result.network).toBe('Crunchyroll');
+    expect(result.title).toBe('SPY x FAMILY');
+  });
 });
