@@ -2,8 +2,8 @@
  * Processors
  */
 
-import { HandlerProcessor, HandlerMatchValidator, ParseMeta } from './types';
-import { getMatchIndices } from './utils';
+import { HandlerProcessor, HandlerMatchValidator, ParseMeta } from './types.js';
+import { getMatchIndices } from './utils.js';
 
 export function removeFromValue(re: RegExp): HandlerProcessor {
   return (title: string, m: ParseMeta): ParseMeta => {
