@@ -22,7 +22,8 @@ import {
   toValueSet,
   toValueSetWithTransform,
   toValueSetMultiWithTransform,
-  toIntArray
+  toIntArray,
+  toIntRangeTill
 } from './transforms.js';
 import {
   validateAnd,
@@ -35,7 +36,7 @@ import {
   validateOr,
   validateLookahead
 } from './validators.js';
-import { removeFromValue } from './processors.js';
+import { regexMatchUntilValid, removeFromValue } from './processors.js';
 
 /**
  * All handlers in the exact order as handlers.go
@@ -302,18 +303,15 @@ export const handlers: Handler[] = [
   },
   {
     field: 'year',
-    pattern: /[(\[*]?\b(20[0-9]{2}|2100)[*\])]?/,
-    validateMatch: (input: string, match: number[]): boolean => {
-      const re = /(?:\D*\d{4}\b)/;
-      return !re.test(input.substring(match[3]));
-    },
+    pattern: /[(\[*]?\b(20[0-9]{2}|2100)[*\])]?/i,
+    validateMatch: validateLookahead('(?:\\D*\\d{4}\\b)', '', false),
     transform: toYear(),
     remove: true
   },
   {
     field: 'year',
     pattern:
-      /(?:[(\[*]|.)((?:\d|Cap[. ]?)?(?:19\d|20[012])\d(?:\d|kbps)?)[*)\]]?/,
+      /(?:[(\[*]|.)((?:\d|[SE]|Cap[. ]?)?(?:19\d|20[012])\d(?:\d|kbps)?)[*)\]]?/i,
     validateMatch: (input: string, match: number[]): boolean => {
       if (match[0] < 2) {
         return false;
@@ -1062,7 +1060,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'audio',
-    pattern: /DD2?[+p]|DD Plus|Dolby Digital Plus|DDP5[ ._]1/i,
+    pattern: /\bDD2?[+p]|DD Plus|Dolby Digital Plus|DDP5[ ._]1/i,
     transform: toValueSet('DDP'),
     keepMatching: true,
     remove: true
@@ -1128,11 +1126,13 @@ export const handlers: Handler[] = [
   // Group handler (lines 1523-1528 in handlers.go)
   {
     field: 'group',
-    pattern:
-      /(- ?([^\-. \[]+[^\-. \[)\]\d][^\-. \[)\]]*))(?:\[[\w.-]+])?(?:\.\w{2,4}$|$)/i,
-    validateMatch: validateNotMatch(/- ?(?:\d+$|S\d+|\d+x|ep?\d+|[^\[]+]$)/i),
-    matchGroup: 1,
-    valueGroup: 2
+    process: regexMatchUntilValid(
+      /- ?([^\-. \[]+[^\-. \[)\]E\d][^\-. \[)\]]*)(?:\[[\w.-]+])?/i,
+      validateAnd(
+        validateNotMatch(/- ?(?:\d+$|S\d+|\d+x|ep?\d+|[^[]+]$)/i),
+        validateLookahead('(?:[ .]\\w{2,4}$|$)', 'i', true)
+      )
+    )
   },
 
   // Container handler (lines 1530-1534 in handlers.go)
@@ -1223,7 +1223,7 @@ export const handlers: Handler[] = [
   {
     field: 'complete',
     pattern:
-      /(?:\bthe\W)?(?:\bcomplete|full|all)\b.*\b(?:series|seasons|collection|episodes|set|pack|movies)\b/i,
+      /(?:\bthe\W)?(?:\bcomplete|full|\ball)\b.*\b(?:series|seasons|collection|episodes|set|pack|movies)\b/i,
     transform: toBoolean()
   },
   {
@@ -1368,7 +1368,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'seasons',
-    pattern: /(\d{1,2})(?:-?й)?[. _]?(?:[Сс]езон|sez(?:on)?)(?:\W?\D|$)/i,
+    pattern: /(\d{1,2})(?:-?й)?[. _]?(?:[Сс]езон|sez(?:on)?)(?:\P{L}?\D|$)/iu,
     transform: toIntArray(),
     remove: true
   },
@@ -1407,7 +1407,7 @@ export const handlers: Handler[] = [
   {
     field: 'seasons',
     pattern:
-      /(?:so?|t)(\d{1,2})[. ]?[xх-]?[. ]?(?:e|x|х|ep|-|\.)[. ]?\d{1,4}(?:[abc]|v0?[1-4]|\D|$)/i,
+      /(?:so?|t)(\d{1,4})[. ]?[xх-]?[. ]?(?:e|x|х|ep|-|\.)[. ]?\d{1,4}(?:[abc]|v0?[1-4]|\D|$)/i,
     transform: toIntArray()
   },
   {
@@ -1483,6 +1483,19 @@ export const handlers: Handler[] = [
     pattern: /(?:\W|^)(\d{1,2})(?:e|ep)\d{1,3}(?:\W|$)/i,
     transform: toIntArray()
   },
+  /**
+   * 	// ~ parser.add_handler("seasons", regex.compile(r"\bТВ-(\d{1,2})\b", regex.IGNORECASE), array(integer))
+	{
+		Field:     "seasons",
+		Pattern:   regexp.MustCompile(`(?i)[\[\(]ТВ-(\d{1,2})[\)\]]`),
+		Transform: to_int_array(),
+	},
+   */
+  {
+    field: 'seasons',
+    pattern: /[\[\(]ТВ-(\d{1,2})[\)\]]/i,
+    transform: toIntArray()
+  },
 
   // Batch 8: Episodes handlers (lines 1870-2125 in handlers.go)
   {
@@ -1528,7 +1541,7 @@ export const handlers: Handler[] = [
   {
     field: 'episodes',
     pattern:
-      /(?:so?|t)\d{1,3}[. ]?[xх-]?[. ]?(?:e|x|х|ep)[. ]?(\d{1,4})(?:[abc]|v0?[1-4]|\D|$)/i,
+      /(?:so?|t)\d{1,4}[. ]?[xх-]?[. ]?(?:e|x|х|ep)[. ]?(\d{1,4})(?:[abc]|v0?[1-4]|\D|$)/i,
     remove: true,
     transform: toIntArray()
   },
@@ -1580,15 +1593,17 @@ export const handlers: Handler[] = [
   {
     field: 'episodes',
     pattern:
-      /(?:(?:seasons?|[Сс]езони?)\W*)?(?:[ .(\[-]|^)(\d{1,3}(?:[ .]?[,&+~][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i,
-    validateMatch: validateNotMatch(/(?:(?:seasons?|[Сс]езони?)\W*)/i),
+      /(?:(?:seasons?|[Сс]езони?)\P{L}*)?(?:[ .(\[-]|^)(\d{1,3}(?:[ .]?[,&+~][ .]?\d{1,3})+)(?:[ .)\]-]|$)/iu,
+    validateMatch: validateNotMatch(/(?:(?:seasons?|[Сс]езони?)\P{L}*)/iu),
     transform: toIntRange()
   },
   {
     field: 'episodes',
     pattern:
-      /(?:(?:seasons?|[Сс]езони?)\W*)?(?:20-20)?(?:[ .(\[-]|^)(\d{1,4}(?:-\d{1,4})+)(?:[ .)(\]]|[+-]\D|$)/i,
-    validateMatch: validateNotMatch(/(?:seasons?|[Сс]езони?)\W*|^(?:20-20)/i),
+      /(?:(?:seasons?|[Сс]езони?)\P{L}*)?(?:20-20)?(?:[ .(\[-]|^)(\d{1,4}(?:-\d{1,4})+)(?:[ .)(\]]|[+-]\D|$)/iu,
+    validateMatch: validateNotMatch(
+      /(?:seasons?|[Сс]езони?)\P{L}*|^(?:20-20)/iu
+    ),
     transform: toIntRange()
   },
   {
@@ -1601,6 +1616,15 @@ export const handlers: Handler[] = [
     pattern: /Ep.\d+.-.\d+/i,
     transform: toIntRange(),
     remove: true
+  },
+  {
+    field: 'episodes',
+    pattern: /(\d{1,3})[. ]?(?:of|из|iz)[. ]?\d{1,3}/i,
+    validateMatch: validateAnd(
+      validateLookbehind('(?:\\D|^)', 'i', true),
+      validateLookahead('(?:\\D|$)', 'i', true)
+    ),
+    transform: toIntRangeTill()
   },
   {
     field: 'episodes',
@@ -1638,11 +1662,6 @@ export const handlers: Handler[] = [
     field: 'episodes',
     pattern: /^\d{1,2}\.(\d{2,3}) - /,
     skipIfBefore: ['year', 'source', 'resolution'],
-    transform: toIntArray()
-  },
-  {
-    field: 'episodes',
-    pattern: /(?:\D|^)(\d{1,3})[. ]?(?:of|из|iz)[. ]?\d{1,3}(?:\D|$)/i,
     transform: toIntArray()
   },
   {
@@ -2039,7 +2058,11 @@ export const handlers: Handler[] = [
       validateLookbehind('(?:w{3}\\.\\w+\\.)', 'i', false),
       validateOr(
         validateLookahead('(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})', 'i', true),
-        validateLookbehind('(?:(?:[ .,/\\[-]+[A-Z]{2}){2,}[ .,/-]+)', 'i', true),
+        validateLookbehind(
+          '(?:(?:[ .,/\\[-]+[A-Z]{2}){2,}[ .,/-]+)',
+          'i',
+          true
+        ),
         validateAnd(
           validateLookahead('(?:[ .,/-]+[A-Z]{2}(?:[ .,/-]|$))', 'i', true),
           validateLookbehind('(?:[ .,/\\[-]+[A-Z]{2}[ .,/-]+)', 'i', true)
@@ -2799,7 +2822,8 @@ export const handlers: Handler[] = [
     field: 'subbed',
     pattern: /\b(?:Official.*?|Dual-?)?sub(?:s|bed)?\b/i,
     transform: toBoolean(),
-    remove: true
+    remove: true,
+    skipIfFirst: true
   },
   {
     field: 'subbed',
@@ -2907,7 +2931,7 @@ export const handlers: Handler[] = [
   {
     field: 'site',
     pattern:
-      /[[(【]\s*((?:www?.?)?(?:\w+-)?\w+(?:[.\s](?:com|org|net|ms|tv|mx|co|party|vip|nu|pics))\b)\s*[\])】]/i,
+      /[[(【].*?((?:www?.?)?(?:\w+-)?\w+(?:[.\s](?:com|org|net|ms|tv|mx|co|party|vip|nu|pics))\b).*?[\])】]/i,
     matchGroup: 0,
     remove: true,
     skipFromTitle: true

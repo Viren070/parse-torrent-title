@@ -519,7 +519,7 @@ describe('Parse Torrent Title', () => {
     {
       title: 'Tyler.Perrys.The.Oval.S01E10.1080p.WEB.H264-CAKES[TGx]',
       expected: {
-        title: "Tyler Perrys The Oval",
+        title: 'Tyler Perrys The Oval',
         seasons: [1],
         episodes: [10],
         resolution: '1080p',
@@ -1256,7 +1256,8 @@ describe('Parse Torrent Title', () => {
         container: 'mkv',
         audio: ['Atmos', 'DDP'],
         channels: ['5.1'],
-        hdr: ['DV', 'HDR']
+        hdr: ['DV', 'HDR'],
+        group: 'SiC'
       }
     },
     {
@@ -1344,6 +1345,7 @@ describe('Parse Torrent Title', () => {
         resolution: '1080p',
         codec: 'h264',
         container: 'mkv',
+        group: 'BYNDR',
         audio: ['Atmos', 'DDP'],
         channels: ['5.1']
       }
@@ -1708,6 +1710,115 @@ describe('Parse Torrent Title - Edge Cases', () => {
         quality: 'BDRip',
         resolution: '1080p',
         title: 'RahXephon'
+      }
+    },
+    {
+      title:
+        'The Shawshank Redemption 1994 1080p BluRay DDP 5 1 x265-EDGE2020 mkv',
+      expected: {
+        audio: ['DDP'],
+        channels: ['5.1'],
+        codec: 'x265',
+        quality: 'BluRay',
+        resolution: '1080p',
+        title: 'The Shawshank Redemption',
+        year: '1994',
+        group: 'EDGE2020'
+      }
+    },
+    {
+      title:
+        'Mission Impossible Dead Reckoning Part One 2023 1080p BluRay DDP 7 1 x265-EDGE2020 mkv',
+      expected: {
+        audio: ['DDP'],
+        channels: ['7.1'],
+        codec: 'x265',
+        container: 'mkv',
+        group: 'EDGE2020',
+        quality: 'BluRay',
+        resolution: '1080p',
+        title: 'Mission Impossible Dead Reckoning Part One',
+        year: '2023'
+      }
+    },
+    {
+      title: 'Interstellar 2014 1080p BluRay DDP 5 1 x265-EDGE2020 mkv',
+      expected: {
+        audio: ['DDP'],
+        channels: ['5.1'],
+        codec: 'x265',
+        container: 'mkv',
+        group: 'EDGE2020',
+        quality: 'BluRay',
+        resolution: '1080p',
+        title: 'Interstellar',
+        year: '2014'
+      }
+    },
+    {
+      title:
+        'The Fairly OddParents Fairly Odder S01 720p PMTP WEBRip DDP5 1 x264 TEPES rartv ORARBG',
+      expected: {
+        audio: ['DDP'],
+        channels: ['5.1'],
+        codec: 'x264',
+        quality: 'WEBRip',
+        resolution: '720p',
+        seasons: [1],
+        title: 'The Fairly OddParents Fairly Odder'
+      }
+    },
+    {
+      title:
+        'Formula1.S2025E86.Italy.Grand.Prix.1080i.HDTV.MPA2.0.H.264-playTV',
+      expected: {
+        codec: 'h264',
+        episodes: [86],
+        group: 'playTV',
+        quality: 'HDTV',
+        resolution: '1080p',
+        seasons: [2025],
+        title: 'Formula1'
+      }
+    },
+    {
+      title:
+        'Georgie and Mandys First Marriage S01E18 TV Money 720p AMZN WEB DL DDP5 1 H 264 FLUX EZTV',
+      expected: {
+        audio: ['DDP'],
+        channels: ['5.1'],
+        codec: 'h264',
+        quality: 'WEB-DL',
+        resolution: '720p',
+        seasons: [1],
+        episodes: [18],
+        network: 'Amazon',
+        title: 'Georgie and Mandys First Marriage'
+      }
+    },
+    {
+      title: 'Dragon Ball Z (Complete Series) [1080p] [MP4] [English Audio]',
+      expected: {
+        complete: true,
+        container: 'mp4',
+        languages: ['en'],
+        resolution: '1080p',
+        title: 'Dragon Ball Z'
+      }
+    },
+    {
+      title:
+        'Implosion The Titanic Sub Disaster 2025 720p AMZN WEB-DL DDP2 0 H 264-Kitsune',
+      expected: {
+        audio: ['DDP'],
+        channels: ['2.0'],
+        codec: 'h264',
+        group: 'Kitsune',
+        network: 'Amazon',
+        quality: 'WEB-DL',
+        resolution: '720p',
+        title: 'Implosion The Titanic Sub Disaster',
+        year: '2025'
       }
     }
   ];

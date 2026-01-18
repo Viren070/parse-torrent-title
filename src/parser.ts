@@ -4,7 +4,8 @@ import {
   beforeTitleRegex,
   whitespacesRegex,
   underscoresRegex,
-  getMatchIndices
+  getMatchIndices,
+  trailingEpisodePattern
 } from './utils.js';
 
 /**
@@ -344,7 +345,13 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
   }
 
   const titleEnd = Math.max(Math.min(endOfTitle, title.length), 0);
-  finalResult.title = cleanTitle(title.substring(0, titleEnd));
+  let rawTitle = title.substring(0, titleEnd);
+
+  if (finalResult.episodes && finalResult.episodes.length > 0) {
+    rawTitle = rawTitle.replace(trailingEpisodePattern, '');
+  }
+
+  finalResult.title = cleanTitle(rawTitle);
 
   return finalResult as ParsedResult;
 }

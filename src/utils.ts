@@ -42,6 +42,7 @@ export const underscoresRegex = /_+/g;
 export const whitespacesRegex = /\s+/g;
 
 export const redundantSymbolsAtEnd = /[ \-:./\\]+$/;
+export const trailingEpisodePattern = /[ .]*-[ .]*\d{1,4}[ .]*$/;
 
 export const curlyBrackets = ['{', '}'];
 export const squareBrackets = ['[', ']'];

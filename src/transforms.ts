@@ -269,3 +269,37 @@ export function toIntArray(): HandlerTransformer {
     }
   };
 }
+
+
+
+export function toIntRangeTill(): HandlerTransformer {
+  return (title: string, m: ParseMeta): void => {
+    if (typeof m.value !== 'string') {
+      m.value = null;
+      return;
+    }
+
+    const parts = m.value
+      .replace(nonDigitsRegex, ' ')
+      .trim()
+      .split(' ')
+      .filter((p) => p);
+    
+    if (parts.length === 0) {
+      m.value = null;
+      return;
+    }
+
+    const num = parseInt(parts[0]);
+    if (!isNaN(num)) {
+      const nums: number[] = [];
+      for (let i = 1; i <= num; i++) {
+        nums.push(i);
+      }
+      m.value = nums;
+      return;
+    }
+
+    m.value = null;
+  };
+}

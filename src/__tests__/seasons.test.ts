@@ -745,6 +745,13 @@ describe('parseTorrentTitle - seasons', () => {
     expect(result.seasons).toEqual(intRange(1, 15));
   });
 
+  test("Клинок, рассекающий демонов (ТВ-1) / Kimetsu no Yaiba / Demon Slayer [TV] [26 из 26] [RUS(ext), ENG, JAP+Sub] [2019, BDRip] [1080p]", () => {
+    const result = parseTorrentTitle(
+      "Клинок, рассекающий демонов (ТВ-1) / Kimetsu no Yaiba / Demon Slayer [TV] [26 из 26] [RUS(ext), ENG, JAP+Sub] [2019, BDRip] [1080p]"
+    );
+    expect(result.seasons).toEqual([1]);
+  });
+
   test('Swamp People - Season 1 to 6 Plus Specials - 720P - HDTV - X265-HEVC - O69', () => {
     const result = parseTorrentTitle(
       'Swamp People - Season 1 to 6 Plus Specials - 720P - HDTV - X265-HEVC - O69'

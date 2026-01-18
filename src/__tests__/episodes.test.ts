@@ -511,21 +511,21 @@ describe('Episode Detection Tests', () => {
     const result = parseTorrentTitle(
       'BBC Indian Ocean with Simon Reeve 5of6 Sri Lanka to Bangladesh.avi'
     );
-    expect(result.episodes).toEqual([5]);
+    expect(result.episodes).toEqual([1, 2, 3, 4, 5]);
   });
 
   test('episode with of separator v1', () => {
     const result = parseTorrentTitle(
       'Witches Of Salem - 2Of4 - Road To Hell - Gr.mkv'
     );
-    expect(result.episodes).toEqual([2]);
+    expect(result.episodes).toEqual([1, 2]);
   });
 
   test('episode with of separator v2', () => {
     const result = parseTorrentTitle(
       'Das Boot Miniseries Original Uncut-Reevel Cd2 Of 3.avi'
     );
-    expect(result.episodes).toEqual([2]);
+    expect(result.episodes).toEqual([1, 2]);
   });
 
   test('multiple episodes with multiple E sign and no separator', () => {
@@ -625,7 +625,7 @@ describe('Episode Detection Tests', () => {
     const result = parseTorrentTitle(
       'Prehistoric park.3iz6.Supercroc.DVDRip.Xvid.avi'
     );
-    expect(result.episodes).toEqual([3]);
+    expect(result.episodes).toEqual([1, 2, 3]);
   });
 
   test('episode with shortened russian episode name', () => {
@@ -865,6 +865,20 @@ describe('Episode Detection Tests', () => {
       "[BenjiD] Quan Zhi Gao Shou (The King's Avatar) / Full-Time Master S01 (01 - 12) [1080p x265] [Soft sub] V2"
     );
     expect(result.episodes).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+  });
+
+  test('episode with russian singular episode marker', () => {
+    const result = parseTorrentTitle(
+      'Викинги / Vikings / Сезон: 5 / Серия: 1 [2017, WEB-DL 1080p] MVO'
+    );
+    expect(result.episodes).toEqual([1]);
+  });
+
+  test('multiple episodes with russian episode marker and total episodes value', () => {
+    const result = parseTorrentTitle(
+      'Викинги / Vikings / Сезон: 5 / Серии: 5 из 20 [2017, WEB-DL 1080p] MVO'
+    );
+    expect(result.episodes).toEqual([1, 2, 3, 4, 5]);
   });
 
   // More complex anime tests
