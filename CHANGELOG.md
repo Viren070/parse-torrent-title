@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/Viren070/parse-torrent-title/compare/v0.6.0...v0.6.1) (2026-01-18)
+
+
+### Bug Fixes
+
+* use correct esm import syntax ([aaf2743](https://github.com/Viren070/parse-torrent-title/commit/aaf274392297a9f6542bc583ecb8dd425c4eef7e))
+
 ## [0.6.0](https://github.com/Viren070/parse-torrent-title/compare/v0.5.5...v0.6.0) (2026-01-18)
 
 
