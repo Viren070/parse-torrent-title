@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/Viren070/parse-torrent-title/compare/v0.5.5...v0.6.0) (2026-01-18)
+
+
+### Features
+
+* sync go-ptt changes ([8578d45](https://github.com/Viren070/parse-torrent-title/commit/8578d45b1824ebe3fab5f24b0549cedbae35641f))
+
+
+### Bug Fixes
+
+* improve parsing - site ([8578d45](https://github.com/Viren070/parse-torrent-title/commit/8578d45b1824ebe3fab5f24b0549cedbae35641f))
+* remove trailing absolute episode from title ([8578d45](https://github.com/Viren070/parse-torrent-title/commit/8578d45b1824ebe3fab5f24b0549cedbae35641f))
+
 ## [0.5.5](https://github.com/Viren070/parse-torrent-title/compare/v0.5.4...v0.5.5) (2026-01-15)
 
 
