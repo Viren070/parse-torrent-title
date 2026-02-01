@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/Viren070/parse-torrent-title/compare/v0.6.2...v0.6.3) (2026-02-01)
+
+
+### Bug Fixes
+
+* move size handler up and add 20-40 group handler ([fd1e84a](https://github.com/Viren070/parse-torrent-title/commit/fd1e84a66456a83fb2d178fdbe465b03083da60a))
+
 ## [0.6.2](https://github.com/Viren070/parse-torrent-title/compare/v0.6.1...v0.6.2) (2026-02-01)
 
 
