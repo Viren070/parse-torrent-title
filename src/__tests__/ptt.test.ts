@@ -1847,6 +1847,33 @@ describe('Parse Torrent Title - Edge Cases', () => {
         seasons: [1],
         title: 'Body Cam'
       }
+    },
+    {
+      title: 'The.Hangover.Part.II.2011.BluRay.576p.H264-20-40',
+      expected: {
+        title: 'The Hangover Part II',
+        year: '2011',
+        resolution: '576p',
+        quality: 'BluRay',
+        codec: 'h264',
+        group: '20-40',
+        episodes: undefined
+      }
+    },
+    {
+      title:
+        'Der.Herr.der.Ringe.Die.Gefaehrten.Extended.Edition.2001.German.DL.720p.BluRay.x264.NEUPRESSUNG-CDD<>ghost-of-usenet.org< (003/101) "cdd-dhdr1.ee.neu-720p.r00" - 12,85 GB',
+      expected: {
+        title: 'Der Herr der Ringe Die Gefaehrten',
+        year: '2001',
+        resolution: '720p',
+        quality: 'BluRay',
+        codec: 'x264',
+        languages: ['de'],
+        size: '12,85 GB',
+        edition: 'Extended Edition',
+        episodes: undefined
+      }
     }
   ];
 

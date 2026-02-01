@@ -91,6 +91,14 @@ export const handlers: Handler[] = [
     skipFromTitle: true
   },
 
+  // 20-40 group handler, placed before episode handlers to prevent matching as episodes
+  {
+    field: 'group',
+    pattern: /\b(20-40)\b$/,
+    transform: toValue('20-40'),
+    remove: true
+  },
+
   // Episode Code handlers (lines 319-328 in handlers.go)
   {
     field: 'episodeCode',
@@ -1134,6 +1142,13 @@ export const handlers: Handler[] = [
         validateLookahead('(?:[ .]\\w{2,4}$|$)', 'i', true)
       )
     )
+  },
+
+  // Size handler
+  {
+    field: 'size',
+    pattern: /\b(\d+((\.|,)\d+)?\s?(MB|GB|TB))\b/i,
+    remove: true
   },
 
   // Container handler (lines 1530-1534 in handlers.go)
@@ -2891,13 +2906,6 @@ export const handlers: Handler[] = [
       }
       return m;
     }
-  },
-
-  // Size handler
-  {
-    field: 'size',
-    pattern: /\b(\d+(\.\d+)?\s?(MB|GB|TB))\b/i,
-    remove: true
   },
 
   // Site handlers
