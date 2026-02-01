@@ -1820,6 +1820,33 @@ describe('Parse Torrent Title - Edge Cases', () => {
         title: 'Implosion The Titanic Sub Disaster',
         year: '2025'
       }
+    },
+    {
+      title:
+        'Body Cam (2019) MULTi WEBrip 4Klight 2160p x265 10bit EAC3-JiHEFF',
+      expected: {
+        audio: ['EAC3'],
+        bitDepth: '10bit',
+        codec: 'x265',
+        languages: ['multi audio'],
+        quality: 'WEBRip',
+        resolution: '4k',
+        title: 'Body Cam',
+        year: '2019'
+      }
+    },
+    {
+      title: 'Body Cam S01 1080p AMZN WEBRip DDP2 0 x264-TrollHD[rartv]',
+      expected: {
+        audio: ['DDP'],
+        channels: ['2.0'],
+        codec: 'x264',
+        group: 'TrollHD',
+        quality: 'WEBRip',
+        resolution: '1080p',
+        seasons: [1],
+        title: 'Body Cam'
+      }
     }
   ];
 

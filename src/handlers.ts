@@ -581,6 +581,7 @@ export const handlers: Handler[] = [
     field: 'quality',
     pattern: /\b(?:H[DQ][ .-]*)?CAM(?:H[DQ])?(?:[ .-]*Rip)?\b/i,
     transform: toValue('CAM'),
+    skipIfFirst: true,
     remove: true
   },
   {
