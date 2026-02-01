@@ -1,6 +1,6 @@
 {
   "name": "@viren070/parse-torrent-title",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A TypeScript library for parsing torrent titles",
   "type": "module",
   "main": "dist/index.js",
