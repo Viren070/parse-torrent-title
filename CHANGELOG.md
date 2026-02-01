@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/Viren070/parse-torrent-title/compare/v0.6.1...v0.6.2) (2026-02-01)
+
+
+### Bug Fixes
+
+* skip cam if first ([ce37cd5](https://github.com/Viren070/parse-torrent-title/commit/ce37cd5b9e737e217e25befb01becd4f80e88bec))
+
 ## [0.6.1](https://github.com/Viren070/parse-torrent-title/compare/v0.6.0...v0.6.1) (2026-01-18)
 
 
