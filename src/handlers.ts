@@ -55,6 +55,11 @@ export const handlers: Handler[] = [
     pattern: /\b(?:INTERNAL|HFR)\b/i,
     remove: true
   },
+  {
+    field: 'title',
+    pattern: /413 Days/i,
+    remove: true
+  },
 
   // PPV handlers (lines 294-300 in handlers.go)
   {
@@ -1793,9 +1798,9 @@ export const handlers: Handler[] = [
         }
       }
 
-      // Check for 3-digit episode at the end of title (right before resolution/quality/codec)
+      // Check for 2-3 digit episode at the end of title (right before resolution/quality/codec)
       if (!mStr && endIndex > 0 && endIndex < title.length) {
-        const dotEpisodeRe = /[ .](\d{3})(?:[ .]v\d)?[ .]*$/i;
+        const dotEpisodeRe = /[ .](\d{2,3})(?:[ .]v\d)?[ .]*$/i;
         const endSection = title.substring(0, endIndex);
         const dotMatch = endSection.match(dotEpisodeRe);
         if (dotMatch && dotMatch[1]) {
