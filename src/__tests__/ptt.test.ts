@@ -2274,6 +2274,44 @@ describe('Parse Torrent Title - Anime Tests', () => {
         seasons: [3],
         title: 'Fumetsu no Anata e'
       }
+    },
+    {
+      title:
+        "[inid4c] JoJo's Bizarre Adventure - Diamond is Unbreakable 01 (BD 1080p FLAC) [C84DED8C].mkv",
+      expected: {
+        audio: ['FLAC'],
+        container: 'mkv',
+        episodeCode: 'C84DED8C',
+        episodes: [1],
+        extension: 'mkv',
+        group: 'inid4c',
+        quality: 'BDRip',
+        resolution: '1080p',
+        title: "JoJo's Bizarre Adventure - Diamond is Unbreakable"
+      }
+    },
+    {
+      title:
+        "[inid4c] JoJo's Bizarre Adventure - Golden Wind 01 (BD 1080p FLAC) [E10F496B].mkv",
+      expected: {
+        audio: ['FLAC'],
+        container: 'mkv',
+        episodeCode: 'E10F496B',
+        episodes: [1],
+        extension: 'mkv',
+        group: 'inid4c',
+        quality: 'BDRip',
+        resolution: '1080p',
+        title: "JoJo's Bizarre Adventure - Golden Wind"
+      }
+    },
+    {
+      title: '[Anime Time] Fairy Tail - 220 - 413 Days.mkv',
+      expected: {
+        episodes: [220],
+        group: 'Anime Time',
+        title: 'Fairy Tail'
+      }
     }
   ];
 
