@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.4](https://github.com/Viren070/parse-torrent-title/compare/v0.6.3...v0.6.4) (2026-02-06)
+
+
+### Bug Fixes
+
+* allow 2-3 instead of just 3 digit absolue episode at end of title ([7027757](https://github.com/Viren070/parse-torrent-title/commit/70277573c8fd768353fc18c8280c6235f2a8fe9c))
+
 ## [0.6.3](https://github.com/Viren070/parse-torrent-title/compare/v0.6.2...v0.6.3) (2026-02-01)
 
 
