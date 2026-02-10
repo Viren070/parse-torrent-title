@@ -393,6 +393,13 @@ describe('Episode Detection Tests', () => {
     expect(result.episodes).toEqual([4]);
   });
 
+  test('detect absolute episode with a version and dash in title', () => {
+    const result = parseTorrentTitle(
+      '[MK-Pn8] Parasyte -themaxim- 23v2 [BD 1080p][Dual-Audio][2D4D1B00].mkv'
+    );
+    expect(result.episodes).toEqual([23]);
+  });
+
   test('detect absolute episode with dot separator', () => {
     const result = parseTorrentTitle(
       'Dragon.Ball.Z.013.480p.DBox.DVD.REGRADE.Dual-Audio.FLAC2.0.x264-SoM.mkv'
