@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.5](https://github.com/Viren070/parse-torrent-title/compare/v0.6.4...v0.6.5) (2026-02-10)
+
+
+### Bug Fixes
+
+* make separator before version optional ([c617117](https://github.com/Viren070/parse-torrent-title/commit/c61711709c7dd246201c1dc7682c95cc59d05296))
+
 ## [0.6.4](https://github.com/Viren070/parse-torrent-title/compare/v0.6.3...v0.6.4) (2026-02-06)
 
 
