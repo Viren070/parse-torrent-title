@@ -77,4 +77,11 @@ describe('parseTorrentTitle - site', () => {
     );
     expect(result.site).toBe('www.arabp2p.net');
   });
+
+  test('No site', () => {
+    const result = parseTorrentTitle(
+      'Breaking.Bad.S01.720p.BRRip.Hindi-English.ESUB - Cukister'
+    );
+    expect(result.site).toBeUndefined();
+  });
 });

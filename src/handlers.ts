@@ -86,11 +86,6 @@ export const handlers: Handler[] = [
   },
   {
     field: 'site',
-    pattern: /^((?:www?[\.,])?[\w-]+\.[\w-]+(?:\.[\w-]+)*?)\s+-\s*/i,
-    keepMatching: true
-  },
-  {
-    field: 'site',
     pattern: /\bwww[., ][\w-]+[., ](?:rodeo|hair)\b/i,
     remove: true,
     skipFromTitle: true
