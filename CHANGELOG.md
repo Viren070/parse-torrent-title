@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.6](https://github.com/Viren070/parse-torrent-title/compare/v0.6.5...v0.6.6) (2026-02-22)
+
+
+### Bug Fixes
+
+* remove site handler causing issues ([c805976](https://github.com/Viren070/parse-torrent-title/commit/c8059768943325fe6868a92f6cdd7ca4118ece8b)), closes [#25](https://github.com/Viren070/parse-torrent-title/issues/25)
+* shift endOfTitle if match index is 0 ([89dfdfd](https://github.com/Viren070/parse-torrent-title/commit/89dfdfdd2f2b49bbadc4cbcae759f23954a7f0fd))
+
 ## [0.6.5](https://github.com/Viren070/parse-torrent-title/compare/v0.6.4...v0.6.5) (2026-02-10)
 
 
