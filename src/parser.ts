@@ -185,7 +185,11 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       endOfTitle = m.mIndex;
     }
 
-    if (m.remove && skipFromTitle && m.mIndex < endOfTitle) {
+    if (
+      m.remove &&
+      (skipFromTitle || m.mIndex === 0) &&
+      m.mIndex < endOfTitle
+    ) {
       // adjust title index in case part of it should be removed and skipped
       endOfTitle -= m.mValue.length;
     }

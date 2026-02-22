@@ -1484,6 +1484,20 @@ describe('Parse Torrent Title', () => {
         resolution: '1080p',
         title: 'fairy tail'
       }
+    },
+    {
+      title: '[nextorrent.net] Deadpool.2016.TRUEFRENCH.BDRip.x264-EXTREME.mkv',
+      expected: {
+        codec: 'x264',
+        container: 'mkv',
+        extension: 'mkv',
+        group: 'EXTREME',
+        languages: ['fr'],
+        quality: 'BDRip',
+        title: 'Deadpool',
+        year: '2016',
+        site: 'nextorrent.net'
+      }
     }
   ];
 
