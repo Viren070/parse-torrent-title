@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.7](https://github.com/Viren070/parse-torrent-title/compare/v0.6.6...v0.6.7) (2026-02-24)
+
+
+### Bug Fixes
+
+* adjust overly permissive TrueHD handlers ([5da5034](https://github.com/Viren070/parse-torrent-title/commit/5da5034b9674679f603b37138dcb3f550b5614a6))
+
 ## [0.6.6](https://github.com/Viren070/parse-torrent-title/compare/v0.6.5...v0.6.6) (2026-02-22)
 
 
