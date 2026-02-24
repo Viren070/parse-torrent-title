@@ -1044,7 +1044,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'audio',
-    pattern: /\b(?:True[ .-]?HD|\.True\.)\b/i,
+    pattern: /\bTrue[ .-]?HD\b/i,
     transform: toValueSet('TrueHD'),
     keepMatching: true,
     remove: true,
@@ -1056,7 +1056,8 @@ export const handlers: Handler[] = [
     transform: toValueSet('TrueHD'),
     keepMatching: true,
     remove: true,
-    skipFromTitle: true
+    skipFromTitle: true,
+    skipIfBefore: ['year', 'seasons', 'episodes']
   },
 
   // More Audio handlers (lines 1253-1521 in handlers.go)

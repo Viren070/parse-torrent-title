@@ -354,4 +354,11 @@ describe('parseTorrentTitle - title', () => {
     );
     expect(result.title).toBe('The French Connection');
   });
+
+  test('The.Scream.Murder.A.TRUE.Teen.Horror.Story.S01E02.Just.Like.Scream.1080p.DSNP.WEB-DL.DDP5.1.H.264-RAWR', () => {
+    const result = parseTorrentTitle(
+      'The.Scream.Murder.A.True.Teen.Horror.Story.S01E02.Just.Like.Scream.1080p.DSNP.WEB-DL.DDP5.1.H.264-RAWR'
+    );
+    expect(result.title).toBe('The Scream Murder A True Teen Horror Story');
+  });
 });
