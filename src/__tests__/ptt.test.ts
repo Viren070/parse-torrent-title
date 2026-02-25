@@ -2326,6 +2326,20 @@ describe('Parse Torrent Title - Anime Tests', () => {
         group: 'Anime Time',
         title: 'Fairy Tail'
       }
+    },
+    {
+      title: '[ParanDark]_D.Gray-man_093_v2_(R2DVD_576p_x264_AC3).mkv',
+      expected: {
+        audio: ['AC3'],
+        codec: 'x264',
+        container: 'mkv',
+        extension: 'mkv',
+        group: 'ParanDark',
+        quality: 'DVD',
+        resolution: '576p',
+        episodes: [93],
+        title: 'D Gray-man'
+      }
     }
   ];
 

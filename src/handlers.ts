@@ -706,7 +706,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'quality',
-    pattern: /\bDVD(?:R\d?)?\b/i,
+    pattern: /\b(?:R\d?)?DVD(?:R\d?)?\b/i,
     transform: toValue('DVD'),
     remove: true
   },
@@ -1796,7 +1796,7 @@ export const handlers: Handler[] = [
 
       // Check for 2-3 digit episode at the end of title (right before resolution/quality/codec)
       if (!mStr && endIndex > 0 && endIndex < title.length) {
-        const dotEpisodeRe = /[ .](\d{2,3})(?:[ .]?v\d)?[ .]*$/i;
+        const dotEpisodeRe = /[ ._](\d{2,3})(?:[ ._]?v\d)?[ ._(\[]*$/i;
         const endSection = title.substring(0, endIndex);
         const dotMatch = endSection.match(dotEpisodeRe);
         if (dotMatch && dotMatch[1]) {
