@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.8](https://github.com/Viren070/parse-torrent-title/compare/v0.6.7...v0.6.8) (2026-02-25)
+
+
+### Bug Fixes
+
+* allow R\d at beginning nof DVD pattern ([9a50a0f](https://github.com/Viren070/parse-torrent-title/commit/9a50a0f1b7c642a26274b7325287ecfc98773d65))
+* allow underscores as episode separator and trailing bracket ([9a50a0f](https://github.com/Viren070/parse-torrent-title/commit/9a50a0f1b7c642a26274b7325287ecfc98773d65))
+
 ## [0.6.7](https://github.com/Viren070/parse-torrent-title/compare/v0.6.6...v0.6.7) (2026-02-24)
 
 
