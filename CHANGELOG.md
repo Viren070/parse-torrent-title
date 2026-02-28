@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.7.0](https://github.com/Viren070/parse-torrent-title/compare/v0.6.8...v0.7.0) (2026-02-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* replace edition with editions string array, remove remastered boolean, add regraded boolean
+
+### Features
+
+* replace edition with editions string array, remove remastered boolean, add regraded boolean ([de8d7fd](https://github.com/Viren070/parse-torrent-title/commit/de8d7fd3333b93d6b0495e3862bb17521970de03))
+
 ## [0.6.8](https://github.com/Viren070/parse-torrent-title/compare/v0.6.7...v0.6.8) (2026-02-25)
 
 
