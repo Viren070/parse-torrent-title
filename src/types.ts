@@ -15,7 +15,7 @@ export interface ParsedResult {
   documentary?: boolean;
   ppv?: boolean;
   dubbed?: boolean;
-  edition?: string;
+  editions?: string[];
   episodeCode?: string;
   episodes?: number[];
   extended?: boolean;
@@ -29,7 +29,6 @@ export interface ParsedResult {
   quality?: string;
   region?: string;
   releaseTypes?: string[];
-  remastered?: boolean;
   repack?: boolean;
   resolution?: string;
   retail?: boolean;
@@ -38,6 +37,7 @@ export interface ParsedResult {
   size?: string;
   subbed?: boolean;
   threeD?: string;
+  regraded?: boolean;
   title?: string;
   uncensored?: boolean;
   unrated?: boolean;

@@ -14,6 +14,7 @@ import {
 const VALUE_SET_FIELDS = new Set([
   'audio',
   'channels',
+  'editions',
   'hdr',
   'languages',
   'releaseTypes'
@@ -245,8 +246,10 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       case 'dubbed':
         finalResult.dubbed = v as boolean;
         break;
-      case 'edition':
-        finalResult.edition = v as string;
+      case 'editions':
+        if (v instanceof ValueSet) {
+          finalResult.editions = v.values as string[];
+        }
         break;
       case 'episodeCode':
         finalResult.episodeCode = v as string;
@@ -291,9 +294,6 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       case 'region':
         finalResult.region = v as string;
         break;
-      case 'remastered':
-        finalResult.remastered = v as boolean;
-        break;
       case 'repack':
         finalResult.repack = v as boolean;
         break;
@@ -331,6 +331,9 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
         break;
       case 'unrated':
         finalResult.unrated = v as boolean;
+        break;
+      case 'regraded':
+        finalResult.regraded = v as boolean;
         break;
       case 'upscaled':
         finalResult.upscaled = v as boolean;

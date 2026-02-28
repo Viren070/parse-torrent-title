@@ -358,103 +358,106 @@ export const handlers: Handler[] = [
 
   // Edition handlers (lines 551-606 in handlers.go)
   {
-    field: 'edition',
+    field: 'editions',
     pattern:
       /\b\d{2,3}(?:th)?[\.\s\-\+_\/(),]Anniversary[\.\s\-\+_\/(),](?:Edition|Ed)?\b/i,
-    transform: toValue('Anniversary Edition'),
-    remove: true
-  },
-  {
-    field: 'dragonBox',
-    pattern: /\bDBOX\b/i,
-    transform: toBoolean(),
-    remove: true
-  },
-  {
-    field: 'edition',
-    pattern: /\bCC\b/,
-    transform: toValue('Color Corrected'),
-    remove: true
-  },
-  {
-    field: 'edition',
-    pattern: /\bUltimate[\.\s\-\+_\/(),]Edition\b/i,
-    transform: toValue('Ultimate Edition'),
-    remove: true
-  },
-  {
-    field: 'edition',
-    pattern: /\bExtended[\.\s\-\+_\/(),]Director'?s\b/i,
-    transform: toValue("Director's Cut"),
-    remove: true
-  },
-  {
-    field: 'edition',
-    pattern: /\b(?:custom.?)?Extended\b/i,
-    transform: toValue('Extended Edition'),
-    remove: true
-  },
-  {
-    field: 'edition',
-    pattern: /\bDirector'?s.?Cut\b/i,
-    transform: toValue("Director's Cut"),
-    remove: true
-  },
-  {
-    field: 'edition',
-    pattern: /\bCollector'?s\b/i,
-    transform: toValue("Collector's Edition"),
-    remove: true
-  },
-  {
-    field: 'edition',
-    pattern: /\bTheatrical\b/i,
-    transform: toValue('Theatrical'),
-    remove: true
-  },
-  {
-    field: 'edition',
-    pattern: /\buncut(?:.gems)?\b/i,
-    validateMatch: validateNotMatch(/(?:.gems)/i),
-    transform: toValue('Uncut'),
-    remove: true
-  },
-  {
-    field: 'edition',
-    pattern: /\bIMAX\b/i,
-    transform: toValue('IMAX'),
-    remove: true,
-    skipFromTitle: true
-  },
-  {
-    field: 'edition',
-    pattern: /\b\.Diamond\.\b/i,
-    transform: toValue('Diamond Edition'),
-    remove: true
-  },
-  {
-    field: 'edition',
-    pattern: /\bRemaster(?:ed)?\b|\b[\[(]?REKONSTRUKCJA[\])]?\b/i,
-    transform: toValue('Remastered'),
+    transform: toValueSet('Anniversary Edition'),
     keepMatching: true,
     remove: true
   },
   {
-    field: 'edition',
-    process: (title: string, m, result) => {
-      if (m.value === 'Remastered') {
-        if (!result.has('remastered')) {
-          result.set('remastered', {
-            mIndex: m.mIndex,
-            mValue: m.mValue,
-            value: true,
-            remove: false,
-            processed: false
-          });
-        }
-      }
-      return m;
-    }
+    field: 'editions',
+    pattern: /\b(?:D(ragon)?[\.\s\-\+_\/(),]?Box)\b/i,
+    transform: toValueSet('Dragon Box'),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'editions',
+    pattern: /\bCC\b|\bcolou?r[.\s-]?corrected\b/i,
+    transform: toValueSet('Color Corrected'),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'editions',
+    pattern: /\bUltimate[\.\s\-\+_\/(),]Edition\b/i,
+    transform: toValueSet('Ultimate Edition'),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'editions',
+    pattern: /\bExtended[\.\s\-\+_\/(),]Director'?s\b/i,
+    transform: toValueSet("Director's Cut"),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'editions',
+    pattern: /\b(?:custom.?)?Extended\b/i,
+    transform: toValueSet('Extended Edition'),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    // criterion collection
+    field: 'editions',
+    pattern: /\bCriterion\.Collection\b/i,
+    transform: toValueSet('Criterion Collection'),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'editions',
+    pattern: /\bDirector'?s.?Cut\b/i,
+    transform: toValueSet("Director's Cut"),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'editions',
+    pattern: /\bCollector'?s\b/i,
+    transform: toValueSet("Collector's Edition"),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'editions',
+    pattern: /\bTheatrical\b/i,
+    transform: toValueSet('Theatrical'),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'editions',
+    pattern: /\buncut(?:.gems)?\b/i,
+    validateMatch: validateNotMatch(/(?:.gems)/i),
+    transform: toValueSet('Uncut'),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'editions',
+    pattern: /\bIMAX\b/i,
+    transform: toValueSet('IMAX'),
+    keepMatching: true,
+    remove: true,
+    skipFromTitle: true
+  },
+  {
+    field: 'editions',
+    pattern: /\b\.Diamond\.\b/i,
+    transform: toValueSet('Diamond Edition'),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'editions',
+    pattern: /\bRemaster(?:ed)?\b|\b[\[(]?REKONSTRUKCJA[\])]?\b/i,
+    transform: toValueSet('Remastered'),
+    keepMatching: true,
+    remove: true
   },
 
   // Release Types handlers (lines 608-623 in handlers.go)
@@ -484,14 +487,26 @@ export const handlers: Handler[] = [
 
   // Upscaled handlers (lines 625-636 in handlers.go)
   {
+    field: 'regraded',
+    pattern: /\bRegraded?\b/i,
+    transform: toBoolean(),
+    remove: true
+  },
+  {
     field: 'upscaled',
     pattern: /\b(?:AI.?)?(Upscal(ed?|ing)|Enhanced?)\b/i,
     transform: toBoolean()
   },
   {
     field: 'upscaled',
-    pattern: /\b(?:iris2|regrade|ups(?:uhd|fhd|hd|4k)?)\b/i,
+    pattern: /\b(?:iris2|ups(?:uhd|fhd|hd|4k))\b/i,
     transform: toBoolean()
+  },
+  {
+    field: 'upscaled',
+    pattern: /\bups\b/i,
+    transform: toBoolean(),
+    skipIfFirst: true
   },
   {
     field: 'upscaled',
@@ -2705,7 +2720,7 @@ export const handlers: Handler[] = [
     skipFromTitle: true
   },
 
-  // Unicode script detection for languages
+  // Unicode spt detection for languages
   {
     field: 'languages',
     pattern: /[\u3040-\u30ff]+/i,

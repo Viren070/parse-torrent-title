@@ -76,8 +76,7 @@ describe('Parse Torrent Title', () => {
       expected: {
         title: '2019 After The Fall Of New York',
         quality: 'BDRip',
-        edition: 'Remastered',
-        remastered: true,
+        editions: ['Remastered'],
         year: '1983',
         codec: 'x264',
         group: 'GHOULS'
@@ -174,7 +173,7 @@ describe('Parse Torrent Title', () => {
       title: 'You.[Uncut].S01.SweSub.1080p.x264-Justiso',
       expected: {
         codec: 'x264',
-        edition: 'Uncut',
+        editions: ['Uncut'],
         group: 'Justiso',
         languages: ['sv'],
         resolution: '1080p',
@@ -489,7 +488,7 @@ describe('Parse Torrent Title', () => {
       expected: {
         title: 'Mary Poppins',
         year: '1964',
-        edition: 'Anniversary Edition',
+        editions: ['Anniversary Edition'],
         quality: 'BluRay REMUX',
         resolution: '1080p',
         audio: ['DTS Lossless'],
@@ -505,7 +504,7 @@ describe('Parse Torrent Title', () => {
         title: 'The Lord of the Rings The Fellowship of the Ring',
         year: '2001',
         resolution: '4k',
-        edition: 'Extended Edition',
+        editions: ['Extended Edition'],
         extended: true,
         quality: 'BluRay',
         codec: 'x265',
@@ -915,7 +914,7 @@ describe('Parse Torrent Title', () => {
         channels: ['5.1'],
         codec: 'hevc',
         container: 'mkv',
-        edition: 'IMAX',
+        editions: ['IMAX'],
         extension: 'mkv',
         languages: ['en', 'hi', 'te', 'ta', 'ml'],
         quality: 'BDRip',
@@ -1498,6 +1497,21 @@ describe('Parse Torrent Title', () => {
         year: '2016',
         site: 'nextorrent.net'
       }
+    },
+    {
+      title: 'Grown.Ups.2010.1080p.BluRay.REMUX.AVC.DTS-HD.MA.5.1-HDH.mkv',
+      expected: {
+        title: 'Grown Ups',
+        year: '2010',
+        resolution: '1080p',
+        codec: 'avc',
+        audio: ['DTS Lossless'],
+        channels: ['5.1'],
+        group: 'HDH',
+        quality: 'BluRay REMUX',
+        container: 'mkv',
+        extension: 'mkv'
+      }
     }
   ];
 
@@ -1885,7 +1899,7 @@ describe('Parse Torrent Title - Edge Cases', () => {
         codec: 'x264',
         languages: ['de'],
         size: '12,85 GB',
-        edition: 'Extended Edition',
+        editions: ['Extended Edition'],
         episodes: undefined
       }
     }
