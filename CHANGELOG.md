@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/Viren070/parse-torrent-title/compare/v0.7.0...v0.7.1) (2026-03-25)
+
+
+### Bug Fixes
+
+* make trailing episode pattern more strict ([c187387](https://github.com/Viren070/parse-torrent-title/commit/c187387ca540c76129a2163d8bdd41a6f1176745))
+
 ## [0.7.0](https://github.com/Viren070/parse-torrent-title/compare/v0.6.8...v0.7.0) (2026-02-28)
 
 
