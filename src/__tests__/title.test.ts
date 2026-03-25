@@ -361,4 +361,13 @@ describe('parseTorrentTitle - title', () => {
     );
     expect(result.title).toBe('The Scream Murder A True Teen Horror Story');
   });
+
+  test('9-1-1.S01E01.Pilot.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb.mkv', () => {
+    const result = parseTorrentTitle(
+      '9-1-1.S01E01.Pilot.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb.mkv'
+    );
+    expect(result.title).toBe('9-1-1');
+    expect(result.seasons).toEqual([1]);
+    expect(result.episodes).toEqual([1]);
+  });
 });
