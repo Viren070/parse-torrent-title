@@ -223,6 +223,7 @@ describe('Language Detection Tests', () => {
     ],
     ['26_Romanian.srt', ['ro']],
     ['4_Bulgarian.srt', ['bg']],
+    ['House.S07E01.720p.HDTV.BGAUDIO.X264-DIMENSION', ['bg']],
     ['18_srp.srt', ['sr']],
     ['Aranyelet.S01.HUNGARIAN.1080p.WEBRip.DDP5.1.x264-SbR[rartv]', ['hu']],
     [
