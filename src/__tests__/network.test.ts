@@ -126,4 +126,12 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('Crunchyroll');
     expect(result.title).toBe('SPY x FAMILY');
   });
+
+  test('not nickelodeon', () => {
+    const result = parseTorrentTitle(
+      'Mike.And.Nick.And.Nick.And.Alice.2026.2160p.DSNP.WEB.DL.DDP5.1.Atmos.DV.HDR.H.265.FLUX.mkv'
+    );
+    expect(result.network).toBe('Disney');
+    expect(result.title).toBe('Mike And Nick And Nick And Alice');
+  });
 });
