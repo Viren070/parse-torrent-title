@@ -61,7 +61,7 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
         let hasOther = false;
         let hasBefore = false;
         for (const [f, fm] of result) {
-          if (f !== field) {
+          if (f !== field && fm.mValue) {
             hasOther = true;
             if (idxs[0] >= fm.mIndex) {
               hasBefore = true;
