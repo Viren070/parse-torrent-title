@@ -2515,6 +2515,14 @@ export const handlers: Handler[] = [
     keepMatching: true,
     skipFromTitle: true
   },
+  {
+    field: 'languages',
+    pattern: /\bBGAUDIO\b/i,
+    transform: toValueSet('bg'),
+    keepMatching: true,
+    remove: true,
+    skipFromTitle: true
+  },
 
   // Serbian/Croatian/Slovenian language handlers
   {
