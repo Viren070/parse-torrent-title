@@ -363,7 +363,8 @@ export const handlers: Handler[] = [
       /\b\d{2,3}(?:th)?[\.\s\-\+_\/(),]Anniversary[\.\s\-\+_\/(),](?:Edition|Ed)?\b/i,
     transform: toValueSet('Anniversary Edition'),
     keepMatching: true,
-    remove: true
+    remove: true,
+    skipIfBefore: ['year']
   },
   {
     field: 'editions',
