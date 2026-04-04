@@ -1226,6 +1226,13 @@ describe('Episode Detection Tests', () => {
     expect(result.episodes).toBeUndefined();
   });
 
+  test('no episodes with trailing 4K where resolution already parsed', () => {
+    const result = parseTorrentTitle(
+      'www.1TamilMV.cymru - Vadam (2026) Tamil TRUE WEB-DL - 4K SDR - 2160p HQ - HEVC - (DD+5.1 - 192Kbps & AAC 2.0) - 8.3GB - ESub.mkv'
+    );
+    expect(result.episodes).toBeUndefined();
+  });
+
   test('episode with unusual format', () => {
     const result = parseTorrentTitle('Vikkatakavi 01E06.mkv');
     expect(result.episodes).toEqual([6]);

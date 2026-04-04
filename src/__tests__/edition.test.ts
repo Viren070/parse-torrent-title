@@ -57,6 +57,13 @@ describe('Edition Detection Tests', () => {
     expect(result.editions).toBeUndefined();
   });
 
+  test('No edition for Hannah Montana', () => {
+    const result = parseTorrentTitle(
+      'Hannah.Montanna.20th.Anniversary.Special.2026.1080p.WEB.h264-GRACE.mkv'
+    );
+    expect(result.editions).toBeUndefined();
+  });
+
   test("Director's Cut", () => {
     const result = parseTorrentTitle(
       'Basic.Instinct.1992.Unrated.Directors.Cut.Bluray.1080p.DTS-HD-HR-6.1.x264-Grym@BTNET'
