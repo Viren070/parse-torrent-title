@@ -447,6 +447,13 @@ export const handlers: Handler[] = [
   },
   {
     field: 'editions',
+    pattern: /\bDiamond[\s.]Edition\b/i,
+    transform: toValueSet('Diamond Edition'),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'editions',
     pattern: /\b\.Diamond\.\b/i,
     transform: toValueSet('Diamond Edition'),
     keepMatching: true,
