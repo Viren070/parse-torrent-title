@@ -1795,12 +1795,18 @@ export const handlers: Handler[] = [
 
       if (match && match.index !== undefined) {
         mStr = match[0];
+        const matchEndPos = match.index + match[0].length;
+        const nextCharIsWordChar =
+          matchEndPos >= beginningTitle.length &&
+          endIndex < title.length &&
+          /\w/.test(title[endIndex]);
         if (
           match.index === 0 ||
           btReNegBefore.test(mStr) ||
           btReNegAfter.test(mStr) ||
           commonResolutionNeg.test(mStr) ||
-          commonFPSNeg.test(mStr)
+          commonFPSNeg.test(mStr) ||
+          nextCharIsWordChar
         ) {
           match = null;
           mStr = '';
