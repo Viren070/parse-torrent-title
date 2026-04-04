@@ -3023,7 +3023,8 @@ export const handlers: Handler[] = [
     field: 'network',
     pattern: /\bNICK(?:elodeon)?\b/i,
     transform: toValue('Nickelodeon'),
-    remove: true
+    remove: true,
+    skipIfFirst: true
   },
   {
     field: 'network',
