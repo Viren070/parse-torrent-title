@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.7.2](https://github.com/Viren070/parse-torrent-title/compare/v0.7.1...v0.7.2) (2026-04-04)
+
+
+### Bug Fixes
+
+* add less strict diamond edition handler ([eb7a3f8](https://github.com/Viren070/parse-torrent-title/commit/eb7a3f8b955326788a15034e7bc36be739247f72))
+* check if next char is word at end of title ([517cd56](https://github.com/Viren070/parse-torrent-title/commit/517cd565fb25b7942f9e2c8095a1f0fcc2bb6605)), closes [#31](https://github.com/Viren070/parse-torrent-title/issues/31)
+* skip anniversary edition if before year ([d163ac4](https://github.com/Viren070/parse-torrent-title/commit/d163ac4403ddc60b0859447de1e7c8c50eb264db))
+* skip nickelodeon handler if first ([e25d0c7](https://github.com/Viren070/parse-torrent-title/commit/e25d0c7535d0f3bcd177f40aa09c7eb0a09bc791))
+
 ## [0.7.1](https://github.com/Viren070/parse-torrent-title/compare/v0.7.0...v0.7.1) (2026-03-25)
 
 
