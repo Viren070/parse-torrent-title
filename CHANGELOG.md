@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.7.3](https://github.com/Viren070/parse-torrent-title/compare/v0.7.2...v0.7.3) (2026-04-04)
+
+
+### Bug Fixes
+
+* add less strict subbed handler when prefixed with official/dual ([e25f8d5](https://github.com/Viren070/parse-torrent-title/commit/e25f8d589dd229c95c367e09aa53b342d3ba8d7e))
+* parse bgaudio as bg ([18670e9](https://github.com/Viren070/parse-torrent-title/commit/18670e91bb37b0840fbe4469b3d293a78851760c)), closes [#33](https://github.com/Viren070/parse-torrent-title/issues/33)
+* skip field without value when determining skipIfFirst ([8ef36fc](https://github.com/Viren070/parse-torrent-title/commit/8ef36fcf4ef45452b781760c878afa2b16e1c9c3))
+
 ## [0.7.2](https://github.com/Viren070/parse-torrent-title/compare/v0.7.1...v0.7.2) (2026-04-04)
 
 
