@@ -2881,6 +2881,12 @@ export const handlers: Handler[] = [
   },
   {
     field: 'subbed',
+    pattern: /\b(?:Official.*?|Dual-?)sub(?:s|bed)?\b/i,
+    transform: toBoolean(),
+    remove: true
+  },
+  {
+    field: 'subbed',
     process: (title: string, m, result) => {
       const lm = result.get('languages');
       if (!lm) {
