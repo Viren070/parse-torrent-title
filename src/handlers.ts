@@ -30,6 +30,7 @@ import {
   validateNotAtStart,
   validateNotAtEnd,
   validateNotMatch,
+  validateNotStartSpaced,
   validateMatch,
   validateMatchedGroupsAreSame,
   validateLookbehind,
@@ -1441,6 +1442,7 @@ export const handlers: Handler[] = [
     field: 'seasons',
     pattern:
       /(?:(?:\bthe\W)?\bcomplete)?(?:\W|^)so?([01]?[0-5]?[1-9])(?:[\Wex]|\d{2}\b)/i,
+    validateMatch: validateNotStartSpaced(),
     transform: toIntArray(),
     keepMatching: true
   },
@@ -1509,7 +1511,10 @@ export const handlers: Handler[] = [
     field: 'seasons',
     pattern:
       /(?:(?:\bthe\W)?\bcomplete)?(?:[a-z])?\bs(\d{1,3})(?:[\Wex]|\d{2}\b|$)/i,
-    validateMatch: validateNotMatch(/(?:[a-z])\bs\d{1,3}/i),
+    validateMatch: validateAnd(
+      validateNotMatch(/(?:[a-z])\bs\d{1,3}/i),
+      validateNotStartSpaced()
+    ),
     transform: toIntArray(),
     keepMatching: true
   },

@@ -745,9 +745,9 @@ describe('parseTorrentTitle - seasons', () => {
     expect(result.seasons).toEqual(intRange(1, 15));
   });
 
-  test("Клинок, рассекающий демонов (ТВ-1) / Kimetsu no Yaiba / Demon Slayer [TV] [26 из 26] [RUS(ext), ENG, JAP+Sub] [2019, BDRip] [1080p]", () => {
+  test('Клинок, рассекающий демонов (ТВ-1) / Kimetsu no Yaiba / Demon Slayer [TV] [26 из 26] [RUS(ext), ENG, JAP+Sub] [2019, BDRip] [1080p]', () => {
     const result = parseTorrentTitle(
-      "Клинок, рассекающий демонов (ТВ-1) / Kimetsu no Yaiba / Demon Slayer [TV] [26 из 26] [RUS(ext), ENG, JAP+Sub] [2019, BDRip] [1080p]"
+      'Клинок, рассекающий демонов (ТВ-1) / Kimetsu no Yaiba / Demon Slayer [TV] [26 из 26] [RUS(ext), ENG, JAP+Sub] [2019, BDRip] [1080p]'
     );
     expect(result.seasons).toEqual([1]);
   });
@@ -848,5 +848,11 @@ describe('parseTorrentTitle - seasons', () => {
     const result = parseTorrentTitle('Show Name Season 3-5 Complete');
     expect(result.seasons).toEqual([3, 4, 5]);
     expect(result.episodes).toBeUndefined();
+  });
+  test('season prefix in title does not get parsed as season', () => {
+    const result = parseTorrentTitle(
+      'S4 The Bob Lazar Story 2026 1080p AMZN WEB-DL EAC3 2CH H 264-NGP.mkv'
+    );
+    expect(result.seasons).toBeUndefined();
   });
 });

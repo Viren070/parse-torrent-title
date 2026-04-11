@@ -68,6 +68,13 @@ export function validateNotAtEnd(): HandlerMatchValidator {
   };
 }
 
+export function validateNotStartSpaced(): HandlerMatchValidator {
+  return (input: string, match: number[]): boolean => {
+    if (match[0] !== 0) return true;
+    return !/\s$/.test(input.substring(match[0], match[1]));
+  };
+}
+
 export function validateNotMatch(re: RegExp): HandlerMatchValidator {
   return (input: string, match: number[]): boolean => {
     const rv = input.substring(match[0], match[1]);
