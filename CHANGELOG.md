@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.5](https://github.com/Viren070/parse-torrent-title/compare/v0.7.4...v0.7.5) (2026-04-14)
+
+
+### Bug Fixes
+
+* tatsuki fujimoto 17-26 ([36425b4](https://github.com/Viren070/parse-torrent-title/commit/36425b43c9c47c56078b482fc5d37d4540b8d44c))
+
 ## [0.7.4](https://github.com/Viren070/parse-torrent-title/compare/v0.7.3...v0.7.4) (2026-04-11)
 
 
