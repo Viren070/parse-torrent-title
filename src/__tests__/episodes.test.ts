@@ -1266,4 +1266,10 @@ describe('Episode Detection Tests', () => {
     expect(result.seasons).toEqual([2]);
     expect(result.episodes).toEqual(intRange(1, 12));
   });
+
+  test('tatsuki fujimoto 17-26 title should not be parsed as episode range', () => {
+    const result = parseTorrentTitle('Tatsuki Fujimoto 17-26');
+    expect(result.title).toBe('Tatsuki Fujimoto 17-26');
+    expect(result.episodes).toBeUndefined();
+  });
 });

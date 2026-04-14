@@ -1646,8 +1646,12 @@ export const handlers: Handler[] = [
     field: 'episodes',
     pattern:
       /(?:(?:seasons?|[Сс]езони?)\P{L}*)?(?:20-20)?(?:[ .(\[-]|^)(\d{1,4}(?:-\d{1,4})+)(?:[ .)(\]]|[+-]\D|$)/iu,
-    validateMatch: validateNotMatch(
-      /(?:seasons?|[Сс]езони?)\P{L}*|^(?:20-20)/iu
+    validateMatch: validateAnd(
+      validateNotMatch(/(?:seasons?|[Сс]езони?)\P{L}*|^(?:20-20)/iu),
+      validateOr(
+        validateLookbehind('Tatsuki[\\s._-]Fujimoto', 'i', false),
+        validateNotMatch(/\b17-26\b/)
+      )
     ),
     transform: toIntRange()
   },
