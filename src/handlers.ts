@@ -390,7 +390,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'editions',
-    pattern: /\bExtended[\.\s\-\+_\/(),]Director'?s\b/i,
+    pattern: /\bExtended[\.\s\-\+_\/(),]Director\W?s\b/i,
     transform: toValueSet("Director's Cut"),
     keepMatching: true,
     remove: true
@@ -412,14 +412,14 @@ export const handlers: Handler[] = [
   },
   {
     field: 'editions',
-    pattern: /\bDirector'?s.?Cut\b/i,
+    pattern: /\bDirector\W?s.?Cut\b/i,
     transform: toValueSet("Director's Cut"),
     keepMatching: true,
     remove: true
   },
   {
     field: 'editions',
-    pattern: /\bCollector'?s\b/i,
+    pattern: /\bCollector\W?s\b/i,
     transform: toValueSet("Collector's Edition"),
     keepMatching: true,
     remove: true
