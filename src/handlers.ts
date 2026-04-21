@@ -468,6 +468,14 @@ export const handlers: Handler[] = [
     keepMatching: true,
     remove: true
   },
+  {
+    field: 'editions',
+    pattern: /\bDC\b/,
+    transform: toValueSet("Director's Cut"),
+    keepMatching: true,
+    remove: true,
+    skipIfBefore: ['year']
+  },
 
   // Release Types handlers (lines 608-623 in handlers.go)
   {
