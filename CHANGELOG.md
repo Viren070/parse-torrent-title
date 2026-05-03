@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.6](https://github.com/Viren070/parse-torrent-title/compare/v0.7.5...v0.7.6) (2026-04-30)
+
+
+### Bug Fixes
+
+* update regex patterns for Director's Edition & Collector's Cut ([#37](https://github.com/Viren070/parse-torrent-title/issues/37)) ([f6afad6](https://github.com/Viren070/parse-torrent-title/commit/f6afad63de5e071c6006206650928dff548f2c1d))
+
 ## [0.7.5](https://github.com/Viren070/parse-torrent-title/compare/v0.7.4...v0.7.5) (2026-04-14)
 
 
