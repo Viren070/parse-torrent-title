@@ -1025,17 +1025,21 @@ export const handlers: Handler[] = [
   {
     field: 'channels',
     pattern: /(?:\b|AAC|DDP)\+?(2[.\s]0)(?:x[2-4])?\b/i,
+    validateMatch: validateLookahead('[.\\s](?:19|20)\\d{2}\\b', 'i', false),
+    skipIfBefore: ['year'],
     transform: toValueSet('2.0'),
     keepMatching: true,
-    remove: true,
+    skipFromTitle: true,
     matchGroup: 1
   },
   {
     field: 'channels',
     pattern: /\b2\.0\b/i,
+    validateMatch: validateLookahead('[.\\s](?:19|20)\\d{2}\\b', 'i', false),
+    skipIfBefore: ['year'],
     transform: toValueSet('2.0'),
     keepMatching: true,
-    remove: true
+    skipFromTitle: true
   },
   {
     field: 'channels',
@@ -1397,6 +1401,12 @@ export const handlers: Handler[] = [
       if (/\s{2,}/.test(capturedRange)) {
         return false;
       }
+      // Third check: in anime-style "[Group] Title Season 3 - 14" the spaced dash separates
+      // the season from a 2+ digit episode number, it is not a season range
+      // (single digit second numbers like "Season 1 - 6" remain season ranges)
+      if (/^\[[^\]]+\]/.test(input) && /^\d{1,2} - \d{2,4}$/.test(capturedRange)) {
+        return false;
+      }
       return true;
     },
     transform: toIntRange(),
@@ -1442,6 +1452,12 @@ export const handlers: Handler[] = [
   },
   {
     field: 'seasons',
+    // Spanish "Cap.205" / "Cap.1901_1909" is a season+episode composite: SSEE (s2e05, s19e01-09)
+    pattern: /\bcaa?p(?:itulo)?s?[. ]?(\d{1,2})\d{2}(?:[ _-]\d{1,4})?\b/i,
+    transform: toIntArray()
+  },
+  {
+    field: 'seasons',
     pattern: /t(\d{1,3})(?:[ex]+|$)/i,
     transform: toIntArray(),
     remove: true
@@ -1469,6 +1485,14 @@ export const handlers: Handler[] = [
   {
     field: 'seasons',
     pattern: /(?:\D|^)(\d{1,2})[Xxх]\d{1,3}(?:\D|$)/,
+    validateMatch: (input: string, idxs: number[]): boolean => {
+      // Reject matches that begin inside a decimal figure (e.g. the ".0x3" of "2.0x3")
+      return !(
+        input[idxs[0]] === '.' &&
+        idxs[0] > 0 &&
+        /\d/.test(input[idxs[0] - 1])
+      );
+    },
     transform: toIntArray()
   },
   {
@@ -1647,7 +1671,24 @@ export const handlers: Handler[] = [
     field: 'episodes',
     pattern:
       /(?:(?:seasons?|[Сс]езони?)\P{L}*)?(?:[ .(\[-]|^)(\d{1,3}(?:[ .]?[,&+~][ .]?\d{1,3})+)(?:[ .)\]-]|$)/iu,
-    validateMatch: validateNotMatch(/(?:(?:seasons?|[Сс]езони?)\P{L}*)/iu),
+    validateMatch: validateAnd(
+      validateNotMatch(/(?:(?:seasons?|[Сс]езони?)\P{L}*)/iu),
+      (input: string, idxs: number[]): boolean => {
+        // Reject captures that are fragments of decimal figures
+        const capStart = idxs[2];
+        const capEnd = idxs[3];
+        if (
+          capStart >= 2 &&
+          /\d\./.test(input.substring(capStart - 2, capStart))
+        ) {
+          return false;
+        }
+        if (/^\.\d/.test(input.substring(capEnd, capEnd + 2))) {
+          return false;
+        }
+        return true;
+      }
+    ),
     transform: toIntRange()
   },
   {
@@ -1662,6 +1703,20 @@ export const handlers: Handler[] = [
       )
     ),
     transform: toIntRange()
+  },
+  {
+    field: 'episodes',
+    // "Season 3-01" is season 3 episode 1
+    pattern: /\bseason[. ]?\d{1,2}[. ]?-[. ]?(\d{1,3})(?:\D|$)/i,
+    transform: (title, m, result) => {
+      // A multi-season match means this is a season range (e.g. "Season 1-6"), not an episode
+      const sm = result.get('seasons');
+      if (sm && Array.isArray(sm.value) && sm.value.length > 1) {
+        m.value = null;
+        return;
+      }
+      toIntArray()(title, m, result);
+    }
   },
   {
     field: 'episodes',
@@ -1685,6 +1740,49 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
+    // Spanish "Cap.205" / "Cap.1901_1909" is a season+episode composite: SSEE (s2e05, s19e01-09)
+    pattern: /\bcaa?p(?:itulo)?s?[. ]?(\d{1,2})(\d{2})(?:[ _-](\d{1,2})(\d{2}))?\b/i,
+    remove: true,
+    transform: (title, m, result) => {
+      const cm = /(\d{1,2})(\d{2})(?:[ _-](\d{1,2})(\d{2}))?\b\s*$/.exec(m.mValue);
+      if (!cm) {
+        m.value = null;
+        return;
+      }
+      const season = parseInt(cm[1], 10);
+      const epStart = parseInt(cm[2], 10);
+      const epEnd = cm[4] !== undefined ? parseInt(cm[4], 10) : NaN;
+      const sm = result.get('seasons');
+      const parsedSeason =
+        sm && Array.isArray(sm.value) && sm.value.length === 1
+          ? sm.value[0]
+          : undefined;
+      if (parsedSeason !== undefined && parsedSeason !== season) {
+        // The Cap. prefix doesn't match the explicit season, so the whole number is the
+        // episode (e.g. "Temporada 1 ... Cap.849" is episode 849)
+        const whole1 = parseInt(cm[1] + cm[2], 10);
+        const whole2 =
+          cm[3] !== undefined ? parseInt(cm[3] + cm[4], 10) : NaN;
+        if (!isNaN(whole2) && whole2 > whole1) {
+          const eps: number[] = [];
+          for (let i = whole1; i <= whole2; i++) eps.push(i);
+          m.value = eps;
+        } else {
+          m.value = [whole1];
+        }
+        return;
+      }
+      if (!isNaN(epEnd) && epEnd > epStart) {
+        const eps: number[] = [];
+        for (let i = epStart; i <= epEnd; i++) eps.push(i);
+        m.value = eps;
+      } else {
+        m.value = [epStart];
+      }
+    }
+  },
+  {
+    field: 'episodes',
     pattern:
       /(?:\b[ée]p?(?:isode)?|[Ээ]пизод|[Сс]ер(?:ии|ия|\.)?|caa?p(?:itulo)?|epis[oó]dio)[. ]?[-:#№]?[. ]?(\d{1,4})(?:[abc]|v0?[1-4]|\W|$)/i,
     transform: toIntArray()
@@ -1698,6 +1796,14 @@ export const handlers: Handler[] = [
   {
     field: 'episodes',
     pattern: /(?:\D|^)\d{1,2}[. ]?[Xxх][. ]?(\d{1,3})(?:[abc]|v0?[1-4]|\D|$)/i,
+    validateMatch: (input: string, idxs: number[]): boolean => {
+      // Reject matches that begin inside a decimal figure (e.g. the ".0x3" of "2.0x3")
+      return !(
+        input[idxs[0]] === '.' &&
+        idxs[0] > 0 &&
+        /\d/.test(input[idxs[0] - 1])
+      );
+    },
     transform: toIntArray()
   },
   {
@@ -1845,8 +1951,22 @@ export const handlers: Handler[] = [
         const dotEpisodeRe = /[ ._](\d{2,3})(?:[ ._]?v\d)?[ ._(\[]*$/i;
         const endSection = title.substring(0, endIndex);
         const dotMatch = endSection.match(dotEpisodeRe);
-        if (dotMatch && dotMatch[1]) {
-          mStr = dotMatch[1];
+        if (dotMatch && dotMatch.index !== undefined && dotMatch[1]) {
+          const capStart = dotMatch.index + dotMatch[0].indexOf(dotMatch[1]);
+          // Skip digits that belong to the season match (e.g. "Temporada 19 [HDTV]")
+          const sm = result.get('seasons');
+          const overlapsSeasons =
+            sm !== undefined &&
+            sm.mValue !== '' &&
+            capStart >= sm.mIndex &&
+            capStart < sm.mIndex + sm.mValue.length;
+          // Skip when the year sat between this number and the resolution/quality
+          const ym = result.get('year');
+          const yearInBetween =
+            ym !== undefined && ym.mIndex >= capStart && ym.mIndex <= endIndex;
+          if (!overlapsSeasons && !yearInBetween) {
+            mStr = dotMatch[1];
+          }
         }
       }
 
@@ -1873,7 +1993,11 @@ export const handlers: Handler[] = [
       if (mStr) {
         mStr = mStr.replace(/\D/g, '');
         const ep = parseInt(mStr, 10);
-        if (!isNaN(ep)) {
+        // A number equal to the parsed year is a repeated year,
+        // not an episode
+        const ym = result.get('year');
+        const isYearDuplicate = ym !== undefined && String(ym.value) === mStr;
+        if (!isNaN(ep) && !isYearDuplicate) {
           m.mIndex = title.indexOf(mStr);
           m.mValue = mStr;
           m.value = [ep];

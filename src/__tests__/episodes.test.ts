@@ -770,21 +770,24 @@ describe('Episode Detection Tests', () => {
     const result = parseTorrentTitle(
       'Juego de Tronos - Temp.2 [ALTA DEFINICION 720p][Cap.209][Spanish].mkv'
     );
-    expect(result.episodes).toEqual([209]);
+    expect(result.seasons).toEqual([2]);
+    expect(result.episodes).toEqual([9]);
   });
 
   test('spanish partial long episode identifier', () => {
     const result = parseTorrentTitle(
       'Blue Bloods - Temporada 11 [HDTV 720p][Cap.1103][AC3 5.1 Castellano][www.PCTmix.com].mkv'
     );
-    expect(result.episodes).toEqual([1103]);
+    expect(result.seasons).toEqual([11]);
+    expect(result.episodes).toEqual([3]);
   });
 
   test('spanish partial episode identifier with common typo', () => {
     const result = parseTorrentTitle(
       'Para toda la humanidad [4k 2160p][Caap.406](wolfmax4k.com).mkv'
     );
-    expect(result.episodes).toEqual([406]);
+    expect(result.seasons).toEqual([4]);
+    expect(result.episodes).toEqual([6]);
   });
 
   test('spanish partial episode identifier v2', () => {
@@ -1209,7 +1212,43 @@ describe('Episode Detection Tests', () => {
     const result = parseTorrentTitle(
       'Anatomia De Grey - Temporada 19 [HDTV][Cap.1905][Castellano][www.AtomoHD.nu].avi'
     );
-    expect(result.episodes).toEqual([1905]);
+    expect(result.seasons).toEqual([19]);
+    expect(result.episodes).toEqual([5]);
+  });
+
+  test('spanish cap format without explicit season', () => {
+    const result = parseTorrentTitle('The Pitt [HDTV 720p][Cap.205].avi');
+    expect(result.seasons).toEqual([2]);
+    expect(result.episodes).toEqual([5]);
+    expect(result.site).toBeUndefined();
+  });
+
+  test('spanish cap format with episode range', () => {
+    const result = parseTorrentTitle(
+      'Anatomia De Grey - Temporada 19 [HDTV 720p][Cap.1901_1909][AC3 5.1 Castellano][www.AtomoHD.nu]'
+    );
+    expect(result.seasons).toEqual([19]);
+    expect(result.episodes).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  });
+
+  test('no episodes for movie title number before year with trailing dot', () => {
+    const result = parseTorrentTitle('Crime.101.2026.1080p.WEB.');
+    expect(result.episodes).toBeUndefined();
+    expect(result.title).toBe('Crime 101');
+  });
+
+  test('no episodes for movie title number before year with group suffix', () => {
+    const result = parseTorrentTitle('Crime.101.2026.1080p.WEB.H264-GROUP');
+    expect(result.episodes).toBeUndefined();
+    expect(result.title).toBe('Crime 101');
+  });
+
+  test('no episodes when title number repeats the year', () => {
+    const result = parseTorrentTitle(
+      'www.1TamilMV.center - TN 2026 (2026) Tamil TRUE WEB-DL - 1080p - AVC - (DD+5.1 - 640Kbps & AAC 2.0) - 2.6GB - ESub.mkv'
+    );
+    expect(result.episodes).toBeUndefined();
+    expect(result.title).toBe('TN');
   });
 
   test('fairy tail 100 years quest', () => {

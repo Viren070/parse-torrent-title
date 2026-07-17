@@ -179,7 +179,7 @@ describe('parseTorrentTitle - title', () => {
     const result = parseTorrentTitle(
       'COMPASS2.0.ANIMATION.PROJECT.S01E02.Will.You.Be.My.Partner.1080p.CR.WEB-DL.JPN.AAC2.0.H.264.MSubs-ToonsHub.mkv'
     );
-    expect(result.title).toBe('COMPASS2 0 ANIMATION PROJECT');
+    expect(result.title).toBe('COMPASS2.0 ANIMATION PROJECT');
   });
 
   test('www.1TamilMV.world - Ayalaan (2024) Tamil PreDVD - 1080p - x264 - HQ Clean Aud - 2.5GB.mkv', () => {
@@ -360,6 +360,30 @@ describe('parseTorrentTitle - title', () => {
       'The.Scream.Murder.A.True.Teen.Horror.Story.S01E02.Just.Like.Scream.1080p.DSNP.WEB-DL.DDP5.1.H.264-RAWR'
     );
     expect(result.title).toBe('The Scream Murder A True Teen Horror Story');
+  });
+
+  test('COMPASS.2.0.ANIMATION.PROJECT with separated title 2.0', () => {
+    const result = parseTorrentTitle(
+      'COMPASS.2.0.ANIMATION.PROJECT.S01E02.Will.You.Be.My.Partner.1080p.CR.WEB-DL.JPN.AAC2.0.H.264.MSubs-ToonsHub.mkv'
+    );
+    expect(result.title).toBe('COMPASS 2.0 ANIMATION PROJECT');
+    expect(result.channels).toEqual(['2.0']);
+  });
+
+  test('COMPASS 2.0 ANIMATION PROJECT with spaces', () => {
+    const result = parseTorrentTitle(
+      'COMPASS 2.0 ANIMATION PROJECT S01E02 Will You Be My Partner 1080p CR WEB-DL JPN AAC2.0 H.264 MSubs-ToonsHub.mkv'
+    );
+    expect(result.title).toBe('COMPASS 2.0 ANIMATION PROJECT');
+    expect(result.channels).toEqual(['2.0']);
+  });
+
+  test('M3GAN.2.0.2025.4K.HDR.DV.2160p BDRemux Ita Eng x265-NAHOM.mkv', () => {
+    const result = parseTorrentTitle(
+      'M3GAN.2.0.2025.4K.HDR.DV.2160p BDRemux Ita Eng x265-NAHOM.mkv'
+    );
+    expect(result.title).toBe('M3GAN 2.0');
+    expect(result.channels).toBeUndefined();
   });
 
   test('9-1-1.S01E01.Pilot.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb.mkv', () => {

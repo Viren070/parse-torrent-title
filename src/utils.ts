@@ -87,7 +87,7 @@ export function cleanTitle(rawTitle: string): string {
   title = title.replace(remainingNotAllowedSymbolsAtStartAndEndRegex, '');
 
   if (!title.includes(' ') && title.includes('.')) {
-    title = title.replace(/\./g, ' ');
+    title = title.replace(/(?<!\d)\.|\.(?!\d)/g, ' ');
   }
 
   for (const [open, close] of brackets) {

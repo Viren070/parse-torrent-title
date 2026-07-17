@@ -381,6 +381,7 @@ describe('Parse Torrent Title', () => {
       expected: {
         title: 'Anatomia De Grey',
         seasons: [19],
+        episodes: undefined,
         container: 'avi',
         extension: 'avi',
         languages: ['es'],
@@ -677,7 +678,7 @@ describe('Parse Torrent Title', () => {
     {
       title: '4.20.Massacre.2018.1080p.BluRay.x264.AAC-[YTS.MX].mp4',
       expected: {
-        title: '4 20 Massacre',
+        title: '4.20 Massacre',
         year: '2018',
         resolution: '1080p',
         quality: 'BluRay',
