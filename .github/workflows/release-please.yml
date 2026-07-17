@@ -21,28 +21,17 @@ jobs:
           package-name: '@viren070/parse-torrent-title'
       
       # Publish to npm when a release is created
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         if: ${{ steps.release.outputs.release_created }}
       
-      - uses: pnpm/action-setup@v4
-        if: ${{ steps.release.outputs.release_created }}
-        with:
-          version: 10.15.0
+      - name: Install corepack
+        run: corepack enable
       
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         if: ${{ steps.release.outputs.release_created }}
         with:
-          node-version: '20'
-          cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
-      
-      - name: Update npm
-        if: ${{ steps.release.outputs.release_created }}
-        run: npm install -g npm@latest
-
-      - name: Update pnpm
-        if: ${{ steps.release.outputs.release_created }}
-        run: npm install -g pnpm@latest
+          node-version: 24
       
       - name: Install dependencies
         if: ${{ steps.release.outputs.release_created }}
