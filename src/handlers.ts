@@ -501,6 +501,20 @@ export const handlers: Handler[] = [
     remove: true,
     matchGroup: 1
   },
+  {
+    field: 'releaseTypes',
+    pattern: /\b(?:[Ww]ith[ .])?ASL\b/,
+    transform: toValueSet('ASL'),
+    keepMatching: true,
+    remove: true
+  },
+  {
+    field: 'releaseTypes',
+    pattern: /\b(?:with[ .])?(?:Audio[ .]Description|Descriptive[ .]Audio)\b/i,
+    transform: toValueSet('Audio Description'),
+    keepMatching: true,
+    remove: true
+  },
 
   // Upscaled handlers (lines 625-636 in handlers.go)
   {
@@ -1003,6 +1017,14 @@ export const handlers: Handler[] = [
   // Channels handlers (lines 1169-1199 in handlers.go)
   {
     field: 'channels',
+    pattern: /\bDDP?(51)\b/i,
+    transform: toValueSet('5.1'),
+    keepMatching: true,
+    remove: true,
+    matchGroup: 1
+  },
+  {
+    field: 'channels',
     pattern: /5[.\s]1(?:ch|-S\d+)?\b/i,
     transform: toValueSet('5.1'),
     keepMatching: true,
@@ -1127,7 +1149,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'audio',
-    pattern: /\b(AC-?3(?:x2)?(?:-S\d+)?)\b/i,
+    pattern: /\b(AC-?3D?(?:x2)?(?:-S\d+)?)\b/i,
     transform: toValueSet('AC3'),
     keepMatching: true,
     remove: true
@@ -1404,7 +1426,10 @@ export const handlers: Handler[] = [
       // Third check: in anime-style "[Group] Title Season 3 - 14" the spaced dash separates
       // the season from a 2+ digit episode number, it is not a season range
       // (single digit second numbers like "Season 1 - 6" remain season ranges)
-      if (/^\[[^\]]+\]/.test(input) && /^\d{1,2} - \d{2,4}$/.test(capturedRange)) {
+      if (
+        /^\[[^\]]+\]/.test(input) &&
+        /^\d{1,2} - \d{2,4}$/.test(capturedRange)
+      ) {
         return false;
       }
       return true;
@@ -1741,10 +1766,13 @@ export const handlers: Handler[] = [
   {
     field: 'episodes',
     // Spanish "Cap.205" / "Cap.1901_1909" is a season+episode composite: SSEE (s2e05, s19e01-09)
-    pattern: /\bcaa?p(?:itulo)?s?[. ]?(\d{1,2})(\d{2})(?:[ _-](\d{1,2})(\d{2}))?\b/i,
+    pattern:
+      /\bcaa?p(?:itulo)?s?[. ]?(\d{1,2})(\d{2})(?:[ _-](\d{1,2})(\d{2}))?\b/i,
     remove: true,
     transform: (title, m, result) => {
-      const cm = /(\d{1,2})(\d{2})(?:[ _-](\d{1,2})(\d{2}))?\b\s*$/.exec(m.mValue);
+      const cm = /(\d{1,2})(\d{2})(?:[ _-](\d{1,2})(\d{2}))?\b\s*$/.exec(
+        m.mValue
+      );
       if (!cm) {
         m.value = null;
         return;
@@ -1761,8 +1789,7 @@ export const handlers: Handler[] = [
         // The Cap. prefix doesn't match the explicit season, so the whole number is the
         // episode (e.g. "Temporada 1 ... Cap.849" is episode 849)
         const whole1 = parseInt(cm[1] + cm[2], 10);
-        const whole2 =
-          cm[3] !== undefined ? parseInt(cm[3] + cm[4], 10) : NaN;
+        const whole2 = cm[3] !== undefined ? parseInt(cm[3] + cm[4], 10) : NaN;
         if (!isNaN(whole2) && whole2 > whole1) {
           const eps: number[] = [];
           for (let i = whole1; i <= whole2; i++) eps.push(i);
@@ -3013,6 +3040,15 @@ export const handlers: Handler[] = [
   },
 
   // Subbed handlers
+  {
+    field: 'subbed',
+    pattern:
+      /\b(?:DAN|E|FIN|PL|SLO|SWE|HEB|NOR|GER|ITA|SPA|POR|DUT|NL|CZE|GRE|TUR|ARA|RUS|HUN|HIN|ENG|KOR|JPN|CHI|VIE|THA)SUBS?\b/i,
+    transform: toBoolean(),
+    keepMatching: true,
+    remove: true,
+    skipIfFirst: true
+  },
   {
     field: 'subbed',
     pattern: /\b(?:Official.*?|Dual-?)?sub(?:s|bed)?\b/i,

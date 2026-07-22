@@ -196,11 +196,75 @@ const episodeTitleLanguageWordRegex = new RegExp(
   'i'
 );
 
+// Release metadata a handler left behind
+const episodeTitleTrailingTagRegex = new RegExp(
+  '^(?:' + ['\\d{3,4}[pi]', '[48]k', 'u?hd', 'dl', 'synced'].join('|') + ')$',
+  'i'
+);
+// Three-letter language tags as releases spell them.
+const episodeTitleLanguageCodeRegex = new RegExp(
+  '^(?:' +
+    [
+      'ENG',
+      'ITA',
+      'GER',
+      'DEU',
+      'FRE',
+      'FRA',
+      'SPA',
+      'ESP',
+      'POR',
+      'RUS',
+      'JPN',
+      'JAP',
+      'KOR',
+      'CHI',
+      'DUT',
+      'NLD',
+      'SWE',
+      'NOR',
+      'DAN',
+      'FIN',
+      'POL',
+      'CZE',
+      'GRE',
+      'TUR',
+      'ARA',
+      'HEB',
+      'HIN',
+      'TAM',
+      'TEL',
+      'THA',
+      'VIE',
+      'HUN',
+      'UKR',
+      'BUL',
+      'HRV',
+      'SRP',
+      'SLO',
+      'RON',
+      'EST',
+      'LAV',
+      'LIT'
+    ].join('|') +
+    ')$'
+);
+
 function isStopWord(token: string): boolean {
   const word = token.replace(surroundingPunctuationRegex, '');
   return (
     episodeTitleHardStopRegex.test(word) ||
     episodeTitleLanguageWordRegex.test(word)
+  );
+}
+
+// Junk only ever trimmed from the trailing edge, where a leftover tag cannot
+// be mistaken for the start of a real title.
+function isTrailingTag(token: string): boolean {
+  const word = token.replace(surroundingPunctuationRegex, '');
+  return (
+    episodeTitleTrailingTagRegex.test(word) ||
+    episodeTitleLanguageCodeRegex.test(word)
   );
 }
 const surroundingPunctuationRegex = /^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu;
@@ -281,7 +345,8 @@ export function extractEpisodeTitle(
       extensionTokenRegex.test(last) ||
       /^(?:v\d{1,2}|rs\d{1,2})$/i.test(last) ||
       (group !== undefined && last.toLowerCase() === group.toLowerCase()) ||
-      isStopWord(last)
+      isStopWord(last) ||
+      isTrailingTag(last)
     ) {
       tokens.pop();
       continue;

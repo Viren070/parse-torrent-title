@@ -389,4 +389,71 @@ describe('Episode Title Detection Tests', () => {
     );
     expect(result.episodeTitle).toBeUndefined();
   });
+
+  // Trailing release metadata that no handler consumed
+  test('trailing three letter language tags are not part of the title', () => {
+    const result = parseTorrentTitle(
+      'Silo.S01E04.Verita.ITA.ENG.1080p.ATVP.WEB-DL.DDP5.1.H.264-MeM.GP'
+    );
+    expect(result.episodeTitle).toBe('Verita');
+    expect(result.languages).toEqual(['en', 'it']);
+  });
+
+  test('trailing language name and dual-language tag are stripped', () => {
+    const result = parseTorrentTitle(
+      'Silo.S01E04.Wahrheit.German.DL.Webrip.x264-TVARCHiV'
+    );
+    expect(result.episodeTitle).toBe('Wahrheit');
+    expect(result.languages).toEqual(['de']);
+  });
+
+  test('trailing UHD tag is not part of the title', () => {
+    const result = parseTorrentTitle(
+      'House.of.the.Dragon.S01E03.Second.of.His.Name.UHD.BluRay.2160p.TrueHD.Atmos.7.1.DV.HEVC.REMUX-FraMeSToR'
+    );
+    expect(result.episodeTitle).toBe('Second of His Name');
+  });
+
+  test('resolution left over by a glued resolution pair is stripped', () => {
+    const result = parseTorrentTitle(
+      'Silo.S01E04.Truth.2160p1080p.WEBRip.HDR10.10Bit.DDP5.1.Atmos.H265-d3g'
+    );
+    expect(result.episodeTitle).toBe('Truth');
+    expect(result.resolution).toBe('4k');
+  });
+
+  test('scene audio tags without separators are consumed as audio', () => {
+    const ac3d = parseTorrentTitle(
+      'House.of.the.Dragon.S01E03.Der.zweite.seines.Namens.German.AC3D.DL.DV.HDR.2160p.WEB.h265-JaJunge'
+    );
+    expect(ac3d.episodeTitle).toBe('Der zweite seines Namens');
+    expect(ac3d.audio).toEqual(['AC3']);
+
+    const dd51 = parseTorrentTitle(
+      'House.of.the.Dragon.S01E03.Der.Zweite.seines.Namens.German.DD51.Synced.DL.2160p.HBOMaxUHD.DV.HDR.HEVC-TVS'
+    );
+    expect(dd51.episodeTitle).toBe('Der Zweite seines Namens');
+    expect(dd51.audio).toEqual(['DD']);
+    expect(dd51.channels).toEqual(['5.1']);
+  });
+
+  test('accessibility variants are release types, not episode title text', () => {
+    const asl = parseTorrentTitle(
+      'House.of.the.Dragon.S01E03.Second.of.His.Name.with.ASL.1080p.AMZN.WEB-DL.DDP5.1.H.264-Kitsune'
+    );
+    expect(asl.episodeTitle).toBe('Second of His Name');
+    expect(asl.releaseTypes).toEqual(['ASL']);
+
+    const ad = parseTorrentTitle(
+      'Silo.S01E04.Truth.with.Audio.Description.1080p.ATVP.WEB-DL.DDP5.1.Atmos.H.264-Kitsune'
+    );
+    expect(ad.episodeTitle).toBe('Truth');
+    expect(ad.releaseTypes).toEqual(['Audio Description']);
+  });
+
+  test('no episode title from a language-prefixed sub tag', () => {
+    const result = parseTorrentTitle('One.Piece.S01E01.HebSub.XviD');
+    expect(result.episodeTitle).toBeUndefined();
+    expect(result.subbed).toBe(true);
+  });
 });
