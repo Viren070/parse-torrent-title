@@ -11,6 +11,7 @@ export interface ParsedResult {
   complete?: boolean;
   container?: string;
   convert?: boolean;
+  country?: string;
   date?: string;
   documentary?: boolean;
   ppv?: boolean;

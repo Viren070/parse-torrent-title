@@ -61,6 +61,7 @@ interface ParsedResult {
   title?: string; // Movie or series title
   year?: string; // Release year
   date?: string; // Release date
+  country?: string; // Country variant of a series/release, e.g., 'US', 'UK', 'AU', 'NZ'
 
   // Video Quality
   resolution?: string; // e.g., '1080p', '720p', '4K', '2160p'

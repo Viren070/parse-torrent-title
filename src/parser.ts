@@ -275,6 +275,9 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       case 'convert':
         finalResult.convert = v as boolean;
         break;
+      case 'country':
+        finalResult.country = v as string;
+        break;
       case 'date':
         finalResult.date = v as string;
         break;
