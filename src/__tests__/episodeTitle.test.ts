@@ -218,6 +218,36 @@ describe('Episode Title Detection Tests', () => {
     expect(result.episodeTitle).toBe('Episode Title');
   });
 
+
+  test('episode title with tight hyphen delimiters around the marker', () => {
+    const result = parseTorrentTitle(
+      'SuperNatural-S01E01-Strange.Relations.WEBDL-1080p'
+    );
+    expect(result.episodeTitle).toBe('Strange Relations');
+    expect(result.title).toBe('SuperNatural');
+  });
+
+  test('tight hyphen scheme drops a since-removed trailing tag', () => {
+    const result = parseTorrentTitle(
+      'Supernatural-S01E01-Strange Relations-1080p'
+    );
+    expect(result.episodeTitle).toBe('Strange Relations');
+  });
+
+  test('spaced hyphen delimiter still yields the episode title', () => {
+    const result = parseTorrentTitle(
+      '[animeawake] Naruto Shippuden - 124 - Art_2.mkv'
+    );
+    expect(result.episodeTitle).toBe('Art 2');
+  });
+
+  test('intra-word hyphen is kept inside the episode title', () => {
+    const result = parseTorrentTitle(
+      'Show.S01E01.Spider-Man.Returns.1080p.WEB-DL-GRP'
+    );
+    expect(result.episodeTitle).toBe('Spider-Man Returns');
+  });
+
   // Negative cases: no episode title present, or unreliable context.
 
   test('no episode title when a year precedes a marker with no title', () => {

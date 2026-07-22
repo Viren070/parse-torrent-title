@@ -274,6 +274,16 @@ function isSep(c: string | undefined): boolean {
   return c === ' ' || c === '.';
 }
 
+function isTightDash(w: string, p: number): boolean {
+  return (
+    w[p] === '-' &&
+    p > 0 &&
+    !isSep(w[p - 1]) &&
+    p + 1 < w.length &&
+    !isSep(w[p + 1])
+  );
+}
+
 /**
  * Extract the episode title from the parser's final working string.
  *
@@ -293,6 +303,9 @@ export function extractEpisodeTitle(
   // by removed marker text; 0 means the marker match bit into a word.
   let sepsBefore = 0;
   for (let i = start - 1; i >= 0 && isSep(w[i]); i--) sepsBefore++;
+  // A tight hyphen delimiter leaves the title directly
+  // behind the removed marker with no space or dot to mark the junction.
+  if (sepsBefore === 0 && start > 0 && isTightDash(w, start - 1)) sepsBefore = 1;
   let sepsAfter = 0;
   let i = start;
   while (i < w.length && isSep(w[i])) {
@@ -353,6 +366,12 @@ export function extractEpisodeTitle(
       continue;
     }
     break;
+  }
+  // A tight-dash scheme can glue the last title word to a since-removed tag
+  // ("Relations-1080p" -> "Relations-"); the hyphen is never title text.
+  if (tokens.length > 0) {
+    tokens[tokens.length - 1] = tokens[tokens.length - 1].replace(/-+$/, '');
+    if (tokens[tokens.length - 1] === '') tokens.pop();
   }
 
   if (tokens.length === 0 || tokens.length > 12) return null;
