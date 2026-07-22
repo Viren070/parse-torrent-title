@@ -560,6 +560,11 @@ export const handlers: Handler[] = [
     transform: toBoolean(),
     remove: true
   },
+  {
+    field: 'preair',
+    pattern: /\bPRE[ .-]?AIR(?:ED)?\b/i,
+    remove: true
+  },
 
   // Proper handler (lines 652-657 in handlers.go)
   {

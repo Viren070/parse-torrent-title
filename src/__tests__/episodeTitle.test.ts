@@ -451,6 +451,20 @@ describe('Episode Title Detection Tests', () => {
     expect(ad.releaseTypes).toEqual(['Audio Description']);
   });
 
+  test('preair is a release tag, not episode title text', () => {
+    const styled = parseTorrentTitle(
+      'The.Office.IL.S01E01.PREAiR.HDTV.XviD-MaxHD'
+    );
+    expect(styled.episodeTitle).toBeUndefined();
+    expect(styled.title).toBe('The Office IL');
+    expect(styled.quality).toBe('HDTV');
+
+    const hyphenated = parseTorrentTitle(
+      'Some.Show.S01E01.Real.Title.PRE-AIR.720p.WEB-DL-GRP'
+    );
+    expect(hyphenated.episodeTitle).toBe('Real Title');
+  });
+
   test('no episode title from a language-prefixed sub tag', () => {
     const result = parseTorrentTitle('One.Piece.S01E01.HebSub.XviD');
     expect(result.episodeTitle).toBeUndefined();
