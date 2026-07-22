@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/Viren070/parse-torrent-title/compare/v0.7.8...v0.8.0) (2026-07-22)
+
+
+### Features
+
+* expose country variant in `country` ([11a1aee](https://github.com/Viren070/parse-torrent-title/commit/11a1aee1fc95d20ef3eb45917efe3353669818ab))
+* parse episode title in `episodeTitle` ([3fa9dee](https://github.com/Viren070/parse-torrent-title/commit/3fa9dee1213b79d2efe3574ef9dd67c0027d15ed))
+
 ## [0.7.8](https://github.com/Viren070/parse-torrent-title/compare/v0.7.7...v0.7.8) (2026-07-17)
 
 
