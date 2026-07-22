@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/Viren070/parse-torrent-title/compare/v0.8.0...v0.8.1) (2026-07-22)
+
+
+### Bug Fixes
+
+* some fixes ([799d6f7](https://github.com/Viren070/parse-torrent-title/commit/799d6f7b8c58e9ea453498c45523ec42ade552e3))
+
 ## [0.8.0](https://github.com/Viren070/parse-torrent-title/compare/v0.7.8...v0.8.0) (2026-07-22)
 
 
