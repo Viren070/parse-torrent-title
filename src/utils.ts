@@ -291,14 +291,15 @@ export function extractEpisodeTitle(
   // Junction check: in the original filename the episode title is adjacent
   // to the marker with exactly one separator. 2+ separators is a scar left
   // by removed marker text; 0 means the marker match bit into a word.
-  let seps = 0;
-  for (let i = start - 1; i >= 0 && isSep(w[i]); i--) seps++;
+  let sepsBefore = 0;
+  for (let i = start - 1; i >= 0 && isSep(w[i]); i--) sepsBefore++;
+  let sepsAfter = 0;
   let i = start;
   while (i < w.length && isSep(w[i])) {
-    seps++;
+    sepsAfter++;
     i++;
   }
-  if (seps !== 1 || i >= w.length) return null;
+  if (Math.min(sepsBefore, 1) + sepsAfter !== 1 || i >= w.length) return null;
 
   const tokens: string[] = [];
   let terminator = '';

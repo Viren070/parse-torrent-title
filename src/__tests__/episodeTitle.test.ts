@@ -193,9 +193,45 @@ describe('Episode Title Detection Tests', () => {
     );
     expect(result.episodeTitle).toBe('English as a Second Language');
   });
+  
+  test('episode title after a year preceding the episode marker', () => {
+    const result = parseTorrentTitle(
+      'Series.Title.2012.S01E01.Episode.Title.2160p.BluRay.HEVC.DV.TrueHD.Atmos.7.1.iTA.ENG-GROUP.mkv'
+    );
+    expect(result.episodeTitle).toBe('Episode Title');
+    expect(result.title).toBe('Series Title');
+    expect(result.year).toBe('2012');
+  });
+
+  test('multi word episode title after a year preceding the marker', () => {
+    const result = parseTorrentTitle(
+      'The.Wire.2002.S01E02.The.Detail.1080p.BluRay.x264-GRP'
+    );
+    expect(result.episodeTitle).toBe('The Detail');
+    expect(result.title).toBe('The Wire');
+  });
+
+  test('year before an x style marker still yields the episode title', () => {
+    const result = parseTorrentTitle(
+      'Show.Name.2012.1x01.Episode.Title.1080p.BluRay-GRP'
+    );
+    expect(result.episodeTitle).toBe('Episode Title');
+  });
 
   // Negative cases: no episode title present, or unreliable context.
-  // Each of these produced a false positive during development.
+
+  test('no episode title when a year precedes a marker with no title', () => {
+    const result = parseTorrentTitle('Show.Name.2012.S01E01.1080p.BluRay-GRP');
+    expect(result.episodeTitle).toBeUndefined();
+  });
+
+  test('no episode title when tag debris follows a year and marker', () => {
+    const result = parseTorrentTitle(
+      'Show.Name.2012.S01E01.German.1080p.WEB-DL-GRP'
+    );
+    expect(result.episodeTitle).toBeUndefined();
+  });
+
   test('no episode title from mixed-case scene region tag', () => {
     const result = parseTorrentTitle(
       'Borgen.S04E01.NORDiC.1080p.WEB-DL.H.264.DD5.1-TWA'
