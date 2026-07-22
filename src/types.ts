@@ -17,6 +17,7 @@ export interface ParsedResult {
   dubbed?: boolean;
   editions?: string[];
   episodeCode?: string;
+  episodeTitle?: string;
   episodes?: number[];
   extended?: boolean;
   extension?: string;

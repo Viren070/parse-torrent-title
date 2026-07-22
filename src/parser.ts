@@ -5,7 +5,9 @@ import {
   whitespacesRegex,
   underscoresRegex,
   getMatchIndices,
-  trailingEpisodePattern
+  trailingEpisodePattern,
+  extractEpisodeTitle,
+  wordCharRegex
 } from './utils.js';
 
 /**
@@ -24,6 +26,8 @@ function hasValueSet(field: string): boolean {
   return VALUE_SET_FIELDS.has(field);
 }
 
+const letterRegex = /\p{L}/u;
+
 /**
  * Main parse function matching Go parse() function
  */
@@ -34,6 +38,10 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
   title = title.replace(underscoresRegex, ' ');
 
   let endOfTitle = title.length;
+  // Index just past the episode marker in the (mutating) working string;
+  // the episode title, when present, starts here.
+  let episodeTitleStart = -1;
+  let episodeMarkerSeen = false;
 
   for (const handler of handlers) {
     const field = handler.field;
@@ -175,11 +183,44 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       continue;
     }
 
-    if (handler.remove || m.remove) {
+    // Only the first episode marker can anchor an episode title, and only if
+    // it stands on its own
+    const isFirstEpisodeMarker =
+      field === 'episodes' && !episodeMarkerSeen && m.mValue !== '';
+    let markerAnchorsTitle = false;
+    if (isFirstEpisodeMarker) {
+      const leadingBracket = beforeTitleRegex.exec(title);
+      // A marker whose text begins inside a word is a mis-parse
+      // A digit before it is normal
+      const startsMidWord =
+        m.mIndex > 0 &&
+        letterRegex.test(title[m.mIndex - 1]) &&
+        wordCharRegex.test(m.mValue[0]);
+      const insideLeadingBracket =
+        leadingBracket !== null && m.mIndex < leadingBracket[0].length;
+      markerAnchorsTitle = !startsMidWord && !insideLeadingBracket;
+    }
+
+    const removed = handler.remove || m.remove;
+    if (removed) {
       m.remove = true;
+      // keep the episode-title anchor aligned with the mutating string
+      if (episodeTitleStart >= 0 && m.mIndex < episodeTitleStart) {
+        episodeTitleStart =
+          m.mIndex + m.mValue.length <= episodeTitleStart
+            ? episodeTitleStart - m.mValue.length
+            : m.mIndex;
+      }
       title =
         title.substring(0, m.mIndex) +
         title.substring(m.mIndex + m.mValue.length);
+    }
+
+    if (isFirstEpisodeMarker) {
+      episodeMarkerSeen = true;
+      if (markerAnchorsTitle) {
+        episodeTitleStart = removed ? m.mIndex : m.mIndex + m.mValue.length;
+      }
     }
 
     if (!skipFromTitle && m.mIndex !== 0 && m.mIndex < endOfTitle) {
@@ -359,6 +400,31 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
   }
 
   finalResult.title = cleanTitle(rawTitle);
+
+  // A bare-number episode marker gives no confidence
+  // that adjacent words are an episode title, so require a marker with
+  // structure: any non-digit char.
+  // A marker ending in a letter means its pattern bit into the following
+  // word, so what follows is mangled and unusable.
+  const episodesMeta = result.get('episodes');
+  if (
+    finalResult.episodes &&
+    finalResult.episodes.length > 0 &&
+    episodesMeta !== undefined &&
+    /\D/.test(episodesMeta.mValue) &&
+    !/\p{L}$/u.test(episodesMeta.mValue) &&
+    episodeTitleStart > 0 &&
+    episodeTitleStart < title.length
+  ) {
+    const episodeTitle = extractEpisodeTitle(
+      title,
+      episodeTitleStart,
+      finalResult.group
+    );
+    if (episodeTitle) {
+      finalResult.episodeTitle = episodeTitle;
+    }
+  }
 
   return finalResult as ParsedResult;
 }

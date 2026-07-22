@@ -603,6 +603,7 @@ describe('Parse Torrent Title', () => {
         'Futurama.S08E03.How.the.West.Was.1010001.1080p.HULU.WEB-DL.DDP5.1.H.264-FLUX.mkv',
       expected: {
         title: 'Futurama',
+        episodeTitle: 'How the West Was 1010001',
         seasons: [8],
         episodes: [3],
         network: 'Hulu',
@@ -855,6 +856,7 @@ describe('Parse Torrent Title', () => {
         'Fallout.S01E03.The.Head.2160p.DV.HDR10Plus.Ai-Enhanced.H265.DDP.5.1.MULTI.RIFE.4.15v2-60fps-DirtyHippie.mkv',
       expected: {
         title: 'Fallout',
+        episodeTitle: 'The Head',
         seasons: [1],
         episodes: [3],
         languages: ['multi audio'],
@@ -1265,6 +1267,7 @@ describe('Parse Torrent Title', () => {
         '1923 S02E01 The Killing Season 1080p AMZN WEB-DL DDP5 1 H 264-FLUX[TGx]',
       expected: {
         title: '1923',
+        episodeTitle: 'The Killing Season',
         seasons: [2],
         episodes: [1],
         resolution: '1080p',
@@ -1657,7 +1660,8 @@ describe('Parse Torrent Title - Edge Cases', () => {
         episodes: [1],
         network: 'Amazon',
         extension: 'mkv',
-        title: 'The Hunting Party'
+        title: 'The Hunting Party',
+        episodeTitle: 'Richard Harris'
       }
     },
     {
@@ -1807,7 +1811,8 @@ describe('Parse Torrent Title - Edge Cases', () => {
         quality: 'HDTV',
         resolution: '1080p',
         seasons: [2025],
-        title: 'Formula1'
+        title: 'Formula1',
+        episodeTitle: 'Italy Grand Prix'
       }
     },
     {
@@ -1822,7 +1827,8 @@ describe('Parse Torrent Title - Edge Cases', () => {
         seasons: [1],
         episodes: [18],
         network: 'Amazon',
-        title: 'Georgie and Mandys First Marriage'
+        title: 'Georgie and Mandys First Marriage',
+        episodeTitle: 'TV Money'
       }
     },
     {
@@ -2060,7 +2066,8 @@ describe('Parse Torrent Title - Anime Tests', () => {
         quality: 'WEB-DL',
         resolution: '1080p',
         seasons: [4],
-        title: 'One Piece'
+        title: 'One Piece',
+        episodeTitle: 'Dash For a Miracle! Alabasta Animal Land!'
       }
     },
     {

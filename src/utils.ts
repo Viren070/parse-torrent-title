@@ -107,6 +107,224 @@ export function cleanTitle(rawTitle: string): string {
   return title.trim();
 }
 
+const episodeTitleLetterRegex = new RegExp(`[a-zA-Z${NON_ENGLISH_CHARS}]`);
+const episodeTitleTokenRegex = /[^ .[\]() {}/\\|]+/y;
+const extensionTokenRegex =
+  /^(3g2|3gp|avi|flv|mkv|mk3d|mov|mp2|mp4|m4v|mpe|mpeg|mpg|mpv|webm|wmv|ogm|divx|ts|m2ts|iso|vob|sub|idx|ttxt|txt|smi|srt|ssa|ass|vtt|nfo|html)$/i;
+// Scene, subtitle and dub markers that are never part of an episode title.
+// Native-language spellings matter: release names carry them untranslated
+// ("legendado", "dublado").
+const episodeTitleHardStopRegex = new RegExp(
+  '^(?:' +
+    [
+      // release/scene markers
+      'complete[sd]?',
+      'completas?',
+      'incomplete',
+      'final',
+      'multi',
+      'dual',
+      'integrale?',
+      'nordic',
+      'true?french',
+      // subtitle/dub markers
+      'subs?',
+      'subbed',
+      'subtitles?',
+      'legendas?',
+      'legendad[oa]',
+      'subtitulad[oa]',
+      'vostfr',
+      'vosta',
+      'dubbed',
+      'dublado',
+      'doblado'
+    ].join('|') +
+    ')$',
+  'i'
+);
+// Language names (English and native spellings). Ambiguous on their own:
+// "French" after an episode marker is a language tag, but "Chinese Grand
+// Prix Sprint" is an episode title. A leading language word only condemns
+// short captures or ones whose next word is also a marker.
+const episodeTitleLanguageWordRegex = new RegExp(
+  '^(?:' +
+    [
+      'french',
+      'fran(?:c|ç)ais',
+      'german',
+      'deutsch',
+      'spanish',
+      'espa(?:n|ñ)ol',
+      'castellano',
+      'latino',
+      'italian',
+      'italiano',
+      'portuguese',
+      'portugu(?:e|ê)s',
+      'brazilian',
+      'dutch',
+      'nederlands',
+      'english',
+      'ingles',
+      'swedish',
+      'svenska?',
+      'norwegian',
+      'norska?',
+      'danish',
+      'danska?',
+      'finnish',
+      'finska?',
+      'suomi',
+      'greek',
+      'polish',
+      'polski',
+      'czech',
+      'russian',
+      'japanese',
+      'korean',
+      'chinese',
+      'hindi',
+      'tamil',
+      'telugu',
+      'arabic',
+      'hebrew',
+      'turkish',
+      'thai'
+    ].join('|') +
+    ')$',
+  'i'
+);
+
+function isStopWord(token: string): boolean {
+  const word = token.replace(surroundingPunctuationRegex, '');
+  return (
+    episodeTitleHardStopRegex.test(word) ||
+    episodeTitleLanguageWordRegex.test(word)
+  );
+}
+const surroundingPunctuationRegex = /^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu;
+export const wordCharRegex = /[\p{L}\p{N}]/u;
+
+function isSep(c: string | undefined): boolean {
+  return c === ' ' || c === '.';
+}
+
+/**
+ * Extract the episode title from the parser's final working string.
+ *
+ * `start` is the index just past the episode marker (or where the removed
+ * marker used to be). The episode title is the run of tokens connected by
+ * SINGLE separators; runs of 2+ separators ("scars" left where marker text
+ * was removed), brackets and slashes end it. A capture terminated by a
+ * closing bracket means we were inside a bracket group, i.e. not a title.
+ */
+export function extractEpisodeTitle(
+  w: string,
+  start: number,
+  group?: string
+): string | null {
+  // Junction check: in the original filename the episode title is adjacent
+  // to the marker with exactly one separator. 2+ separators is a scar left
+  // by removed marker text; 0 means the marker match bit into a word.
+  let seps = 0;
+  for (let i = start - 1; i >= 0 && isSep(w[i]); i--) seps++;
+  let i = start;
+  while (i < w.length && isSep(w[i])) {
+    seps++;
+    i++;
+  }
+  if (seps !== 1 || i >= w.length) return null;
+
+  const tokens: string[] = [];
+  let terminator = '';
+  while (i < w.length) {
+    episodeTitleTokenRegex.lastIndex = i;
+    const tm = episodeTitleTokenRegex.exec(w);
+    if (!tm || tm.index !== i) {
+      terminator = w[i];
+      break;
+    }
+    const token = tm[0];
+    // Punctuation-only tokens ("-", "--", "+", "–") are list separators:
+    // skip leading ones (marker debris), stop the capture on inner ones.
+    // "&" is a real conjunction inside titles.
+    if (token !== '&' && !wordCharRegex.test(token)) {
+      if (tokens.length > 0) break;
+    } else {
+      tokens.push(token);
+    }
+    i += token.length;
+    if (isSep(w[i])) {
+      if (isSep(w[i + 1])) break; // scar
+      i++;
+    }
+  }
+
+  if (terminator === ')' || terminator === ']' || terminator === '}') {
+    return null;
+  }
+
+  // Strip release-group / extension / version debris from the edges
+  if (tokens.length > 0) {
+    tokens[0] = tokens[0].replace(/^-+/, '');
+    if (tokens[0] === '') tokens.shift();
+  }
+  while (tokens.length > 0) {
+    let last = tokens[tokens.length - 1];
+    if (group && last.toLowerCase().endsWith('-' + group.toLowerCase())) {
+      last = last.slice(0, last.length - group.length - 1);
+      tokens[tokens.length - 1] = last;
+    }
+    if (
+      last === '' ||
+      extensionTokenRegex.test(last) ||
+      /^(?:v\d{1,2}|rs\d{1,2})$/i.test(last) ||
+      (group !== undefined && last.toLowerCase() === group.toLowerCase()) ||
+      isStopWord(last)
+    ) {
+      tokens.pop();
+      continue;
+    }
+    break;
+  }
+
+  if (tokens.length === 0 || tokens.length > 12) return null;
+
+  // Tokens carry their punctuation ("svensk,"), so compare on the bare word
+  const firstWord = tokens[0].replace(surroundingPunctuationRegex, '');
+
+  // A scene/subtitle marker word is never the start of an episode title
+  if (episodeTitleHardStopRegex.test(firstWord)) return null;
+  // A leading language name is a language tag unless it clearly opens a
+  // longer title: the next word must
+  // be a real title word, i.e. neither a marker nor shouty tag debris
+  if (
+    episodeTitleLanguageWordRegex.test(firstWord) &&
+    (tokens.length <= 2 || isStopWord(tokens[1]) || !/\p{Ll}/u.test(tokens[1]))
+  ) {
+    return null;
+  }
+  // A resolution-ish first token means leftover media info, not a title
+  if (/^(?:\d{3,4}[pi]|[48]k)$/i.test(firstWord)) return null;
+
+  // Single-word titles are held to a higher standard, since single leftover
+  // junk tokens are the most common false positive
+  if (tokens.length === 1) {
+    if (firstWord.length < 3) return null;
+    if (!/\p{Ll}/u.test(firstWord)) return null;
+  }
+
+  const episodeTitle = tokens.join(' ');
+  if (!episodeTitleLetterRegex.test(episodeTitle)) return null;
+  // "of 10" / "из 10" remnants of an "X of Y" episode-count marker
+  if (/^(?:of|из|iz) \d+$/i.test(episodeTitle)) return null;
+  // "Ep 129" style remnants of a second, unconsumed episode marker
+  if (/^ep(?:isode)?s?[ .]*\d{1,4}$/i.test(episodeTitle)) return null;
+
+  return episodeTitle;
+}
+
 /**
  * Helper to get all regex match indices (like Go FindStringSubmatchIndex)
  */

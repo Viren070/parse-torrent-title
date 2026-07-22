@@ -77,6 +77,7 @@ interface ParsedResult {
   // Episode/Season Information
   seasons?: number[]; // Season numbers, e.g., [1, 2, 3]
   episodes?: number[]; // Episode numbers, e.g., [1, 2, 3]
+  episodeTitle?: string; // Episode title following the episode marker, e.g., 'The Killing Season'
   episodeCode?: string; // e.g., '5E46AC39'
   complete?: boolean; // Complete season/series indicator
   volumes?: number[]; // Volume numbers
