@@ -134,4 +134,77 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('Disney');
     expect(result.title).toBe('Mike And Nick And Nick And Alice');
   });
+
+  test('Paramount+', () => {
+    const result = parseTorrentTitle(
+      'From.S01E07.All.Good.Things.540p.PMTP.WEB-DL.AAC2.0.H.264-lll'
+    );
+    expect(result.network).toBe('Paramount');
+    expect(result.title).toBe('From');
+  });
+
+  test('Peacock', () => {
+    const result = parseTorrentTitle(
+      'Poker.Face.S01E01.1080p.PCOK.WEB-DL.DDP5.1.H.264-NTb'
+    );
+    expect(result.network).toBe('Peacock');
+    expect(result.title).toBe('Poker Face');
+  });
+
+  test('Crave', () => {
+    const result = parseTorrentTitle(
+      'Some.Show.S01E01.1080p.CRAV.WEB-DL.DDP5.1.H.264-NTb'
+    );
+    expect(result.network).toBe('Crave');
+    expect(result.title).toBe('Some Show');
+  });
+
+  test('AMC+', () => {
+    const result = parseTorrentTitle(
+      'Late.Night.with.the.Devil.2023.1080p.BCORE.WEB-DL.DDP5.1-NTb'
+    );
+    expect(result.network).toBe('AMC+');
+    expect(result.title).toBe('Late Night with the Devil');
+  });
+
+  test('Max is HBO', () => {
+    const result = parseTorrentTitle(
+      'Hard Knocks 2001 S23E01 1080p MAX WEB-DL DDP2 0 x264-NTb[EZTVx.to].mkv'
+    );
+    expect(result.network).toBe('HBO');
+    expect(result.title).toBe('Hard Knocks');
+  });
+
+  test('Stan', () => {
+    const result = parseTorrentTitle(
+      'The.Rookie.S06E01.1080p.STAN.WEB-DL.DDP5.1.H.264-NTb'
+    );
+    expect(result.network).toBe('Stan');
+    expect(result.title).toBe('The Rookie');
+  });
+
+  
+
+  // Ambiguous tags must never eat a title word. Each of these is a real
+  // release name whose title contains the tag.
+  test('title words are not mistaken for network tags', () => {
+    for (const [title, expected] of [
+      ['Mad Max Fury Road', 'Mad Max Fury Road'],
+      [
+        'Mad.Max.Fury.Road.2015.1080p.BluRay.DDP5.1.x265.10bit-GalaxyRG265[TGx]',
+        'Mad Max Fury Road'
+      ],
+      ['Max.Payne.2008.1080p.BluRay.x264-MEDiAxSHOCK', 'Max Payne'],
+      ['Big.Stan.2007.1080p.BluRay.Remux.DTS-HD.HR.5.1', 'Big Stan'],
+      [
+        'Stan.Against.Evil.S01E01.1080p.WEB-DL.DD5.1.H.264-NTb',
+        'Stan Against Evil'
+      ],
+      ['Crave.2012.1080p.BluRay.x264-SADPANDA', 'Crave'],
+    ]) {
+      const result = parseTorrentTitle(title);
+      expect(result.network).toBeUndefined();
+      expect(result.title).toBe(expected);
+    }
+  });
 });

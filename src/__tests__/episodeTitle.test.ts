@@ -456,4 +456,13 @@ describe('Episode Title Detection Tests', () => {
     expect(result.episodeTitle).toBeUndefined();
     expect(result.subbed).toBe(true);
   });
+
+  test('uncommon resolution does not splice the following tag onto the title', () => {
+    const result = parseTorrentTitle(
+      'From.S01E07.All.Good.Things.540p.PMTP.WEB-DL.AAC2.0.H.264-lll'
+    );
+    expect(result.episodeTitle).toBe('All Good Things');
+    expect(result.resolution).toBe('540p');
+    expect(result.network).toBe('Paramount');
+  });
 });

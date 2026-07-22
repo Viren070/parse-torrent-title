@@ -183,7 +183,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'resolution',
-    pattern: /(?:^|\D)(\d{3,4})[pi]/i,
+    pattern: /(?<!\d)(\d{3,4})[pi]/i,
     transform: toWithSuffix('p'),
     remove: true
   },
@@ -3234,6 +3234,44 @@ export const handlers: Handler[] = [
     pattern: /\bSHOWTIME\b/i,
     transform: toValue('Showtime'),
     remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\bPMTP\b/i,
+    transform: toValue('Paramount'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\bPCOK\b/i,
+    transform: toValue('Peacock'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\bCRAV\b/i,
+    transform: toValue('Crave'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\bBCORE\b/i,
+    transform: toValue('AMC+'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /(?<=[ ._-]{2})MAX\b/i,
+    transform: toValue('HBO'),
+    remove: true,
+    skipIfFirst: true
+  },
+  {
+    field: 'network',
+    pattern: /(?<=[ ._-]{2})STAN\b/i,
+    transform: toValue('Stan'),
+    remove: true,
+    skipIfFirst: true
   },
   {
     field: 'network',
