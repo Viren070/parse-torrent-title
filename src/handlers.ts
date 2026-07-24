@@ -2188,7 +2188,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'languages',
-    pattern: /(chinese|chin[eê]s)\b/i,
+    pattern: /\b(chinese|chin[eê]s)\b/i,
     transform: toValueSet('zh'),
     keepMatching: true,
     skipIfFirst: true
