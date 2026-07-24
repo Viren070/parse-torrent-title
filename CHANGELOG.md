@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.5](https://github.com/Viren070/parse-torrent-title/compare/v0.8.4...v0.8.5) (2026-07-24)
+
+
+### Bug Fixes
+
+* add missing leading word boundary on zh handler ([1f07899](https://github.com/Viren070/parse-torrent-title/commit/1f07899434f6cccf4fbf440934f0c7262de9c5aa))
+
 ## [0.8.4](https://github.com/Viren070/parse-torrent-title/compare/v0.8.3...v0.8.4) (2026-07-22)
 
 
