@@ -6,6 +6,7 @@
  */
 import { handlers } from '../handlers';
 import { Parser } from '../index';
+import { parse } from '../parser';
 import {
   GramSet,
   buildPrefilter,
@@ -94,6 +95,22 @@ describe('prefilter cache', () => {
     expect(
       parser.parse<{ customTag: string }>('Movie.ZZTOP.2024').customTag
     ).toBe('yes');
+  });
+});
+
+describe('prefilter equivalence', () => {
+  test('parses every corpus title identically with the prefilter off', () => {
+    const differences: string[] = [];
+    for (const title of corpus) {
+      const gated = JSON.stringify(parse(title, handlers));
+      const ungated = JSON.stringify(parse(title, handlers, false));
+      if (gated !== ungated) {
+        differences.push(
+          `${title}\n  gated:   ${gated}\n  ungated: ${ungated}`
+        );
+      }
+    }
+    expect(differences).toEqual([]);
   });
 });
 

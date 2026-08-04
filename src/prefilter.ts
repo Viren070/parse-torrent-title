@@ -857,6 +857,27 @@ export function gateAllows(
   return true;
 }
 
+const openCache = new Map<number, Prefilter>();
+
+/** A gate table that rejects nothing, so every pattern runs. */
+export function openPrefilter(size: number): Prefilter {
+  let built = openCache.get(size);
+  if (built === undefined) {
+    const empty = new Int32Array(size).fill(-1);
+    built = {
+      gram0: empty,
+      gram1: empty,
+      gram2: empty,
+      gateOff: empty,
+      gates: new Int32Array(0),
+      unicodeSensitive: new Uint8Array(size),
+      gatedCount: 0
+    };
+    openCache.set(size, built);
+  }
+  return built;
+}
+
 const cache = new WeakMap<Handler[], Prefilter>();
 
 /**

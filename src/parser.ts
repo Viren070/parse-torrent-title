@@ -9,7 +9,12 @@ import {
   extractEpisodeTitle,
   wordCharRegex
 } from './utils.js';
-import { GramSet, gateAllows, prefilterFor } from './prefilter.js';
+import {
+  GramSet,
+  gateAllows,
+  openPrefilter,
+  prefilterFor
+} from './prefilter.js';
 
 /** Shared scratch: parse() is synchronous and never re-entered by a handler. */
 const grams = new GramSet();
@@ -40,7 +45,11 @@ const letterRegex = /\p{L}/u;
 /**
  * Main parse function matching Go parse() function
  */
-export function parse(title: string, handlers: Handler[]): ParsedResult {
+export function parse(
+  title: string,
+  handlers: Handler[],
+  usePrefilter = true
+): ParsedResult {
   const result = new Map<string, ParseMeta>();
 
   // The replace rewrites the whole string even when every run is already a
@@ -58,7 +67,9 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
   let episodeTitleStart = -1;
   let episodeMarkerSeen = false;
 
-  const prefilter = prefilterFor(handlers);
+  const prefilter = usePrefilter
+    ? prefilterFor(handlers)
+    : openPrefilter(handlers.length);
   const { gram0, gram1, gram2, gateOff, gates, unicodeSensitive } = prefilter;
   grams.reset(title);
   const bits = grams.bits;
