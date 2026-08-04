@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.6](https://github.com/Viren070/parse-torrent-title/compare/v0.8.5...v0.8.6) (2026-08-04)
+
+
+### Performance Improvements
+
+* skip regexes that cannot match using a literal prefilter ([786b096](https://github.com/Viren070/parse-torrent-title/commit/786b096d7afa23eb56d8da0c89485ac52ce07a2c))
+
 ## [0.8.5](https://github.com/Viren070/parse-torrent-title/compare/v0.8.4...v0.8.5) (2026-07-24)
 
 
