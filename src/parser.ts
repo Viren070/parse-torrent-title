@@ -4,11 +4,20 @@ import {
   beforeTitleRegex,
   whitespacesRegex,
   underscoresRegex,
-  getMatchIndices,
+  matchIndices,
   trailingEpisodePattern,
   extractEpisodeTitle,
   wordCharRegex
 } from './utils.js';
+import { GramSet, gateAllows, prefilterFor } from './prefilter.js';
+
+/** Shared scratch: parse() is synchronous and never re-entered by a handler. */
+const grams = new GramSet();
+
+/** Whitespace that `\s+` -> " " would actually change: a run, or a non-space. */
+const needsWhitespaceCollapse = /\s\s|[^\S ]/;
+
+const OPEN_SQUARE_BRACKET = 91;
 
 /**
  * Fields that use value sets
@@ -34,8 +43,14 @@ const letterRegex = /\p{L}/u;
 export function parse(title: string, handlers: Handler[]): ParsedResult {
   const result = new Map<string, ParseMeta>();
 
-  title = title.replace(whitespacesRegex, ' ');
-  title = title.replace(underscoresRegex, ' ');
+  // The replace rewrites the whole string even when every run is already a
+  // single space, which is the usual case.
+  if (needsWhitespaceCollapse.test(title)) {
+    title = title.replace(whitespacesRegex, ' ');
+  }
+  if (title.indexOf('_') !== -1) {
+    title = title.replace(underscoresRegex, ' ');
+  }
 
   let endOfTitle = title.length;
   // Index just past the episode marker in the (mutating) working string;
@@ -43,7 +58,34 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
   let episodeTitleStart = -1;
   let episodeMarkerSeen = false;
 
-  for (const handler of handlers) {
+  const prefilter = prefilterFor(handlers);
+  const { gram0, gram1, gram2, gateOff, gates, unicodeSensitive } = prefilter;
+  grams.reset(title);
+  const bits = grams.bits;
+  const nonAscii = grams.nonAscii;
+
+  for (let hi = 0; hi < handlers.length; hi++) {
+    // A handler whose pattern fails to match continues without reading or
+    // writing `result`, so proving that here is equivalent and much cheaper.
+    // Handlers with no pattern are never gated.
+    if (!(nonAscii && unicodeSensitive[hi] === 1)) {
+      let gram = gram0[hi];
+      if (gram >= 0) {
+        if ((bits[gram >>> 5] & (1 << (gram & 31))) === 0) continue;
+        gram = gram1[hi];
+        if (gram >= 0) {
+          if ((bits[gram >>> 5] & (1 << (gram & 31))) === 0) continue;
+          gram = gram2[hi];
+          if (gram >= 0 && (bits[gram >>> 5] & (1 << (gram & 31))) === 0) {
+            continue;
+          }
+        }
+      }
+      const off = gateOff[hi];
+      if (off >= 0 && !gateAllows(gates, off, bits)) continue;
+    }
+
+    const handler = handlers[hi];
     const field = handler.field;
     let skipFromTitle = handler.skipFromTitle ?? false;
 
@@ -55,13 +97,20 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
         continue;
       }
 
-      const idxs = getMatchIndices(handler.pattern, title);
-      if (idxs.length === 0) {
+      const match = handler.pattern.exec(title);
+      if (match === null) {
         continue;
       }
 
-      if (handler.validateMatch && !handler.validateMatch(title, idxs)) {
-        continue;
+      // Locating the capture groups costs a scan each, and only validators and
+      // matchGroup read them.
+      const matchStart = match.index;
+      let idxs: number[] | null = null;
+      if (handler.validateMatch) {
+        idxs = matchIndices(match, title);
+        if (!handler.validateMatch(title, idxs)) {
+          continue;
+        }
       }
 
       let shouldSkip = false;
@@ -71,7 +120,7 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
         for (const [f, fm] of result) {
           if (f !== field && fm.mValue) {
             hasOther = true;
-            if (idxs[0] >= fm.mIndex) {
+            if (matchStart >= fm.mIndex) {
               hasBefore = true;
               break;
             }
@@ -87,7 +136,7 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       if (handler.skipIfBefore && handler.skipIfBefore.length > 0) {
         for (const skipField of handler.skipIfBefore) {
           const fm = result.get(skipField);
-          if (fm && idxs[0] < fm.mIndex) {
+          if (fm && matchStart < fm.mIndex) {
             shouldSkip = true;
             break;
           }
@@ -97,24 +146,24 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
         }
       }
 
-      const rawMatchedPart = title.substring(idxs[0], idxs[1]);
+      const rawMatchedPart = match[0];
       let matchedPart = rawMatchedPart;
 
-      if (idxs.length > 2) {
+      if (match.length > 1) {
         // Default to capture group 1 if valueGroup is not specified
         if (handler.valueGroup === undefined || handler.valueGroup === 0) {
-          matchedPart = title.substring(idxs[2], idxs[3]);
-        } else if (idxs.length > handler.valueGroup * 2) {
-          matchedPart = title.substring(
-            idxs[handler.valueGroup * 2],
-            idxs[handler.valueGroup * 2 + 1]
-          );
+          matchedPart = match[1] ?? '';
+        } else if (match.length > handler.valueGroup) {
+          matchedPart = match[handler.valueGroup] ?? '';
         }
       }
 
-      const beforeTitleMatch = beforeTitleRegex.exec(title);
-      if (beforeTitleMatch && beforeTitleMatch[0].includes(rawMatchedPart)) {
-        skipFromTitle = true;
+      // beforeTitleRegex is anchored on an opening bracket.
+      if (title.charCodeAt(0) === OPEN_SQUARE_BRACKET) {
+        const beforeTitleMatch = beforeTitleRegex.exec(title);
+        if (beforeTitleMatch && beforeTitleMatch[0].includes(rawMatchedPart)) {
+          skipFromTitle = true;
+        }
       }
 
       if (!mFound) {
@@ -129,18 +178,16 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       }
 
       if (m) {
-        m.mIndex = idxs[0];
+        m.mIndex = matchStart;
         m.mValue = rawMatchedPart;
         if (!hasValueSet(field)) {
           m.value = matchedPart;
         }
 
         if (handler.matchGroup) {
+          if (idxs === null) idxs = matchIndices(match, title);
           m.mIndex = idxs[handler.matchGroup * 2];
-          m.mValue = title.substring(
-            idxs[handler.matchGroup * 2],
-            idxs[handler.matchGroup * 2 + 1]
-          );
+          m.mValue = match[handler.matchGroup] ?? '';
         }
       }
     }
@@ -189,7 +236,10 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       field === 'episodes' && !episodeMarkerSeen && m.mValue !== '';
     let markerAnchorsTitle = false;
     if (isFirstEpisodeMarker) {
-      const leadingBracket = beforeTitleRegex.exec(title);
+      const leadingBracket =
+        title.charCodeAt(0) === OPEN_SQUARE_BRACKET
+          ? beforeTitleRegex.exec(title)
+          : null;
       // A marker whose text begins inside a word is a mis-parse
       // A digit before it is normal
       const startsMidWord =
@@ -214,6 +264,7 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
       title =
         title.substring(0, m.mIndex) +
         title.substring(m.mIndex + m.mValue.length);
+      grams.spliced(title, m.mIndex);
     }
 
     if (isFirstEpisodeMarker) {
@@ -246,152 +297,19 @@ export function parse(title: string, handlers: Handler[]): ParsedResult {
   for (const [field, fieldMeta] of result) {
     const v = fieldMeta.value;
 
-    switch (field) {
-      case 'audio':
-        if (v instanceof ValueSet) {
-          finalResult.audio = v.values as string[];
-        }
-        break;
-      case 'bitDepth':
-        finalResult.bitDepth = v as string;
-        break;
-      case 'channels':
-        if (v instanceof ValueSet) {
-          finalResult.channels = v.values as string[];
-        }
-        break;
-      case 'codec':
-        finalResult.codec = v as string;
-        break;
-      case 'commentary':
-        finalResult.commentary = v as boolean;
-        break;
-      case 'complete':
-        finalResult.complete = v as boolean;
-        break;
-      case 'container':
-        finalResult.container = v as string;
-        break;
-      case 'convert':
-        finalResult.convert = v as boolean;
-        break;
-      case 'country':
-        finalResult.country = v as string;
-        break;
-      case 'date':
-        finalResult.date = v as string;
-        break;
-      case 'documentary':
-        finalResult.documentary = v as boolean;
-        break;
-      case 'ppv':
-        finalResult.ppv = v as boolean;
-        break;
-      case 'dubbed':
-        finalResult.dubbed = v as boolean;
-        break;
-      case 'editions':
-        if (v instanceof ValueSet) {
-          finalResult.editions = v.values as string[];
-        }
-        break;
-      case 'episodeCode':
-        finalResult.episodeCode = v as string;
-        break;
-      case 'episodes':
-        finalResult.episodes = v as number[];
-        break;
-      case 'extended':
-        finalResult.extended = v as boolean;
-        break;
-      case 'extension':
-        finalResult.extension = v as string;
-        break;
-      case 'group':
-        finalResult.group = v as string;
-        break;
-      case 'hardcoded':
-        finalResult.hardcoded = v as boolean;
-        break;
-      case 'hdr':
-        if (v instanceof ValueSet) {
-          finalResult.hdr = v.values as string[];
-        }
-        break;
-      case 'languages':
-        if (v instanceof ValueSet) {
-          const languages = v.values as string[];
-          // If Latin American Spanish (es-419) is present, remove generic Spanish (es)
-          if (languages.includes('es-419') && languages.includes('es')) {
-            finalResult.languages = languages.filter((lang) => lang !== 'es');
-          } else {
-            finalResult.languages = languages;
-          }
-        }
-        break;
-      case 'network':
-        finalResult.network = v as string;
-        break;
-      case 'proper':
-        finalResult.proper = v as boolean;
-        break;
-      case 'region':
-        finalResult.region = v as string;
-        break;
-      case 'repack':
-        finalResult.repack = v as boolean;
-        break;
-      case 'resolution':
-        finalResult.resolution = v as string;
-        break;
-      case 'retail':
-        finalResult.retail = v as boolean;
-        break;
-      case 'seasons':
-        finalResult.seasons = v as number[];
-        break;
-      case 'size':
-        finalResult.size = v as string;
-        break;
-      case 'site':
-        finalResult.site = v as string;
-        break;
-      case 'quality':
-        finalResult.quality = v as string;
-        break;
-      case 'releaseTypes':
-        if (v instanceof ValueSet) {
-          finalResult.releaseTypes = v.values as string[];
-        }
-        break;
-      case 'subbed':
-        finalResult.subbed = v as boolean;
-        break;
-      case 'threeD':
-        finalResult.threeD = v as string;
-        break;
-      case 'uncensored':
-        finalResult.uncensored = v as boolean;
-        break;
-      case 'unrated':
-        finalResult.unrated = v as boolean;
-        break;
-      case 'regraded':
-        finalResult.regraded = v as boolean;
-        break;
-      case 'upscaled':
-        finalResult.upscaled = v as boolean;
-        break;
-      case 'volumes':
-        finalResult.volumes = v as number[];
-        break;
-      case 'year':
-        finalResult.year = v as string;
-        break;
-      default:
-        // Handle custom fields not in the predefined list
-        (finalResult as any)[field] = v;
-        break;
+    // Every field is copied under its own name; value sets publish their array.
+    if (v instanceof ValueSet) {
+      const values = v.values as string[];
+      if (field === 'languages' && values.includes('es-419')) {
+        // Latin American Spanish supersedes the generic tag.
+        (finalResult as Record<string, unknown>)[field] = values.filter(
+          (lang) => lang !== 'es'
+        );
+      } else {
+        (finalResult as Record<string, unknown>)[field] = values;
+      }
+    } else {
+      (finalResult as Record<string, unknown>)[field] = v;
     }
   }
 

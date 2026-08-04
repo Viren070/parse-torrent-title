@@ -49,37 +49,77 @@ export const squareBrackets = ['[', ']'];
 export const parentheses = ['(', ')'];
 export const brackets = [curlyBrackets, squareBrackets, parentheses];
 
+const underscoreRegex = /_/g;
+const dotsToSpacesRegex = /(?<!\d)\.|\.(?!\d)/g;
+const bracketStrippers: RegExp[][] = [
+  [/\{/g, /\}/g],
+  [/\[/g, /\]/g],
+  [/\(/g, /\)/g]
+];
+const groupMarkingStartChars = '[【★';
+const groupMarkingEndChars = ']】★';
+
+function hasNonAscii(text: string): boolean {
+  for (let i = 0; i < text.length; i++) {
+    if (text.charCodeAt(i) >= 128) return true;
+  }
+  return false;
+}
+
+function countChar(text: string, char: string): number {
+  let count = 0;
+  for (let i = text.indexOf(char); i !== -1; i = text.indexOf(char, i + 1)) {
+    count++;
+  }
+  return count;
+}
+
 /**
  * Clean title matching Go clean_title function
  */
 export function cleanTitle(rawTitle: string): string {
   let title = rawTitle.trim();
 
-  title = title.replace(/_/g, ' ');
-  title = title.replace(movieIndicatorRegex, ''); // clear movie indication flag
+  // Every step below only deletes text, so an absence found now still holds
+  // for the later passes that key off non-ASCII characters.
+  const nonAscii = hasNonAscii(title);
+
+  if (title.indexOf('_') !== -1) title = title.replace(underscoreRegex, ' ');
+  if (title.indexOf('[') !== -1 || title.indexOf('(') !== -1) {
+    title = title.replace(movieIndicatorRegex, ''); // clear movie indication flag
+  }
   title = title.replace(notAllowedSymbolsAtStartAndEndRegex, '');
 
   // clear russian cast information
-  const russianMatches = title.match(russianCastRegex);
-  if (russianMatches) {
-    for (let i = 1; i < russianMatches.length; i++) {
-      if (russianMatches[i]) {
-        title = title.replace(russianMatches[i], '');
+  if (nonAscii || title.indexOf('/') !== -1) {
+    const russianMatches = title.match(russianCastRegex);
+    if (russianMatches) {
+      for (let i = 1; i < russianMatches.length; i++) {
+        if (russianMatches[i]) {
+          title = title.replace(russianMatches[i], '');
+        }
       }
     }
   }
 
-  title = title.replace(releaseGroupMarkingAtStartRegex, '$1'); // remove release group markings sections from the start
-  title = title.replace(releaseGroupMarkingAtEndRegex, '$1'); // remove unneeded markings section at the end if present
-  title = title.replace(altTitlesRegex, ''); // remove alt language titles
+  if (groupMarkingStartChars.indexOf(title[0]) !== -1) {
+    title = title.replace(releaseGroupMarkingAtStartRegex, '$1'); // remove release group markings sections from the start
+  }
+  if (groupMarkingEndChars.indexOf(title[title.length - 1]) !== -1) {
+    title = title.replace(releaseGroupMarkingAtEndRegex, '$1'); // remove unneeded markings section at the end if present
+  }
 
-  // remove non english chars if they are not the only ones left
-  const notOnlyNonEnglishMatch = title.match(notOnlyNonEnglishRegex);
-  if (notOnlyNonEnglishMatch) {
-    for (let i = 1; i < notOnlyNonEnglishMatch.length; i++) {
-      if (notOnlyNonEnglishMatch[i]) {
-        title = title.replace(notOnlyNonEnglishMatch[i], '');
-        break;
+  if (nonAscii) {
+    title = title.replace(altTitlesRegex, ''); // remove alt language titles
+
+    // remove non english chars if they are not the only ones left
+    const notOnlyNonEnglishMatch = title.match(notOnlyNonEnglishRegex);
+    if (notOnlyNonEnglishMatch) {
+      for (let i = 1; i < notOnlyNonEnglishMatch.length; i++) {
+        if (notOnlyNonEnglishMatch[i]) {
+          title = title.replace(notOnlyNonEnglishMatch[i], '');
+          break;
+        }
       }
     }
   }
@@ -87,17 +127,15 @@ export function cleanTitle(rawTitle: string): string {
   title = title.replace(remainingNotAllowedSymbolsAtStartAndEndRegex, '');
 
   if (!title.includes(' ') && title.includes('.')) {
-    title = title.replace(/(?<!\d)\.|\.(?!\d)/g, ' ');
+    title = title.replace(dotsToSpacesRegex, ' ');
   }
 
-  for (const [open, close] of brackets) {
-    const openCount = (title.match(new RegExp('\\' + open, 'g')) || []).length;
-    const closeCount = (title.match(new RegExp('\\' + close, 'g')) || [])
-      .length;
-    if (openCount !== closeCount) {
+  for (let b = 0; b < bracketStrippers.length; b++) {
+    const [open, close] = brackets[b];
+    if (countChar(title, open) !== countChar(title, close)) {
       title = title
-        .replace(new RegExp('\\' + open, 'g'), '')
-        .replace(new RegExp('\\' + close, 'g'), '');
+        .replace(bracketStrippers[b][0], '')
+        .replace(bracketStrippers[b][1], '');
     }
   }
 
@@ -305,7 +343,8 @@ export function extractEpisodeTitle(
   for (let i = start - 1; i >= 0 && isSep(w[i]); i--) sepsBefore++;
   // A tight hyphen delimiter leaves the title directly
   // behind the removed marker with no space or dot to mark the junction.
-  if (sepsBefore === 0 && start > 0 && isTightDash(w, start - 1)) sepsBefore = 1;
+  if (sepsBefore === 0 && start > 0 && isTightDash(w, start - 1))
+    sepsBefore = 1;
   let sepsAfter = 0;
   let i = start;
   while (i < w.length && isSep(w[i])) {
@@ -411,23 +450,34 @@ export function extractEpisodeTitle(
 }
 
 /**
+ * Start/end offset pairs for a match and each of its groups, in the layout Go's
+ * FindStringSubmatchIndex produces. Absent groups get -1, -1.
+ */
+export function matchIndices(match: RegExpExecArray, str: string): number[] {
+  const indices = new Array<number>(match.length * 2);
+  indices[0] = match.index;
+  indices[1] = match.index + match[0].length;
+
+  for (let i = 1; i < match.length; i++) {
+    const group = match[i];
+    if (group !== undefined) {
+      const captureIndex = str.indexOf(group, match.index);
+      indices[i * 2] = captureIndex;
+      indices[i * 2 + 1] = captureIndex + group.length;
+    } else {
+      indices[i * 2] = -1;
+      indices[i * 2 + 1] = -1;
+    }
+  }
+
+  return indices;
+}
+
+/**
  * Helper to get all regex match indices (like Go FindStringSubmatchIndex)
  */
 export function getMatchIndices(regex: RegExp, str: string): number[] {
   const match = regex.exec(str);
   if (!match) return [];
-
-  const indices: number[] = [];
-  indices.push(match.index, match.index + match[0].length);
-
-  for (let i = 1; i < match.length; i++) {
-    if (match[i] !== undefined) {
-      const captureIndex = str.indexOf(match[i], match.index);
-      indices.push(captureIndex, captureIndex + match[i].length);
-    } else {
-      indices.push(-1, -1);
-    }
-  }
-
-  return indices;
+  return matchIndices(match, str);
 }
