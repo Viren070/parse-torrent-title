@@ -26,7 +26,10 @@ pnpm-debug.log*
 # Testing
 coverage/
 
+# Benchmark clones, generated corpora and one-off profiling scripts
+bench/.work/
+bench/dev/
+
 # Temporary files
 *.tmp
 .temp/
-
