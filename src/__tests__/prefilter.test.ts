@@ -7,6 +7,7 @@
 import { handlers } from '../handlers';
 import { Parser } from '../index';
 import { parse } from '../parser';
+import { samplesMatching } from './helpers/regexSample';
 import {
   GramSet,
   buildPrefilter,
@@ -133,6 +134,27 @@ describe('prefilter soundness', () => {
       }
     }
     expect(violations).toEqual([]);
+  });
+
+  test('never rejects a pattern on a string built from that pattern', () => {
+    // The corpus only exercises a handler if some title happens to match it,
+    // which leaves the rarer patterns untested. Generating inputs from each
+    // pattern gives every one of them coverage.
+    const violations: string[] = [];
+    const unsampled: string[] = [];
+
+    for (const { handler, index } of patternHandlers) {
+      const samples = samplesMatching(handler.pattern!);
+      if (samples.length === 0) unsampled.push(String(handler.pattern));
+      for (const sample of samples) {
+        if (gateRejects(index, sample)) {
+          violations.push(`${handler.pattern} rejected for "${sample}"`);
+        }
+      }
+    }
+
+    expect(violations).toEqual([]);
+    expect(unsampled.length).toBeLessThanOrEqual(5);
   });
 
   test('never rejects a pattern that matches a synthetic string', () => {
