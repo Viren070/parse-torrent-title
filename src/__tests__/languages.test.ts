@@ -226,6 +226,12 @@ describe('Language Detection Tests', () => {
     ['House.S07E01.720p.HDTV.BGAUDIO.X264-DIMENSION', ['bg']],
     ['18_srp.srt', ['sr']],
     ['Aranyelet.S01.HUNGARIAN.1080p.WEBRip.DDP5.1.x264-SbR[rartv]', ['hu']],
+    ['Some.Movie.2020.EN.HU.DE.FR.1080p.WEB-DL.mkv', ['en', 'fr', 'de', 'hu']],
+    [
+      'Mommie Dearest [1981 PAL DVD][En.Hu.Fr.It.Es Multisubs[18]',
+      ['multi subs', 'en', 'fr', 'es', 'it', 'hu']
+    ],
+    ['12_hu.srt', ['hu']],
     [
       'Ponyo[2008]DvDrip-H264 Quad Audio[Eng Jap Fre Spa]AC3 5.1[DXO]',
       ['en', 'ja', 'fr', 'es']
@@ -549,6 +555,21 @@ describe('Language Detection Tests', () => {
       } else {
         expect(result.languages).toEqual(expected);
       }
+    });
+  });
+
+  // `hu` is a word in its own right, so a bare HU only counts as Hungarian
+  // when it sits in a run of language codes, the same rule `de` follows.
+  const notHungarian: string[] = [
+    'Beyblade.Metal.Masters.S02E17.We.Meet.Again.Wang.Hu.Zhong.1080p.ROKU.WEB-DL.AAC2.0.H.264.mp4',
+    'Beyblade Metal Masters - 17 - We Meet Again! Wang Hu Zhong.mkv',
+    'Hu.Jintao.Documentary.2010.1080p.WEB-DL.mkv',
+    '[www.Naruto-Kun.Hu] Dragon Ball Z - 001.mkv'
+  ];
+
+  notHungarian.forEach((title) => {
+    test(`does not read a bare Hu as Hungarian (${title})`, () => {
+      expect(parseTorrentTitle(title).languages).toBeUndefined();
     });
   });
 

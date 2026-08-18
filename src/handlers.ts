@@ -2653,6 +2653,41 @@ export const handlers: Handler[] = [
   {
     field: 'languages',
     pattern: /\bHU\b/i,
+    validateMatch: validateLookahead(
+      '(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})',
+      'i',
+      true
+    ),
+    transform: toValueSet('hu'),
+    keepMatching: true,
+    skipFromTitle: true
+  },
+  {
+    field: 'languages',
+    pattern: /\bHU\b/i,
+    transform: toValueSet('hu'),
+    validateMatch: validateLookbehind(
+      '(?:[ .,/-]+(?:[A-Z]{2}[ .,/-]+){2,})',
+      'i',
+      true
+    ),
+    keepMatching: true,
+    skipFromTitle: true
+  },
+  {
+    field: 'languages',
+    pattern: /\bHU\b/i,
+    transform: toValueSet('hu'),
+    validateMatch: validateAnd(
+      validateLookbehind('(?:[ .,/-]+[A-Z]{2}[ .,/-]+)', 'i', true),
+      validateLookahead('(?:[ .,/-]+[A-Z]{2}[ .,/-]+)', 'i', true)
+    ),
+    keepMatching: true,
+    skipFromTitle: true
+  },
+  {
+    field: 'languages',
+    pattern: /\bhu(?:\.(?:ass|ssa|srt|sub|idx)$)/i,
     transform: toValueSet('hu'),
     keepMatching: true,
     skipFromTitle: true
