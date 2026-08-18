@@ -573,6 +573,50 @@ describe('Language Detection Tests', () => {
     });
   });
 
+  // `Pt 2` abbreviates Part. Reading it as Portuguese also removed it from
+  // the episode title, so the part number was lost along with it.
+  const partNotPortuguese: [string, string][] = [
+    [
+      'The.Office.US.S02E10.Christmas.Party.Pt.2.1080p.WEB-DL.mkv',
+      'Christmas Party Pt 2'
+    ],
+    [
+      'Doctor.Who.S04E12.The.Stolen.Earth.Pt.2.720p.HDTV.x264.mkv',
+      'The Stolen Earth Pt 2'
+    ],
+    [
+      'Some.Show.S01E05.The.Reckoning.Pt.1.1080p.WEB-DL.mkv',
+      'The Reckoning Pt 1'
+    ]
+  ];
+
+  partNotPortuguese.forEach(([title, episodeTitle]) => {
+    test(`reads Pt before a number as Part, not Portuguese (${title})`, () => {
+      const result = parseTorrentTitle(title);
+      expect(result.languages).toBeUndefined();
+      expect(result.episodeTitle).toBe(episodeTitle);
+    });
+  });
+
+  // `nor` is an English conjunction, so the code is matched case-sensitively,
+  // the same rule `tha` follows.
+  const notNorwegian: string[] = [
+    'Some.Show.S01E05.Neither.Fish.Nor.Fowl.1080p.WEB-DL.mkv',
+    'Blackadder.S02E03.Nor.The.Years.Condemn.720p.WEB-DL.mkv'
+  ];
+
+  notNorwegian.forEach((title) => {
+    test(`does not read the conjunction Nor as Norwegian (${title})`, () => {
+      expect(parseTorrentTitle(title).languages).toBeUndefined();
+    });
+  });
+
+  test('still reads an uppercase NOR tag as Norwegian', () => {
+    expect(
+      parseTorrentTitle('Some.Movie.2019.NOR.1080p.BluRay.x264.mkv').languages
+    ).toEqual(['no']);
+  });
+
   // Special test for title preservation
   test('not remove english from title', () => {
     const result = parseTorrentTitle(

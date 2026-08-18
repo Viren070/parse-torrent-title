@@ -2343,6 +2343,8 @@ export const handlers: Handler[] = [
   {
     field: 'languages',
     pattern: /\bpt\b/i,
+    // `Pt 2` abbreviates Part, so a following number rules out the language.
+    validateMatch: validateLookahead('[ ._-]*\\d', 'i', false),
     transform: toValueSet('pt'),
     keepMatching: true,
     remove: true
@@ -2837,8 +2839,15 @@ export const handlers: Handler[] = [
 
   // Norwegian language handlers
   {
+    // Case-sensitive: `Nor` is the English conjunction, `NOR`/`nor` the code.
     field: 'languages',
-    pattern: /\b(?:NOR|norsk|norsub|nordic)\b/i,
+    pattern: /\b(NOR|nor)\b/,
+    transform: toValueSet('no'),
+    keepMatching: true
+  },
+  {
+    field: 'languages',
+    pattern: /\b(?:norsk|norsub|nordic)\b/i,
     transform: toValueSet('no'),
     keepMatching: true
   },
