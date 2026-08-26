@@ -2,6 +2,7 @@ import { Handler, ParsedResult, ParseMeta, ValueSet } from './types.js';
 import {
   cleanTitle,
   beforeTitleRegex,
+  leadingBracketsRegex,
   whitespacesRegex,
   underscoresRegex,
   matchIndices,
@@ -159,6 +160,30 @@ export function parse(
 
       const rawMatchedPart = match[0];
       let matchedPart = rawMatchedPart;
+
+      if (field === 'languages') {
+        const episodeMeta = result.get('episodes');
+
+        const languageMatchIsInTitle =
+          /^[\x00-\x7F]+$/.test(rawMatchedPart) &&
+          episodeMeta !== undefined &&
+          matchStart > 0 &&
+          matchStart < episodeMeta.mIndex &&
+          !(
+            title.charCodeAt(0) === OPEN_SQUARE_BRACKET &&
+            leadingBracketsRegex.exec(title)?.[0].includes(rawMatchedPart)
+          ) &&
+          /\p{L}/u.test(
+            title.substring(
+              matchStart + rawMatchedPart.length,
+              episodeMeta.mIndex
+            )
+          );
+
+        if (languageMatchIsInTitle) {
+          continue;
+        }
+      }
 
       if (match.length > 1) {
         // Default to capture group 1 if valueGroup is not specified
