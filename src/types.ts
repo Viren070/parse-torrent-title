@@ -120,6 +120,8 @@ export interface Handler {
   skipIfFirst?: boolean;
   skipIfBefore?: string[];
   skipFromTitle?: boolean;
+  retryPastTitle?: RegExp;
+  mustEndTitle?: boolean;
   matchGroup?: number;
   valueGroup?: number;
 }

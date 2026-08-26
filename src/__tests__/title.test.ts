@@ -394,4 +394,62 @@ describe('parseTorrentTitle - title', () => {
     expect(result.seasons).toEqual([1]);
     expect(result.episodes).toEqual([1]);
   });
+
+  // A source token that is also a word of the show name must not be consumed
+  test('Madame Web (2024).mkv', () => {
+    const result = parseTorrentTitle('Madame Web (2024).mkv');
+    expect(result.title).toBe('Madame Web');
+    expect(result.quality).toBeUndefined();
+  });
+
+  test('Madame Web 2024 1080p WEB H264-WeApologizeInAdvance', () => {
+    const result = parseTorrentTitle(
+      'Madame Web 2024 1080p WEB H264-WeApologizeInAdvance'
+    );
+    expect(result.title).toBe('Madame Web');
+    expect(result.quality).toBe('WEB');
+  });
+
+  test('Madame.Web.2024.UHD.BluRay.2160p.TrueHD.Atmos.7.1.DV.HEVC.REMUX-FraMeSToR', () => {
+    const result = parseTorrentTitle(
+      'Madame.Web.2024.UHD.BluRay.2160p.TrueHD.Atmos.7.1.DV.HEVC.REMUX-FraMeSToR'
+    );
+    expect(result.title).toBe('Madame Web');
+    expect(result.quality).toBe('BluRay REMUX');
+  });
+
+  test('Interrogation.Cam.S01E02.XviD-AFG', () => {
+    const result = parseTorrentTitle('Interrogation.Cam.S01E02.XviD-AFG');
+    expect(result.title).toBe('Interrogation Cam');
+    expect(result.quality).toBeUndefined();
+  });
+
+  test('Court.Cam.S01E01.WEB.h264-TBS[TGx]', () => {
+    const result = parseTorrentTitle('Court.Cam.S01E01.WEB.h264-TBS[TGx]');
+    expect(result.title).toBe('Court Cam');
+    expect(result.quality).toBe('WEB');
+  });
+
+  test('Live.PD.Presents.PD.Cam.S01E01.HDTV.x264-W4F', () => {
+    const result = parseTorrentTitle(
+      'Live.PD.Presents.PD.Cam.S01E01.HDTV.x264-W4F'
+    );
+    expect(result.title).toBe('Live PD Presents PD Cam');
+    expect(result.quality).toBe('HDTV');
+  });
+
+  // A country tag only disambiguates when it ends the title
+  test('ALL.OF.US.ARE.DEAD.S01E01.1080p.NF.WEB-DL.mkv', () => {
+    const result = parseTorrentTitle(
+      'ALL.OF.US.ARE.DEAD.S01E01.1080p.NF.WEB-DL.mkv'
+    );
+    expect(result.title).toBe('ALL OF US ARE DEAD');
+    expect(result.country).toBeUndefined();
+  });
+
+  test('The.Office.US.S01E01.1080p.WEB-DL.mkv', () => {
+    const result = parseTorrentTitle('The.Office.US.S01E01.1080p.WEB-DL.mkv');
+    expect(result.title).toBe('The Office');
+    expect(result.country).toBe('US');
+  });
 });

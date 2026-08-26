@@ -42,6 +42,17 @@ function hasValueSet(field: string): boolean {
 
 const letterRegex = /\p{L}/u;
 
+const globalTwins = new Map<RegExp, RegExp>();
+/** A `g` copy of a handler pattern, so a match can be resumed past an index. */
+function globalTwin(re: RegExp): RegExp {
+  let g = globalTwins.get(re);
+  if (!g) {
+    g = new RegExp(re.source, re.flags + 'g');
+    globalTwins.set(re, g);
+  }
+  return g;
+}
+
 /**
  * Main parse function matching Go parse() function
  */
@@ -108,9 +119,28 @@ export function parse(
         continue;
       }
 
-      const match = handler.pattern.exec(title);
+      let match = handler.pattern.exec(title);
       if (match === null) {
         continue;
+      }
+
+      // Take a later occurrence rather than dropping the handler
+      if (
+        handler.retryPastTitle &&
+        match.index < endOfTitle &&
+        handler.retryPastTitle.test(match[0])
+      ) {
+        const g = globalTwin(handler.pattern);
+        g.lastIndex = 0;
+        let next: RegExpExecArray | null = null;
+        while ((next = g.exec(title)) !== null) {
+          if (next.index >= endOfTitle) break;
+          if (g.lastIndex === next.index) g.lastIndex++;
+        }
+        if (next === null) {
+          continue;
+        }
+        match = next;
       }
 
       // Locating the capture groups costs a scan each, and only validators and
@@ -155,6 +185,15 @@ export function parse(
         if (shouldSkip) {
           continue;
         }
+      }
+
+      // A disambiguator only reads as one when it is the last word of the
+      // title; anything after it means the token belongs to the name.
+      if (
+        handler.mustEndTitle &&
+        matchStart + match[0].length < endOfTitle - 1
+      ) {
+        continue;
       }
 
       const rawMatchedPart = match[0];

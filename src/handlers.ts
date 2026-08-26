@@ -638,13 +638,6 @@ export const handlers: Handler[] = [
   // Quality/Source handlers (lines 712-1054 in handlers.go)
   {
     field: 'quality',
-    pattern: /\b(?:H[DQ][ .-]*)?CAM(?:H[DQ])?(?:[ .-]*Rip)?\b/i,
-    transform: toValue('CAM'),
-    skipIfFirst: true,
-    remove: true
-  },
-  {
-    field: 'quality',
     pattern: /\b(?:H[DQ][ .-]*)?S[ .-]+print/i,
     transform: toValue('CAM'),
     remove: true
@@ -836,6 +829,12 @@ export const handlers: Handler[] = [
   },
   {
     field: 'quality',
+    pattern: /\bWEB[ .-]?HD\b/i,
+    transform: toValue('WEB'),
+    remove: true
+  },
+  {
+    field: 'quality',
     pattern: /\b(?:DL|WEB|BD|BR)MUX\b/i,
     remove: true
   },
@@ -844,16 +843,6 @@ export const handlers: Handler[] = [
     pattern: /\b(W(?:ORK)P(?:RINT))\b/,
     transform: toValue('WORKPRINT'),
     remove: true
-  },
-  {
-    field: 'quality',
-    pattern: /\b(?:\w.)?WEB\b|\bWEB(?:(?:[ \.\-\(\],]+\d))?\b/i,
-    validateMatch: validateNotMatch(
-      /\b(?:\w.)WEB\b|\bWEB(?:(?:[ \.\-\(\],]+\d))\b/i
-    ),
-    transform: toValue('WEB'),
-    remove: true,
-    skipFromTitle: true
   },
   {
     field: 'quality',
@@ -1252,12 +1241,6 @@ export const handlers: Handler[] = [
       }
       return m;
     }
-  },
-
-  // Country handler (lines 1593-1597 in handlers.go)
-  {
-    field: 'country',
-    pattern: /\b(US|UK|AU|NZ)\b/
   },
 
   // Languages handlers (lines 1599-1612 in handlers.go)
@@ -2041,6 +2024,30 @@ export const handlers: Handler[] = [
   },
 
   // Batch 9: Subbed, Dubbed, Multi-language detection (lines 2259-2290 in handlers.go)
+  {
+    field: 'quality',
+    pattern: /\b(?:H[DQ][ .-]*)?CAM(?:H[DQ])?(?:[ .-]*Rip)?\b/i,
+    transform: toValue('CAM'),
+    skipIfFirst: true,
+    remove: true,
+    retryPastTitle: /^cam$/i
+  },
+  {
+    field: 'quality',
+    pattern: /\b(?:\w.)?WEB\b|\bWEB(?:(?:[ \.\-\(\],]+\d))?\b/i,
+    validateMatch: validateNotMatch(
+      /\b(?:\w.)WEB\b|\bWEB(?:(?:[ \.\-\(\],]+\d))\b/i
+    ),
+    transform: toValue('WEB'),
+    remove: true,
+    skipFromTitle: true,
+    retryPastTitle: /^web$/i
+  },
+  {
+    field: 'country',
+    pattern: /\b(US|UK|AU|NZ)\b/,
+    mustEndTitle: true
+  },
   {
     field: 'subbed',
     pattern: /\bSUB(?:FRENCH)\b|\b(?:DAN|E|FIN|PL|SLO|SWE)SUBS?\b/i,
