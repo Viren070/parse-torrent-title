@@ -35,6 +35,7 @@ export const releaseGroupMarkingAtStartRegex = /^[[【★].*[\]】★][ .]?(.+)/
 export const releaseGroupMarkingAtEndRegex = /(.+)[ .]?[[【★].*[\]】★]$/;
 
 export const beforeTitleRegex = /^\[([^[\]]+)]/;
+export const leadingBracketsRegex = /^(?:\[[^[\]]+])+/;
 export const nonDigitRegex = /\D/;
 export const nonDigitsRegex = /\D+/g;
 export const nonAlphasRegex = /\W+/g;
