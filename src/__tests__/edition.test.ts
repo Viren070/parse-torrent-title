@@ -29,6 +29,14 @@ describe('Edition Detection Tests', () => {
     expect(result.editions).toEqual(['Extended Edition']);
   });
 
+  test('Extended Cut', () => {
+    const result = parseTorrentTitle(
+      'Some.Movie.EXTENDED.CUT.2010.1080p.BluRay.x264-GRP'
+    );
+    expect(result.editions).toEqual(['Extended Edition']);
+    expect(result.title).toBe('Some Movie');
+  });
+
   test('No edition for CONVERT', () => {
     const result = parseTorrentTitle(
       'Better.Call.Saul.S03E04.CONVERT.720p.WEB.h264-TBS'

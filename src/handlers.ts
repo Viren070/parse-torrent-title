@@ -396,13 +396,6 @@ export const handlers: Handler[] = [
     remove: true
   },
   {
-    field: 'editions',
-    pattern: /\b(?:custom.?)?Extended\b/i,
-    transform: toValueSet('Extended Edition'),
-    keepMatching: true,
-    remove: true
-  },
-  {
     // criterion collection
     field: 'editions',
     pattern: /\bCriterion\.Collection\b/i,
@@ -2046,6 +2039,14 @@ export const handlers: Handler[] = [
   {
     field: 'country',
     pattern: /\b(US|UK|AU|NZ)\b/,
+    mustEndTitle: true
+  },
+  {
+    field: 'editions',
+    pattern: /\b(?:custom.?)?Extended(?:[\.\s\-\+_\/(),](?:Editions?|Cut))?\b/i,
+    transform: toValueSet('Extended Edition'),
+    keepMatching: true,
+    remove: true,
     mustEndTitle: true
   },
   {

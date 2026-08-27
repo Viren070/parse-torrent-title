@@ -452,4 +452,12 @@ describe('parseTorrentTitle - title', () => {
     expect(result.title).toBe('The Office');
     expect(result.country).toBe('US');
   });
+
+  test('Grand Theft Auto VI An Extended Look 2026 2160p NF WEB-DL DDP5 1 H 265-Kitsune', () => {
+    const result = parseTorrentTitle(
+      'Grand Theft Auto VI An Extended Look 2026 2160p NF WEB-DL DDP5 1 H 265-Kitsune'
+    );
+    expect(result.title).toBe('Grand Theft Auto VI An Extended Look');
+    expect(result.editions).toBeUndefined();
+  });
 });
