@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.8](https://github.com/Viren070/parse-torrent-title/compare/v0.8.7...v0.8.8) (2026-08-27)
+
+
+### Bug Fixes
+
+* only match extended at end of title ([c075d41](https://github.com/Viren070/parse-torrent-title/commit/c075d41d284d67464e70a4f51c64a0cddbb9bdf3))
+
 ## [0.8.7](https://github.com/Viren070/parse-torrent-title/compare/v0.8.6...v0.8.7) (2026-08-26)
 
 
