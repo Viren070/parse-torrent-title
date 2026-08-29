@@ -3207,19 +3207,20 @@ export const handlers: Handler[] = [
   // Network handlers
   {
     field: 'network',
-    pattern: /\bATVP?\b/i,
+    pattern: /\b(?:ATVP?|APTV)\b|\bApple.?TV[+]?/i,
     transform: toValue('Apple TV'),
     remove: true
   },
   {
     field: 'network',
-    pattern: /\bAMZN\b/i,
-    transform: toValue('Amazon'),
-    remove: true
+    pattern: /(?<=\W{2})\b(?:AMZN|Amazon.?(?:HD)?)\b/i,
+    transform: toValue('Prime Video'),
+    remove: true,
+    skipIfFirst: true
   },
   {
     field: 'network',
-    pattern: /\bNF|Netflix\b/i,
+    pattern: /\b(?:NF|Netflix)\b/i,
     transform: toValue('Netflix'),
     remove: true
   },
@@ -3232,56 +3233,60 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /\bDSNY?P?\b/i,
-    transform: toValue('Disney'),
-    remove: true
-  },
-  {
-    field: 'network',
-    pattern: /\bH(MAX|BO)\b/i,
-    transform: toValue('HBO'),
-    remove: true
-  },
-  {
-    field: 'network',
-    pattern: /\bSHOWTIME\b/i,
-    transform: toValue('Showtime'),
-    remove: true
-  },
-  {
-    field: 'network',
-    pattern: /\bPMTP\b/i,
-    transform: toValue('Paramount'),
-    remove: true
-  },
-  {
-    field: 'network',
-    pattern: /\bPCOK\b/i,
-    transform: toValue('Peacock'),
-    remove: true
-  },
-  {
-    field: 'network',
-    pattern: /\bCRAV\b/i,
-    transform: toValue('Crave'),
-    remove: true
-  },
-  {
-    field: 'network',
-    pattern: /\bBCORE\b/i,
-    transform: toValue('AMC+'),
-    remove: true
-  },
-  {
-    field: 'network',
-    pattern: /(?<=[ ._-]{2})MAX\b/i,
-    transform: toValue('HBO'),
+    pattern: /(?<=\W{2})(?:\bDSN[YP]\b|\bDisney[+]?)/i,
+    transform: toValue('Disney+'),
     remove: true,
     skipIfFirst: true
   },
   {
     field: 'network',
-    pattern: /(?<=[ ._-]{2})STAN\b/i,
+    pattern: /\b(?:SKST|SKY.?SHOWTIME)\b/i,
+    transform: toValue('SkyShowtime'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\b(?:PM(?:NT|TP)|SHO)\b|\bParamount(?:[+]|.?Plus)/i,
+    transform: toValue('Paramount+'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /(?<=\W{2})\b(?:PCOK|Peacock)\b/i,
+    transform: toValue('Peacock'),
+    remove: true,
+    skipIfFirst: true
+  },
+  {
+    field: 'network',
+    pattern: /(?<=\W{2})\bCRAVE?\b/i,
+    transform: toValue('Crave'),
+    remove: true,
+    skipIfFirst: true
+  },
+  {
+    field: 'network',
+    pattern: /(?<=\W{2})\bB?CORE\b/i,
+    transform: toValue('Sony Pictures Core'),
+    remove: true,
+    skipIfFirst: true
+  },
+  {
+    field: 'network',
+    pattern: /\b(HMAX|HBOM?(?:ax)?)\b/i,
+    transform: toValue('HBO Max'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /(?<=\W{2})MAX\b/i,
+    transform: toValue('HBO Max'),
+    remove: true,
+    skipIfFirst: true
+  },
+  {
+    field: 'network',
+    pattern: /(?<=\W{2})STAN\b/i,
     transform: toValue('Stan'),
     remove: true,
     skipIfFirst: true
@@ -3360,7 +3365,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /\bAnimal.?Planet|ANPL\b/i,
+    pattern: /\b(?:Animal.?Planet|ANPL)\b/i,
     transform: toValue('Animal Planet'),
     remove: true
   },
@@ -3368,6 +3373,31 @@ export const handlers: Handler[] = [
     field: 'network',
     pattern: /\bCartoon.?Network(?:.TOONAMI.BROADCAST)?\b/i,
     transform: toValue('Cartoon Network'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\bCRIT\b/i,
+    transform: toValue('Criterion Channel'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /(?<=\W{2})\bG?PLAY\b/i,
+    transform: toValue('Google Play'),
+    remove: true,
+    skipIfFirst: true
+  },
+  {
+    field: 'network',
+    pattern: /\b(?<!DTS.*?)(?:MA|YKW)\b/i,
+    transform: toValue('Movies Anywhere'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\bROKU\b/i,
+    transform: toValue('The Roku Channel'),
     remove: true
   },
 

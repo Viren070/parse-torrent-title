@@ -428,7 +428,7 @@ describe('Parse Torrent Title', () => {
         audio: ['DDP'],
         channels: ['5.1'],
         codec: 'hevc',
-        network: 'Amazon'
+        network: 'Prime Video'
       }
     },
     {
@@ -1050,7 +1050,7 @@ describe('Parse Torrent Title', () => {
         group: 'XEBEC',
         container: 'mkv',
         extension: 'mkv',
-        network: 'Amazon',
+        network: 'Prime Video',
         repack: true
       }
     },
@@ -1211,7 +1211,7 @@ describe('Parse Torrent Title', () => {
         languages: ['multi audio'],
         resolution: '1080p',
         quality: 'WEB-DL',
-        network: 'Amazon',
+        network: 'Prime Video',
         codec: 'h264',
         dubbed: true,
         audio: ['Atmos', 'DDP'],
@@ -1239,7 +1239,7 @@ describe('Parse Torrent Title', () => {
         title: 'The O C',
         seasons: [1, 2, 3, 4],
         resolution: '1080p',
-        network: 'Amazon',
+        network: 'Prime Video',
         codec: 'hevc',
         bitDepth: '10bit',
         group: 'Bearfish'
@@ -1272,7 +1272,7 @@ describe('Parse Torrent Title', () => {
         episodes: [1],
         resolution: '1080p',
         quality: 'WEB-DL',
-        network: 'Amazon',
+        network: 'Prime Video',
         codec: 'h264',
         audio: ['DDP'],
         channels: ['5.1'],
@@ -1362,7 +1362,7 @@ describe('Parse Torrent Title', () => {
         codec: 'h264',
         group: 'Ralf',
         languages: ['pl'],
-        network: 'Amazon',
+        network: 'Prime Video',
         quality: 'WEB-DL',
         resolution: '1080p',
         seasons: [4],
@@ -1658,7 +1658,7 @@ describe('Parse Torrent Title - Edge Cases', () => {
         container: 'mkv',
         seasons: [1],
         episodes: [1],
-        network: 'Amazon',
+        network: 'Prime Video',
         extension: 'mkv',
         title: 'The Hunting Party',
         episodeTitle: 'Richard Harris'
@@ -1826,7 +1826,7 @@ describe('Parse Torrent Title - Edge Cases', () => {
         resolution: '720p',
         seasons: [1],
         episodes: [18],
-        network: 'Amazon',
+        network: 'Prime Video',
         title: 'Georgie and Mandys First Marriage',
         episodeTitle: 'TV Money'
       }
@@ -1849,7 +1849,7 @@ describe('Parse Torrent Title - Edge Cases', () => {
         channels: ['2.0'],
         codec: 'h264',
         group: 'Kitsune',
-        network: 'Amazon',
+        network: 'Prime Video',
         quality: 'WEB-DL',
         resolution: '720p',
         title: 'Implosion The Titanic Sub Disaster',
