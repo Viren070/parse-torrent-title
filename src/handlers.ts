@@ -1867,6 +1867,80 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
+    // XVID-era 3-digit scheme: "Show.103.Episode.Name.avi" is S01E03,
+    // "Show.301.Episode.Name.avi" is S03E01, "Show.110.avi" is S01E10.
+    // Leading digit(s) = season (1-9), trailing two digits = episode (01-99).
+    // Runs late so structured markers (S01E03, ep, Cap., ...) win first; the
+    // 264/265 codec handler above takes precedence for those values. Bare
+    // numbers in absolute-episode conventions ("- 107 -", "523 23"), event
+    // numbers ("UFC.218.PPV") and movie-title numbers ("Crime.101.2026") are
+    // explicitly excluded.
+    pattern: /(?<=^|[\W_])([1-9]\d{2})(?=\W|$)/i,
+    validateMatch: (input: string, idxs: number[]): boolean => {
+      const before = input.substring(0, idxs[0]);
+      const after = input.substring(idxs[1]);
+      // Codec numbers ("H.264", "H.265") must not become episodes.
+      if (/[hx][ .]?$/i.test(before)) {
+        return false;
+      }
+      // Absolute-episode conventions use hyphen dividers ("- 107 -").
+      if (/- ?$/i.test(before) || /^ ?- ?/i.test(after)) {
+        return false;
+      }
+      // Bracket/slash contexts (anime ranges "[166-192]", par2 "003/101").
+      if (/[(\[/]$/.test(before) || /^[)\]\/]/.test(after)) {
+        return false;
+      }
+      // A number followed by another number is not an episode ("523 23").
+      if (/^\W*\d/.test(after)) {
+        return false;
+      }
+      // Event numbers ("UFC.218.PPV").
+      if (/^\W*ppv\b/i.test(after)) {
+        return false;
+      }
+      // "100", "200", ... would be episode 0, which is invalid.
+      const v = Number(input.substring(idxs[2], idxs[3]));
+      return Number.isFinite(v) && v % 100 >= 1;
+    },
+    remove: true,
+    transform: (title, m, result) => {
+      // A year right after the number marks a movie title ("Crime.101.2026").
+      const ym = result.get('year');
+      if (ym !== undefined && ym.mIndex > m.mIndex) {
+        m.value = null;
+        return;
+      }
+      // Event numbers ("UFC.218.PPV"): the ppv handler already consumed the
+      // marker from the title, so check the parsed field instead.
+      const pm = result.get('ppv');
+      if (pm !== undefined && pm.mIndex > m.mIndex) {
+        m.value = null;
+        return;
+      }
+      const v = Number(m.value);
+      const season = Math.floor(v / 100);
+      const episode = v % 100;
+      const sm = result.get('seasons');
+      if (sm) {
+        // An explicit season marker wins; only fill in when absent.
+        if (sm.value === null) {
+          sm.value = [season];
+        }
+      } else {
+        result.set('seasons', {
+          mIndex: m.mIndex,
+          mValue: m.mValue,
+          value: [season],
+          remove: false,
+          processed: false
+        });
+      }
+      m.value = [episode];
+    }
+  },
+  {
+    field: 'episodes',
     pattern: /(?:\W|^)(?:\d+)?(?:e|ep)(\d{1,3})(?:\W|$)/i,
     transform: toIntArray(),
     remove: true
