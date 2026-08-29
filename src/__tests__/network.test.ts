@@ -190,15 +190,7 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('Peacock');
     expect(result.title).toBe('The Bay');
   });
-
-  test('Peacock with SYFY (Affiliate)', () => {
-    const result = parseTorrentTitle(
-      'The.Ark.S02.1080p.SYFY.WEB-DL.AAC2.0.H.264-DoGSO'
-    );
-    expect(result.network).toBe('Peacock');
-    expect(result.title).toBe('The Ark');
-  });
-
+  
   test('Not Peacock', () => {
     const result = parseTorrentTitle(
       'Peacock.2024.1080p.BluRay.x264-KNiVES'
@@ -206,7 +198,7 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBeUndefined();
     expect(result.title).toBe('Peacock');
   });
-
+  
   test('Crave', () => {
     const result = parseTorrentTitle(
       'Some.Show.S01E01.1080p.CRAV.WEB-DL.DDP5.1.H.264-NTb'
@@ -214,7 +206,7 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('Crave');
     expect(result.title).toBe('Some Show');
   });
-
+  
   test('Not Crave', () => {
     const result = parseTorrentTitle(
       'Crave.2012.1080p.BluRay.x264-SADPANDA'
@@ -222,7 +214,7 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBeUndefined();
     expect(result.title).toBe('Crave');
   });
-
+  
   test('Sony Pictures Core', () => {
     const result = parseTorrentTitle(
       'Late.Night.with.the.Devil.2023.1080p.BCORE.WEB-DL.DDP5.1-NTb'
@@ -238,7 +230,7 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBeUndefined();
     expect(result.title).toBe('Deadliest Catch');
   });
-
+  
   test('Max is HBO', () => {
     const result = parseTorrentTitle(
       'Hard Knocks 2001 S23E01 1080p MAX WEB-DL DDP2 0 x264-NTb[EZTVx.to].mkv'
@@ -246,7 +238,7 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('HBO Max');
     expect(result.title).toBe('Hard Knocks');
   });
-
+  
   test('Stan', () => {
     const result = parseTorrentTitle(
       'The.Rookie.S06E01.1080p.STAN.WEB-DL.DDP5.1.H.264-NTb'
@@ -254,7 +246,7 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('Stan');
     expect(result.title).toBe('The Rookie');
   });
-
+  
   test('Google TV', () => {
     const result = parseTorrentTitle(
       'The.Invite.2026.2160p.PLAY.WEB-DL.DDP5.1.H.265-SCOPE'
@@ -262,7 +254,7 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('Google TV');
     expect(result.title).toBe('The Invite');
   });
-
+  
   test('Movies Anywhere', () => {
     const result = parseTorrentTitle(
       'Supergirl.2026.2160p.MA.WEB-DL.DDP5.1.Atmos.H.265-HONE'
@@ -270,7 +262,7 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('Movies Anywhere');
     expect(result.title).toBe('Supergirl');
   });
-
+  
   test('Not Movies Anywhere', () => {
     const result = parseTorrentTitle(
       'Shelter.2026.2160p.UHD.BluRay.DTS-HD.MA.5.1.DV.HDR10P.x265-j3rico'
@@ -278,15 +270,15 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBeUndefined();
     expect(result.title).toBe('Shelter');
   });
-
-  test('Paramount+ with Showtime (Merger)', () => {
+  
+  test('Showtime', () => {
     const result = parseTorrentTitle(
       'Ghosts.of.Beirut.2023.S01.(2160p.SHO.WEB-DL.H265.SDR.DDP.5.1.English.-.HONE)'
     );
-    expect(result.network).toBe('Paramount+');
+    expect(result.network).toBe('Showtime');
     expect(result.title).toBe('Ghosts of Beirut');
   });
-
+  
   test('SkyShowtime 1', () => {
     const result = parseTorrentTitle(
       'Let.the.Right.One.In.S01.1080p.Skyshowtime.WEB-DL.AAC2.0.H.264-CHDWEB'
@@ -294,7 +286,7 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('SkyShowtime');
     expect(result.title).toBe('Let the Right One In');
   });
-
+  
   test('SkyShowtime 2', () => {
     const result = parseTorrentTitle(
       'Mission.Impossible.III.2006.2160p.SKST.WEB-DL.DD+5.1.HDR.H.265'
@@ -302,13 +294,21 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('SkyShowtime');
     expect(result.title).toBe('Mission Impossible III');
   });
-
-  test('DCU with HBO Max (Merger)', () => {
+  
+  test('DC Universe', () => {
     const result = parseTorrentTitle(
       'Doom.Patrol.S01.2160p.DCU.WEB-DL.DD5.1.HDR.H.265-BTN'
     );
-    expect(result.network).toBe('HBO Max');
+    expect(result.network).toBe('DC Universe');
     expect(result.title).toBe('Doom Patrol');
+  });
+  
+  test('SYFY', () => {
+    const result = parseTorrentTitle(
+      'The.Ark.S02.1080p.SYFY.WEB-DL.AAC2.0.H.264-DoGSO'
+    );
+    expect(result.network).toBe('SYFY');
+    expect(result.title).toBe('The Ark');
   });
 
   // Ambiguous tags must never eat a title word. Each of these is a real

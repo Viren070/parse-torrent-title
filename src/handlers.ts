@@ -3240,19 +3240,25 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /\b(?:SKST|SKY.?SHOWTIME)\b/i,
+    pattern: /\bSHO\b/i,
+    transform: toValue('Showtime'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\b(?:SKST|SKYSHO(?:WTIME))\b/i,
     transform: toValue('SkyShowtime'),
     remove: true
   },
   {
     field: 'network',
-    pattern: /\b(?:PM(?:NT|TP)|SHO)\b|\bParamount(?:[+]|.?Plus)/i,
+    pattern: /\b(?:PMNT|PMTP)\b|\bParamount(?:[+]|.?Plus)/i,
     transform: toValue('Paramount+'),
     remove: true
   },
   {
     field: 'network',
-    pattern: /(?<=\W{2})\b(?:PCOK|Peacock|SYFY)\b/i,
+    pattern: /(?<=\W{2})\b(?:PCOK|Peacock)\b/i,
     transform: toValue('Peacock'),
     remove: true,
     skipIfFirst: true
@@ -3273,7 +3279,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /\b(HMAX|HBOM?(?:ax)?|DCU)\b/i,
+    pattern: /\b(HMAX|HBOM?(?:ax)?)\b/i,
     transform: toValue('HBO Max'),
     remove: true
   },
@@ -3398,6 +3404,18 @@ export const handlers: Handler[] = [
     field: 'network',
     pattern: /\bROKU\b/i,
     transform: toValue('The Roku Channel'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\bDCU\b/i,
+    transform: toValue('DC Universe'),
+    remove: true
+  },
+  {
+    field: 'network',
+    pattern: /\bSYFY\b/i,
+    transform: toValue('SYFY'),
     remove: true
   },
 
