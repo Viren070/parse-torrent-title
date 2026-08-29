@@ -3384,7 +3384,7 @@ export const handlers: Handler[] = [
   {
     field: 'network',
     pattern: /(?<=\W{2})\bG?PLAY\b/i,
-    transform: toValue('Google Play'),
+    transform: toValue('Google TV'),
     remove: true,
     skipIfFirst: true
   },
