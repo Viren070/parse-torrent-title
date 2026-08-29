@@ -3390,7 +3390,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /\b(?<!DTS.*?)(?:MA|YKW)\b/i,
+    pattern: /\b(?:(?<!DTS.*?)MA|YKW)\b/i,
     transform: toValue('Movies Anywhere'),
     remove: true
   },
