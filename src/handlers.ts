@@ -3246,7 +3246,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /\b(?:SKST|SKYSHO(?:WTIME))\b/i,
+    pattern: /\b(?:SKST|SKYSHO(?:WTIME)?)\b/i,
     transform: toValue('SkyShowtime'),
     remove: true
   },
