@@ -175,7 +175,7 @@ describe('Network Detection Tests', () => {
     expect(result.title).toBe('The Neighborhood');
   });
 
-  test('Peacock', () => {
+  test('Peacock 1', () => {
     const result = parseTorrentTitle(
       'Poker.Face.S01E01.1080p.PCOK.WEB-DL.DDP5.1.H.264-NTb'
     );
@@ -183,12 +183,20 @@ describe('Network Detection Tests', () => {
     expect(result.title).toBe('Poker Face');
   });
 
-  test('Peacock', () => {
+  test('Peacock 2', () => {
     const result = parseTorrentTitle(
       'The.Bay.S01.1080p.Peacock.WEB-DL.AAC.2.0.H.264-CHDWEB'
     );
     expect(result.network).toBe('Peacock');
     expect(result.title).toBe('The Bay');
+  });
+
+  test('Peacock with SYFY (Affiliate)', () => {
+    const result = parseTorrentTitle(
+      'The.Ark.S02.1080p.SYFY.WEB-DL.AAC2.0.H.264-DoGSO'
+    );
+    expect(result.network).toBe('Peacock');
+    expect(result.title).toBe('The Ark');
   });
 
   test('Not Peacock', () => {
@@ -271,7 +279,7 @@ describe('Network Detection Tests', () => {
     expect(result.title).toBe('Shelter');
   });
 
-  test('Paramount+ with Showtime', () => {
+  test('Paramount+ with Showtime (Merger)', () => {
     const result = parseTorrentTitle(
       'Ghosts.of.Beirut.2023.S01.(2160p.SHO.WEB-DL.H265.SDR.DDP.5.1.English.-.HONE)'
     );
@@ -293,6 +301,14 @@ describe('Network Detection Tests', () => {
     );
     expect(result.network).toBe('SkyShowtime');
     expect(result.title).toBe('Mission Impossible III');
+  });
+
+  test('DCU with HBO Max (Merger)', () => {
+    const result = parseTorrentTitle(
+      'Doom.Patrol.S01.2160p.DCU.WEB-DL.DD5.1.HDR.H.265-BTN'
+    );
+    expect(result.network).toBe('HBO Max');
+    expect(result.title).toBe('Doom Patrol');
   });
 
   // Ambiguous tags must never eat a title word. Each of these is a real

@@ -3252,7 +3252,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /(?<=\W{2})\b(?:PCOK|Peacock)\b/i,
+    pattern: /(?<=\W{2})\b(?:PCOK|Peacock|SYFY)\b/i,
     transform: toValue('Peacock'),
     remove: true,
     skipIfFirst: true
@@ -3273,7 +3273,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /\b(HMAX|HBOM?(?:ax)?)\b/i,
+    pattern: /\b(HMAX|HBOM?(?:ax)?|DCU)\b/i,
     transform: toValue('HBO Max'),
     remove: true
   },
