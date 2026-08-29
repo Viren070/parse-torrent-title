@@ -247,11 +247,11 @@ describe('Network Detection Tests', () => {
     expect(result.title).toBe('The Rookie');
   });
 
-  test('Google Play', () => {
+  test('Google TV', () => {
     const result = parseTorrentTitle(
       'The.Invite.2026.2160p.PLAY.WEB-DL.DDP5.1.H.265-SCOPE'
     );
-    expect(result.network).toBe('Google Play');
+    expect(result.network).toBe('Google TV');
     expect(result.title).toBe('The Invite');
   });
 
@@ -261,6 +261,14 @@ describe('Network Detection Tests', () => {
     );
     expect(result.network).toBe('Movies Anywhere');
     expect(result.title).toBe('Supergirl');
+  });
+
+  test('Not Movies Anywhere', () => {
+    const result = parseTorrentTitle(
+      'Shelter.2026.2160p.UHD.BluRay.DTS-HD.MA.5.1.DV.HDR10P.x265-j3rico'
+    );
+    expect(result.network).toBeUndefined();
+    expect(result.title).toBe('Shelter');
   });
 
   test('Paramount+ with Showtime', () => {
