@@ -159,7 +159,7 @@ describe('Network Detection Tests', () => {
     expect(result.title).toBe('Family Guy');
   });
 
-  test('Paramount+', () => {
+  test('Paramount+ 1', () => {
     const result = parseTorrentTitle(
       'From.S01E07.All.Good.Things.540p.PMTP.WEB-DL.AAC2.0.H.264-lll'
     );
@@ -167,7 +167,7 @@ describe('Network Detection Tests', () => {
     expect(result.title).toBe('From');
   });
 
-  test('Paramount+', () => {
+  test('Paramount+ 2', () => {
     const result = parseTorrentTitle(
       'The.Neighborhood.S04.1080p.Paramount+.WEB-DL.DDP.5.1.H.264-CHDWEB'
     );

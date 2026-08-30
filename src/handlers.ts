@@ -3207,7 +3207,7 @@ export const handlers: Handler[] = [
   // Network handlers
   {
     field: 'network',
-    pattern: /\b(?:ATVP?|APTV)\b|\bApple.?TV[+]?/i,
+    pattern: /\b(?:ATVP?|APTV)\b|\bApple.?TV\+?/i,
     transform: toValue('Apple TV'),
     remove: true
   },
@@ -3233,7 +3233,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /(?<=\W{2})(?:\bDSN[YP]\b|\bDisney[+]?)/i,
+    pattern: /(?<=\W{2})(?:\bDSN[YP]\b|\bDisney\+?)/i,
     transform: toValue('Disney+'),
     remove: true,
     skipIfFirst: true
@@ -3252,7 +3252,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /\b(?:PMNT|PMTP)\b|\bParamount(?:[+]|.?Plus)/i,
+    pattern: /\b(?:PMNT|PMTP)\b|\bParamount(?:\+|.?Plus)/i,
     transform: toValue('Paramount+'),
     remove: true
   },
