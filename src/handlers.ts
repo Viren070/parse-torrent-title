@@ -1108,7 +1108,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'audio',
-    pattern: /\b(?:DD2?[+p]|DD Plus|Dolby Digital Plus|DDP5[ ._]1)\b/i,
+    pattern: /\bDD2?[+p]|DD Plus|Dolby Digital Plus|DDP5[ ._]1/i,
     transform: toValueSet('DDP'),
     keepMatching: true,
     remove: true
