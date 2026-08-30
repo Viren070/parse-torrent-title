@@ -389,13 +389,6 @@ export const handlers: Handler[] = [
     remove: true
   },
   {
-    field: 'editions',
-    pattern: /\bExtended[\.\s\-\+_\/(),]Director\W?s\b/i,
-    transform: toValueSet("Director's Cut"),
-    keepMatching: true,
-    remove: true
-  },
-  {
     // criterion collection
     field: 'editions',
     pattern: /\bCriterion\.Collection\b/i,
