@@ -3362,13 +3362,7 @@ export const handlers: Handler[] = [
   // Group handlers (final)
   {
     field: 'group',
-    pattern: /\b(INFLATE|DEFLATE)\b/,
-    remove: true
-  },
-  {
-    field: 'group',
-    pattern: /(?<=\W)\w+.?raws\b/i,
-    remove: true
+    pattern: /(?<=\W)\w+.?raws\b/i
   },
   {
     field: 'group',
@@ -3377,7 +3371,7 @@ export const handlers: Handler[] = [
   {
     field: 'group',
     pattern:
-      /-\W?(?!\d+$|S\d+|\d+x|ep?\d+|[^[]+]$|\w+kbps|(?:MKV|AVI|MP4|WMV|MPG|MPEG)$)([^\-. \[]+[^\-. \[\(\)\]E\d][^\-. \[\(\)\]]*)(?:\[[\w.-]+])?(?=(?: ?\(1)?\)|\W+\w{2,4}$|$)/i
+      /-\W?([^\-. \[]+[^\-. \[\(\)\]\d][^\-. \[\(\)\]]*)(?:\W*\[[\w.-]+\])?(?=\W+(?:\w{2,4})?$|$)/i
   },
   {
     field: 'group',
