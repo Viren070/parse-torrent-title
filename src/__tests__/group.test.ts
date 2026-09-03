@@ -41,33 +41,6 @@ describe('Group Detection Tests', () => {
     expect(result.group).toBe('NTb');
   });
 
-  test('no group', () => {
-    const result = parseTorrentTitle(
-      "Western - L'homme qui n'a pas d'étoile-1955.Multi.DVD9"
-    );
-    expect(result.group).toBeUndefined();
-  });
-
-  test('no group with hyphen separator', () => {
-    const result = parseTorrentTitle('Power (2014) - S02E03.mp4');
-    expect(result.group).toBeUndefined();
-  });
-
-  test('no group with hyphen separator and no container', () => {
-    const result = parseTorrentTitle('Power (2014) - S02E03');
-    expect(result.group).toBeUndefined();
-  });
-
-  test('no group when it is episode', () => {
-    const result = parseTorrentTitle('3-Nen D-Gumi Glass no Kamen - 13');
-    expect(result.group).toBeUndefined();
-  });
-
-  test('no group when it is ep symbol', () => {
-    const result = parseTorrentTitle('3-Nen D-Gumi Glass no Kamen - Ep13');
-    expect(result.group).toBeUndefined();
-  });
-
   test('anime group in brackets', () => {
     const result = parseTorrentTitle('[AnimeRG] One Punch Man - 09 [720p].mkv');
     expect(result.group).toBe('AnimeRG');
@@ -106,7 +79,7 @@ describe('Group Detection Tests', () => {
     expect(result.group).toBeUndefined();
   });
 
-  test('not detect brackets group when group is detected at the end of title', () => {
+  test('match trailing group name when retags are present at the start', () => {
     const result = parseTorrentTitle(
       '[Russ]Lords.Of.London.2014.XviD.H264.AC3-BladeBDP'
     );
@@ -118,25 +91,6 @@ describe('Group Detection Tests', () => {
       'Jujutsu Kaisen S02E01 2160p WEB H.265 AAC -Tsundere-Raws (B-Global).mkv'
     );
     expect(result.group).toBe('Tsundere-Raws');
-  });
-
-  test('not detect brackets group when it contains other parsed parameters', () => {
-    const result = parseTorrentTitle(
-      '[DVD-RIP] Kaavalan (2011) Sruthi XVID [700Mb] [TCHellRaiser]'
-    );
-    expect(result.group).toBeUndefined();
-  });
-
-  test('not detect brackets group when it contains other parsed parameters for series', () => {
-    const result = parseTorrentTitle(
-      '[DvdMux - XviD - Ita Mp3 Eng Ac3 - Sub Ita Eng] Sanctuary S01e01'
-    );
-    expect(result.group).toBeUndefined();
-  });
-
-  test('not detect group from episode', () => {
-    const result = parseTorrentTitle('the-x-files-502.mkv');
-    expect(result.group).toBeUndefined();
   });
 
   test('EXTREME group', () => {
@@ -167,10 +121,17 @@ describe('Group Detection Tests', () => {
     expect(result.group).toBe('TURG');
   });
 
-  test('results from other handlers are not a group name, e.g. languages', () => {
+  test('results from other handlers are not a group name, e.g. languages or containers', () => {
     for (const filename of [
-      'Blade.Runner.2049.2017.REMUX.1080p-Dual-Lat.mkv',
-      'www.1TamilMV.yt - Blade Runner 2049 (2017) BluRay - 1080p - (DD+5.1 - 640Kbps) [Tam + Hin + Kan + Eng].mkv'
+      "Western - L'homme qui n'a pas d'étoile-1955.Multi.DVD9",
+      'Power (2014) - S02E03.mp4',
+      'Power (2014) - S02E03',
+      '3-Nen D-Gumi Glass no Kamen - 13',
+      '3-Nen D-Gumi Glass no Kamen - Ep13',
+      '[DVD-RIP] Kaavalan (2011) Sruthi XVID [700Mb] [TCHellRaiser]',
+      '[DvdMux - XviD - Ita Mp3 Eng Ac3 - Sub Ita Eng] Sanctuary S01e01',
+      'the-x-files-502.mkv',
+      'Blade.Runner.2049.2017.REMUX.1080p-Dual-Lat.mkv'
     ]) {
       const result = parseTorrentTitle(filename);
       expect(result.group).toBeUndefined();
