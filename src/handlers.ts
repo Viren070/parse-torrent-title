@@ -1178,18 +1178,6 @@ export const handlers: Handler[] = [
     keepMatching: true
   },
 
-  // Group handler (lines 1523-1528 in handlers.go)
-  {
-    field: 'group',
-    process: regexMatchUntilValid(
-      /- ?([^\-. \[]+[^\-. \[)\]E\d][^\-. \[)\]]*)(?:\[[\w.-]+])?/i,
-      validateAnd(
-        validateNotMatch(/- ?(?:\d+$|S\d+|\d+x|ep?\d+|[^[]+]$)/i),
-        validateLookahead('(?:[ .]\\w{2,4}$|$)', 'i', true)
-      )
-    )
-  },
-
   // Size handler
   {
     field: 'size',
@@ -3379,17 +3367,17 @@ export const handlers: Handler[] = [
   },
   {
     field: 'group',
-    pattern: /\b(?:Erai-raws|Erai-raws\.com)\b/i,
-    transform: toValue('Erai-raws'),
+    pattern: /(?<=\W)\w+.?raws\b/i,
     remove: true
   },
   {
     field: 'group',
-    pattern: /^\[([^\[\]]+)]/
+    pattern: /^\[([^\[\]]+)](?!.*?-\W?\w+$)/
   },
   {
     field: 'group',
-    pattern: /\(([\w-]+)\)(?:$|\.\w{2,4}$)/
+    pattern:
+      /-\W?(?!\d+$|S\d+|\d+x|ep?\d+|[^[]+]$|\w+kbps|(?:MKV|AVI|MP4|WMV|MPG|MPEG)$)([^\-. \[]+[^\-. \[\(\)\]E\d][^\-. \[\(\)\]]*)(?:\[[\w.-]+])?(?=(?: ?\(1)?\)|\W+\w{2,4}$|$)/i
   },
   {
     field: 'group',

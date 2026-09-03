@@ -117,7 +117,7 @@ describe('Group Detection Tests', () => {
     const result = parseTorrentTitle(
       'Jujutsu Kaisen S02E01 2160p WEB H.265 AAC -Tsundere-Raws (B-Global).mkv'
     );
-    expect(result.group).toBe('B-Global');
+    expect(result.group).toBe('Tsundere-Raws');
   });
 
   test('not detect brackets group when it contains other parsed parameters', () => {
@@ -144,5 +144,68 @@ describe('Group Detection Tests', () => {
       '[ Torrent9.cz ] The.InBetween.S01E10.FiNAL.HDTV.XviD-EXTREME.avi'
     );
     expect(result.group).toBe('EXTREME');
+  });
+
+  test('HONE', () => {
+    const result = parseTorrentTitle(
+      'Honey Dont (2025) (2160p WEB-DL H265 SDR DDP Atmos 5.1 English - HONE) [REPACK].mkv'
+    );
+    expect(result.group).toBe('HONE');
+  });
+
+  test('HONE', () => {
+    const result = parseTorrentTitle(
+      'The Fantastic 4 - First Steps (2025) (2160p WEB-DL Hybrid H265 DV HDR DDP Atmos 5.1 English - HONE).mkv'
+    );
+    expect(result.group).toBe('HONE');
+  });
+
+  test('HONE', () => {
+    const result = parseTorrentTitle(
+      'Outer.Banks.2020.S04.(2160p.NF.WEB-DL.H265.DV.DDP.Atmos.5.1.English.-.HONE)'
+    );
+    expect(result.group).toBe('HONE');
+  });
+
+  test('HONE', () => {
+    const result = parseTorrentTitle(
+      'Turning.Point.-.The.Vietnam.War.2025.S01.(2160p.NF.WEB-DL.H265.SDR.DDP.5.1.English.-.HONE)'
+    );
+    expect(result.group).toBe('HONE');
+  });
+
+  test('TURG', () => {
+    const result = parseTorrentTitle(
+      'Ru.S01.1080p.GAIN.Web-DL.AAC.H.264.-.TURG'
+    );
+    expect(result.group).toBe('TURG');
+  });
+
+  test('group name enclosed in non-word characters', () => {
+    const result = parseTorrentTitle(
+      'Movie.Title.2023.2160p.BluRay.HEVC.DV.TrueHD.Atmos.7.1.iTA.ENG-GROUP-.mkv'
+    );
+    expect(result.group).toBe('GROUP');
+  });
+
+  test('duplicate file marked with a number', () => {
+    const result = parseTorrentTitle(
+      'Gravity Falls S02E20 - Weirdmageddon [1080p BLURAY H.264 AVC DTS] - TAXES(1).mkv'
+    );
+    expect(result.group).toBe('TAXES');
+  });
+
+  test('language is not a group name', () => {
+    const result = parseTorrentTitle(
+      'Blade.Runner.2049.2017.REMUX.1080p-Dual-Lat.mkv'
+    );
+    expect(result.group).toBeUndefined();
+  });
+
+  test('bitrate is not a group name', () => {
+    const result = parseTorrentTitle(
+      'www.1TamilMV.yt - Blade Runner 2049 (2017) BluRay - 1080p - (DD+5.1 - 640Kbps) [Tam + Hin + Kan + Eng].mkv'
+    );
+    expect(result.group).toBeUndefined();
   });
 });
