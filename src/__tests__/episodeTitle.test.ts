@@ -543,6 +543,6 @@ describe('Episode Title Detection Tests', () => {
     );
     expect(result.episodeTitle).toBe('All Good Things');
     expect(result.resolution).toBe('540p');
-    expect(result.network).toBe('Paramount');
+    expect(result.network).toBe('Paramount+');
   });
 });

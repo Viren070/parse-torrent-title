@@ -87,20 +87,36 @@ describe('Network Detection Tests', () => {
     expect(result.title).toBe('Futurama');
   });
 
-  test('Amazon 1', () => {
+  test('Prime Video 1', () => {
     const result = parseTorrentTitle(
       'Amazon.Queen.2021.720p.AMZN.WEBRip.800MB.x264-GalaxyRG'
     );
-    expect(result.network).toBe('Amazon');
+    expect(result.network).toBe('Prime Video');
     expect(result.title).toBe('Amazon Queen');
   });
 
-  test('Amazon 2', () => {
+  test('Prime Video 2', () => {
     const result = parseTorrentTitle(
       'The.Mummy.2017.1080p.AMZN.WEBRip.DD5.1.H.264-GalaxyRG'
     );
-    expect(result.network).toBe('Amazon');
+    expect(result.network).toBe('Prime Video');
     expect(result.title).toBe('The Mummy');
+  });
+
+  test('Prime Video 3', () => {
+    const result = parseTorrentTitle(
+      'Primal Survivor Escape The Amazon S06E05 720p HDTV x264-CBFM EZTV'
+    );
+    expect(result.network).toBeUndefined();
+    expect(result.title).toBe('Primal Survivor Escape The Amazon');
+  });
+
+  test('Prime Video 4', () => {
+    const result = parseTorrentTitle(
+      'Law and Order S05E20 Bad Faith 720p Amazon WEB-DL DD 2 0 H 264-TrollHD[TGx]'
+    );
+    expect(result.network).toBe('Prime Video');
+    expect(result.title).toBe('Law and Order');
   });
 
   test('iTunes 1', () => {
@@ -131,19 +147,35 @@ describe('Network Detection Tests', () => {
     const result = parseTorrentTitle(
       'Mike.And.Nick.And.Nick.And.Alice.2026.2160p.DSNP.WEB.DL.DDP5.1.Atmos.DV.HDR.H.265.FLUX.mkv'
     );
-    expect(result.network).toBe('Disney');
+    expect(result.network).toBe('Disney+');
     expect(result.title).toBe('Mike And Nick And Nick And Alice');
   });
 
-  test('Paramount+', () => {
+  test('Not Disney+', () => {
+    const result = parseTorrentTitle(
+      'Family.Guy.S18E04.Disney\'s.The.Reboot.1080p.HULU.WEB-DL.DD+5.1.H.264-CtrlHD'
+    );
+    expect(result.network).toBe('Hulu');
+    expect(result.title).toBe('Family Guy');
+  });
+
+  test('Paramount+ 1', () => {
     const result = parseTorrentTitle(
       'From.S01E07.All.Good.Things.540p.PMTP.WEB-DL.AAC2.0.H.264-lll'
     );
-    expect(result.network).toBe('Paramount');
+    expect(result.network).toBe('Paramount+');
     expect(result.title).toBe('From');
   });
 
-  test('Peacock', () => {
+  test('Paramount+ 2', () => {
+    const result = parseTorrentTitle(
+      'The.Neighborhood.S04.1080p.Paramount+.WEB-DL.DDP.5.1.H.264-CHDWEB'
+    );
+    expect(result.network).toBe('Paramount+');
+    expect(result.title).toBe('The Neighborhood');
+  });
+
+  test('Peacock 1', () => {
     const result = parseTorrentTitle(
       'Poker.Face.S01E01.1080p.PCOK.WEB-DL.DDP5.1.H.264-NTb'
     );
@@ -151,6 +183,22 @@ describe('Network Detection Tests', () => {
     expect(result.title).toBe('Poker Face');
   });
 
+  test('Peacock 2', () => {
+    const result = parseTorrentTitle(
+      'The.Bay.S01.1080p.Peacock.WEB-DL.AAC.2.0.H.264-CHDWEB'
+    );
+    expect(result.network).toBe('Peacock');
+    expect(result.title).toBe('The Bay');
+  });
+  
+  test('Not Peacock', () => {
+    const result = parseTorrentTitle(
+      'Peacock.2024.1080p.BluRay.x264-KNiVES'
+    );
+    expect(result.network).toBeUndefined();
+    expect(result.title).toBe('Peacock');
+  });
+  
   test('Crave', () => {
     const result = parseTorrentTitle(
       'Some.Show.S01E01.1080p.CRAV.WEB-DL.DDP5.1.H.264-NTb'
@@ -158,23 +206,39 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('Crave');
     expect(result.title).toBe('Some Show');
   });
-
-  test('AMC+', () => {
+  
+  test('Not Crave', () => {
+    const result = parseTorrentTitle(
+      'Crave.2012.1080p.BluRay.x264-SADPANDA'
+    );
+    expect(result.network).toBeUndefined();
+    expect(result.title).toBe('Crave');
+  });
+  
+  test('Sony Pictures Core', () => {
     const result = parseTorrentTitle(
       'Late.Night.with.the.Devil.2023.1080p.BCORE.WEB-DL.DDP5.1-NTb'
     );
-    expect(result.network).toBe('AMC+');
+    expect(result.network).toBe('Sony Pictures Core');
     expect(result.title).toBe('Late Night with the Devil');
   });
-
+  
+  test('Not Sony Pictures Core', () => {
+    const result = parseTorrentTitle(
+      'Deadliest.Catch.S22E06.Rocked.to.the.Core.1080p.WEB-DL.DDP2.0.H.264-Kitsune'
+    );
+    expect(result.network).toBeUndefined();
+    expect(result.title).toBe('Deadliest Catch');
+  });
+  
   test('Max is HBO', () => {
     const result = parseTorrentTitle(
       'Hard Knocks 2001 S23E01 1080p MAX WEB-DL DDP2 0 x264-NTb[EZTVx.to].mkv'
     );
-    expect(result.network).toBe('HBO');
+    expect(result.network).toBe('HBO Max');
     expect(result.title).toBe('Hard Knocks');
   });
-
+  
   test('Stan', () => {
     const result = parseTorrentTitle(
       'The.Rookie.S06E01.1080p.STAN.WEB-DL.DDP5.1.H.264-NTb'
@@ -182,8 +246,88 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('Stan');
     expect(result.title).toBe('The Rookie');
   });
-
   
+  test('Google TV', () => {
+    const result = parseTorrentTitle(
+      'The.Invite.2026.2160p.PLAY.WEB-DL.DDP5.1.H.265-SCOPE'
+    );
+    expect(result.network).toBe('Google TV');
+    expect(result.title).toBe('The Invite');
+  });
+  
+  test('Movies Anywhere', () => {
+    const result = parseTorrentTitle(
+      'Supergirl.2026.2160p.MA.WEB-DL.DDP5.1.Atmos.H.265-HONE'
+    );
+    expect(result.network).toBe('Movies Anywhere');
+    expect(result.title).toBe('Supergirl');
+  });
+  
+  test('Not Movies Anywhere', () => {
+    const result = parseTorrentTitle(
+      'Shelter.2026.2160p.UHD.BluRay.DTS-HD.MA.5.1.DV.HDR10P.x265-j3rico'
+    );
+    expect(result.network).toBeUndefined();
+    expect(result.title).toBe('Shelter');
+  });
+  
+  test('Showtime', () => {
+    const result = parseTorrentTitle(
+      'Ghosts.of.Beirut.2023.S01.(2160p.SHO.WEB-DL.H265.SDR.DDP.5.1.English.-.HONE)'
+    );
+    expect(result.network).toBe('Showtime');
+    expect(result.title).toBe('Ghosts of Beirut');
+  });
+  
+  test('SkyShowtime 1', () => {
+    const result = parseTorrentTitle(
+      'Let.the.Right.One.In.S01.1080p.Skyshowtime.WEB-DL.AAC2.0.H.264-CHDWEB'
+    );
+    expect(result.network).toBe('SkyShowtime');
+    expect(result.title).toBe('Let the Right One In');
+  });
+  
+  test('SkyShowtime 2', () => {
+    const result = parseTorrentTitle(
+      'Mission.Impossible.III.2006.2160p.SKST.WEB-DL.DD+5.1.HDR.H.265'
+    );
+    expect(result.network).toBe('SkyShowtime');
+    expect(result.title).toBe('Mission Impossible III');
+  });
+  
+  test('DC Universe', () => {
+    const result = parseTorrentTitle(
+      'Doom.Patrol.S01.2160p.DCU.WEB-DL.DD5.1.HDR.H.265-BTN'
+    );
+    expect(result.network).toBe('DC Universe');
+    expect(result.title).toBe('Doom Patrol');
+  });
+  
+  test('SYFY', () => {
+    const result = parseTorrentTitle(
+      'The.Ark.S02.1080p.SYFY.WEB-DL.AAC2.0.H.264-DoGSO'
+    );
+    expect(result.network).toBe('SYFY');
+    expect(result.title).toBe('The Ark');
+  });
+
+  test('Apple TV', () => {
+    const result = parseTorrentTitle(
+      'The.Martian.2015.2160p.ATVP.MGMP.WEB-DL.DD.5.1.H.265-PiRaTeS'
+    );
+    expect(result.network).toBe('Apple TV');
+    expect(result.title).toBe('The Martian');
+  });
+
+  test('MGM+', () => {
+    for (const filename of [
+      'Jack.Reacher.Never.Go.Back.2016.2160p.MGMP.WEB-DL.DDP5.1.H.265-PiRaTeS',
+      'Robin.Hood.2025.S01.MULTI.2160p.WEBRip.MGM+.SDR.x265.EAC3.5.1-Amen'
+    ]) {
+      const result = parseTorrentTitle(filename);
+      expect(result.network).toBe('MGM+');
+    }
+  });
 
   // Ambiguous tags must never eat a title word. Each of these is a real
   // release name whose title contains the tag.
