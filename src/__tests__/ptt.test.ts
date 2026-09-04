@@ -1334,7 +1334,8 @@ describe('Parse Torrent Title', () => {
         codec: 'hevc',
         hdr: ['DV', 'HDR'],
         subbed: true,
-        year: '2024'
+        year: '2024',
+        group: undefined
       }
     },
     {
@@ -1934,6 +1935,7 @@ describe('Parse Torrent Title - Anime Tests', () => {
     {
       title: 'Detective Conan season 1 to season 22 + season 23(incomplete)',
       expected: {
+        group: undefined,
         seasons: intRange(1, 22),
         title: 'Detective Conan'
       }

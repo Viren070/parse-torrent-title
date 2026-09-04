@@ -79,7 +79,7 @@ describe('Group Detection Tests', () => {
     expect(result.group).toBeUndefined();
   });
 
-  test('match trailing group name when retags are present at the start', () => {
+  test('match trailing group name when leading retags are present', () => {
     const result = parseTorrentTitle(
       '[Russ]Lords.Of.London.2014.XviD.H264.AC3-BladeBDP'
     );

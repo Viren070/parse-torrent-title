@@ -3366,31 +3366,12 @@ export const handlers: Handler[] = [
   },
   {
     field: 'group',
-    pattern: /^\[(?!\W{2})([^\[\]]+)\]/
-  },
-  {
-    field: 'group',
     pattern:
       /-\W?([^\W\d][^\W]*)(?:\W*\[[\w.-]+\])?(?=\W+(?:\w{2,4})?$|$)/
   },
   {
     field: 'group',
-    process: (title: string, m, result) => {
-      const re = /^\[.+]$/;
-      if (m.mValue && re.test(m.mValue)) {
-        const endIndex = m.mIndex + m.mValue.length;
-        // remove anime group match if some other parameter is contained in it, since it's a false positive.
-        for (const [key, km] of result.entries()) {
-          if (km.mIndex > 0 && km.mIndex < endIndex) {
-            m.value = null;
-            return m;
-          }
-        }
-      }
-      m.mIndex = 0;
-      m.mValue = '';
-      return m;
-    }
+    pattern: /^\[(?!\W{2})([^\[\]]+)\]/
   },
 
   // Extension handler
