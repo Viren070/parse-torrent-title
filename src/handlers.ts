@@ -389,13 +389,6 @@ export const handlers: Handler[] = [
     remove: true
   },
   {
-    field: 'editions',
-    pattern: /\bExtended[\.\s\-\+_\/(),]Director\W?s\b/i,
-    transform: toValueSet("Director's Cut"),
-    keepMatching: true,
-    remove: true
-  },
-  {
     // criterion collection
     field: 'editions',
     pattern: /\bCriterion\.Collection\b/i,
@@ -549,7 +542,7 @@ export const handlers: Handler[] = [
   // Hardcoded handler (lines 645-650 in handlers.go)
   {
     field: 'hardcoded',
-    pattern: /\bHC|HARDCODED\b/,
+    pattern: /\b(?:HC|HARDCODED)\b/,
     transform: toBoolean(),
     remove: true
   },
@@ -562,7 +555,7 @@ export const handlers: Handler[] = [
   // Proper handler (lines 652-657 in handlers.go)
   {
     field: 'proper',
-    pattern: /\b(?:REAL.)?PROPER\b/i,
+    pattern: /\b(?:REAL.)?PROPER\d?\b/i,
     transform: toBoolean(),
     remove: true
   },
@@ -570,7 +563,7 @@ export const handlers: Handler[] = [
   // Repack handler (lines 659-664 in handlers.go)
   {
     field: 'repack',
-    pattern: /\bREPACK|RERIP\b/i,
+    pattern: /\b(?:REPACK|RERIP)\d?\b/i,
     transform: toBoolean(),
     remove: true
   },
@@ -2240,7 +2233,7 @@ export const handlers: Handler[] = [
   // Spanish/Latino language handlers
   {
     field: 'languages',
-    pattern: /\bspanish\W?latin|american\W*(?:spa|esp?)/i,
+    pattern: /\b(?:spanish\W?latin|american\W*(?:spa|esp?))\b/i,
     transform: toValueSet('es-419'),
     keepMatching: true,
     remove: true,

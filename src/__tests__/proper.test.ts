@@ -15,6 +15,13 @@ describe('Proper Detection Tests', () => {
     expect(result.proper).toBe(true);
   });
 
+  test('Proper Iteration', () => {
+    const result = parseTorrentTitle(
+      'Leprechaun.1992.PROPER2.BluRay.1080p.TrueHD.5.1.AVC.REMUX-FraMeSToR'
+    );
+    expect(result.proper).toBe(true);
+  });
+
   test('not proper', () => {
     const result = parseTorrentTitle(
       'Have I Got News For You S53E02 EXTENDED 720p HDTV x264-QPEL'
