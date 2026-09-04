@@ -3366,12 +3366,11 @@ export const handlers: Handler[] = [
   },
   {
     field: 'group',
-    pattern:
-      /-\W?([^\W\d][^\W]*)(?:\W*\[[\w.-]+\])?(?=\W+(?:\w{2,4})?$|$)/
+    pattern: /-\W?([^\W\d][^\W]*)(?:\W*\[[\w.-]+\])?(?=\W+(?:\w{2,4})?$|$)/
   },
   {
     field: 'group',
-    pattern: /^\[(?!\W{2})([^\[\]]+)\]/
+    pattern: /^\[([^\[\]]+)\]/
   },
 
   // Extension handler
