@@ -3418,6 +3418,13 @@ export const handlers: Handler[] = [
     transform: toValue('SYFY'),
     remove: true
   },
+  {
+    field: 'network',
+    pattern: /(?<=\W{2})\b(?:MGM[P+]|EPIX)/i,
+    transform: toValue('MGM+'),
+    remove: true,
+    skipIfFirst: true
+  },
 
   // Group handlers (final)
   {

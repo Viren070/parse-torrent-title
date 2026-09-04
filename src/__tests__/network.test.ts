@@ -311,6 +311,24 @@ describe('Network Detection Tests', () => {
     expect(result.title).toBe('The Ark');
   });
 
+  test('Apple TV', () => {
+    const result = parseTorrentTitle(
+      'The.Martian.2015.2160p.ATVP.MGMP.WEB-DL.DD.5.1.H.265-PiRaTeS'
+    );
+    expect(result.network).toBe('Apple TV');
+    expect(result.title).toBe('The Martian');
+  });
+
+  test('MGM+', () => {
+    for (const filename of [
+      'Jack.Reacher.Never.Go.Back.2016.2160p.MGMP.WEB-DL.DDP5.1.H.265-PiRaTeS',
+      'Robin.Hood.2025.S01.MULTI.2160p.WEBRip.MGM+.SDR.x265.EAC3.5.1-Amen'
+    ]) {
+      const result = parseTorrentTitle(filename);
+      expect(result.network).toBe('MGM+');
+    }
+  });
+
   // Ambiguous tags must never eat a title word. Each of these is a real
   // release name whose title contains the tag.
   test('title words are not mistaken for network tags', () => {
