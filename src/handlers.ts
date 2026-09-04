@@ -3372,12 +3372,17 @@ export const handlers: Handler[] = [
   },
   {
     field: 'group',
-    pattern: /(?<=\W)\w+.?raws\b/i,
+    pattern: /\b(?:Erai-raws|Erai-raws\.com)\b/i,
+    transform: toValue('Erai-raws'),
     remove: true
   },
   {
     field: 'group',
     pattern: /^\[([^\[\]]+)]/
+  },
+  {
+    field: 'group',
+    pattern: /\(([\w-]+)\)(?:$|\.\w{2,4}$)/
   },
   {
     field: 'group',

@@ -113,11 +113,11 @@ describe('Group Detection Tests', () => {
     expect(result.group).toBe('BladeBDP');
   });
 
-  test('raws group', () => {
+  test('group in parenthesis', () => {
     const result = parseTorrentTitle(
       'Jujutsu Kaisen S02E01 2160p WEB H.265 AAC -Tsundere-Raws (B-Global).mkv'
     );
-    expect(result.group).toBe('Tsundere-Raws');
+    expect(result.group).toBe('B-Global');
   });
 
   test('not detect brackets group when it contains other parsed parameters', () => {
