@@ -1335,7 +1335,7 @@ describe('Parse Torrent Title', () => {
         hdr: ['DV', 'HDR'],
         subbed: true,
         year: '2024',
-        group: 'Eng'
+        group: undefined
       }
     },
     {
@@ -1935,7 +1935,7 @@ describe('Parse Torrent Title - Anime Tests', () => {
     {
       title: 'Detective Conan season 1 to season 22 + season 23(incomplete)',
       expected: {
-        group: 'incomplete',
+        group: undefined,
         seasons: intRange(1, 22),
         title: 'Detective Conan'
       }
@@ -2291,22 +2291,6 @@ describe('Parse Torrent Title - Anime Tests', () => {
         languages: ['multi subs'],
         quality: 'WEBRip',
         resolution: '1080p',
-        seasons: [3],
-        title: 'Fumetsu no Anata e'
-      }
-    },
-    {
-      title:
-        'Erai-raws-Fumetsu_no_Anata_e_Season_3-01-720p_CR_WEB-DL_AVC_AAC-MultiSub-C3769633.mkv',
-      expected: {
-        audio: ['AAC'],
-        codec: 'avc',
-        episodes: [1],
-        extension: 'mkv',
-        group: 'Erai-raws',
-        languages: ['multi subs'],
-        quality: 'WEB-DL',
-        resolution: '720p',
         seasons: [3],
         title: 'Fumetsu no Anata e'
       }

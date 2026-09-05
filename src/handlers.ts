@@ -1178,18 +1178,6 @@ export const handlers: Handler[] = [
     keepMatching: true
   },
 
-  // Group handler (lines 1523-1528 in handlers.go)
-  {
-    field: 'group',
-    process: regexMatchUntilValid(
-      /- ?([^\-. \[]+[^\-. \[)\]E\d][^\-. \[)\]]*)(?:\[[\w.-]+])?/i,
-      validateAnd(
-        validateNotMatch(/- ?(?:\d+$|S\d+|\d+x|ep?\d+|[^[]+]$)/i),
-        validateLookahead('(?:[ .]\\w{2,4}$|$)', 'i', true)
-      )
-    )
-  },
-
   // Size handler
   {
     field: 'size',
@@ -3374,41 +3362,15 @@ export const handlers: Handler[] = [
   // Group handlers (final)
   {
     field: 'group',
-    pattern: /\b(INFLATE|DEFLATE)\b/,
-    remove: true
+    pattern: /-\W?(\w+.?raws)\b/i
   },
   {
     field: 'group',
-    pattern: /\b(?:Erai-raws|Erai-raws\.com)\b/i,
-    transform: toValue('Erai-raws'),
-    remove: true
+    pattern: /-\W?([^\W]+)(?:\W*\[[\w.-]+\])?(?=\W+(?:\w{2,4})?$|$)/
   },
   {
     field: 'group',
-    pattern: /^\[([^\[\]]+)]/
-  },
-  {
-    field: 'group',
-    pattern: /\(([\w-]+)\)(?:$|\.\w{2,4}$)/
-  },
-  {
-    field: 'group',
-    process: (title: string, m, result) => {
-      const re = /^\[.+]$/;
-      if (m.mValue && re.test(m.mValue)) {
-        const endIndex = m.mIndex + m.mValue.length;
-        // remove anime group match if some other parameter is contained in it, since it's a false positive.
-        for (const [key, km] of result.entries()) {
-          if (km.mIndex > 0 && km.mIndex < endIndex) {
-            m.value = null;
-            return m;
-          }
-        }
-      }
-      m.mIndex = 0;
-      m.mValue = '';
-      return m;
-    }
+    pattern: /^\[([^\[\]]+)\]/
   },
 
   // Extension handler
