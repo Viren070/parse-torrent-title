@@ -137,4 +137,11 @@ describe('Group Detection Tests', () => {
       expect(result.group).toBeUndefined();
     }
   });
+
+  test('group name starts with a digit', () => {
+    const result = parseTorrentTitle(
+      'Andrey.Rublyov.1966.Directors.Cut.Hybrid.1080p.BluRay.FLAC1.0.x264-0BSiDiAN'
+    );
+    expect(result.group).toBe('0BSiDiAN');
+  });
 });
