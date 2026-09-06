@@ -92,7 +92,7 @@ export const handlers: Handler[] = [
     skipFromTitle: true
   },
 
-  // 20-40 group handler, placed before episode handlers to prevent matching as episodes
+  // Group edge-case 1 (placed before episode handlers to prevent matching as episodes)
   {
     field: 'group',
     pattern: /\b(20-40)\b$/,
@@ -3359,11 +3359,13 @@ export const handlers: Handler[] = [
     remove: true
   },
 
-  // Group handlers (final)
+  // Group edge-case 2
   {
     field: 'group',
     pattern: /-\W?(\w+.?raws)\b/i
   },
+  
+  // Group handlers
   {
     field: 'group',
     pattern: /-\W?([^\W]+)(?:\W*\[[\w.-]+\])?(?=\W+(?:\w{2,4})?$|$)/
