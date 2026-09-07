@@ -1687,7 +1687,7 @@ describe('Parse Torrent Title - Edge Cases', () => {
         codec: 'x264',
         audio: ['DDP'],
         channels: ['5.1'],
-        group: 'gb',
+        group: undefined,
         languages: ['ta'],
         resolution: '1080p',
         title: 'deiva-thirumagal',

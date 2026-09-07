@@ -51,13 +51,6 @@ describe('Group Detection Tests', () => {
     expect(result.group).toBe('Mazui');
   });
 
-  test('anime group in brackets with numbers', () => {
-    const result = parseTorrentTitle(
-      '[H3] Hunter x Hunter - 38 [1280x720] [x264]'
-    );
-    expect(result.group).toBe('H3');
-  });
-
   test('anime group in brackets with spaces', () => {
     const result = parseTorrentTitle(
       '[KNK E MMS Fansubs] Nisekoi - 20 Final [PT-BR].mkv'
@@ -137,11 +130,24 @@ describe('Group Detection Tests', () => {
       expect(result.group).toBeUndefined();
     }
   });
-
-  test('group name starts with a digit', () => {
-    const result = parseTorrentTitle(
-      'Andrey.Rublyov.1966.Directors.Cut.Hybrid.1080p.BluRay.FLAC1.0.x264-0BSiDiAN'
-    );
-    expect(result.group).toBe('0BSiDiAN');
+  
+  test('group names including digits', () => {
+    for (const [filename, group] of [
+      [
+        '[H3] Hunter x Hunter - 38 [1280x720] [x264]',
+        'H3'
+      ],
+      [
+        'Andrey.Rublyov.1966.Directors.Cut.Hybrid.1080p.BluRay.FLAC1.0.x264-0BSiDiAN',
+        '0BSiDiAN'
+      ],
+      [
+        'The.Legend.of.Vox.Machina.S04E12.MULTi.1080p.AMZN.WEB-DL.H264.DDP5.1-K83.mkv',
+        'K83'
+      ]
+    ]) {
+      const result = parseTorrentTitle(filename);
+      expect(result.group).toBe(group);
+    }
   });
 });
