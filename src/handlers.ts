@@ -3368,7 +3368,7 @@ export const handlers: Handler[] = [
   // Group handlers
   {
     field: 'group',
-    pattern: /-\W?([^\W]+)(?:\W*\[[\w.-]+\])?(?=\W+(?:\w{2,4})?$|$)/
+    pattern: /-\W?([^\W]+)(?:\W*\[[\w.-]+\]|\s?\(\d\))?(?=\W+(?:\w{2,4})?$|$)/
   },
   {
     field: 'group',

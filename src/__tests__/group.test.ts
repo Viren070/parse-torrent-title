@@ -150,4 +150,11 @@ describe('Group Detection Tests', () => {
       expect(result.group).toBe(group);
     }
   });
+
+  test('duplicate renamed releases', () => {
+    const result = parseTorrentTitle(
+      'Gravity Falls S02E20 - Weirdmageddon [1080p BLURAY H.264 AVC DTS] - TAXES (1).mkv'
+    );
+    expect(result.group).toBe('TAXES');
+  });
 });
