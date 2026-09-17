@@ -1,13 +1,6 @@
 import { parseTorrentTitle } from '../index';
 
 describe('Group Detection Tests', () => {
-  test('HD2', () => {
-    const result = parseTorrentTitle(
-      'Nocturnal Animals 2016 VFF 1080p BluRay DTS HEVC-HD2'
-    );
-    expect(result.group).toBe('HD2');
-  });
-
   test('HDH', () => {
     const result = parseTorrentTitle(
       'Gold 2016 1080p BluRay DTS-HD MA 5 1 x264-HDH'
@@ -133,6 +126,10 @@ describe('Group Detection Tests', () => {
   
   test('group names including digits', () => {
     for (const [filename, group] of [
+      [
+        'Nocturnal Animals 2016 VFF 1080p BluRay DTS HEVC-HD2',
+        'HD2'
+      ],
       [
         '[H3] Hunter x Hunter - 38 [1280x720] [x264]',
         'H3'
