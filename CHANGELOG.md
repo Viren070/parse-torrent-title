@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.0](https://github.com/Viren070/parse-torrent-title/compare/v0.8.8...v0.9.0) (2026-09-18)
+
+
+### Features
+
+* improve general streaming platform support ([#59](https://github.com/Viren070/parse-torrent-title/issues/59)) ([4747f61](https://github.com/Viren070/parse-torrent-title/commit/4747f615e6944e6a93f6e345ddc740694428b9f7))
+* rework release group detection ([7ed1533](https://github.com/Viren070/parse-torrent-title/commit/7ed15337691479c724d8b36c9a540a67de28f1a3)), closes [#63](https://github.com/Viren070/parse-torrent-title/issues/63)
+
+
+### Bug Fixes
+
+* detect numbered PROPER and RERIP releases ([fce0d16](https://github.com/Viren070/parse-torrent-title/commit/fce0d1629f64b87719de454756492480ecc9aa02))
+* only match HC as a whole word for hardcoded ([fce0d16](https://github.com/Viren070/parse-torrent-title/commit/fce0d1629f64b87719de454756492480ecc9aa02))
+* report Extended Edition alongside Director's Cut ([fce0d16](https://github.com/Viren070/parse-torrent-title/commit/fce0d1629f64b87719de454756492480ecc9aa02))
+* stop es-419 matching words that start with "es" ([fce0d16](https://github.com/Viren070/parse-torrent-title/commit/fce0d1629f64b87719de454756492480ecc9aa02))
+* tighten release tag and language patterns ([#60](https://github.com/Viren070/parse-torrent-title/issues/60)) ([fce0d16](https://github.com/Viren070/parse-torrent-title/commit/fce0d1629f64b87719de454756492480ecc9aa02))
+
 ## [0.8.8](https://github.com/Viren070/parse-torrent-title/compare/v0.8.7...v0.8.8) (2026-08-27)
 
 
