@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.1](https://github.com/Viren070/parse-torrent-title/compare/v0.9.0...v0.9.1) (2026-09-18)
+
+
+### Bug Fixes
+
+* find release group before removed tags and stray hyphens ([4ebab92](https://github.com/Viren070/parse-torrent-title/commit/4ebab9234bc18bbb348b2478553dd45dd435f437))
+* only match spanish short season tag at a word start ([f007cbb](https://github.com/Viren070/parse-torrent-title/commit/f007cbb9c42e8e0c182fe37576311b56e9ac282e))
+
 ## [0.9.0](https://github.com/Viren070/parse-torrent-title/compare/v0.8.8...v0.9.0) (2026-09-18)
 
 
