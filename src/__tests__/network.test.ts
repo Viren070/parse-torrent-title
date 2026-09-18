@@ -71,6 +71,14 @@ describe('Network Detection Tests', () => {
     expect(result.title).toBe('Guilty');
   });
 
+  test('Not Netflix', () => {
+    const result = parseTorrentTitle(
+      'Childs.Play.1988.NFOFiX.PROPER.REPACK.DVDRip.XviD-zXx'
+    );
+    expect(result.network).toBeUndefined();
+    expect(result.title).toBe('Childs Play');
+  });
+
   test('Hulu 1', () => {
     const result = parseTorrentTitle(
       'The.Bear.S03.COMPLETE.1080p.HULU.WEB.H264-SuccessfulCrab[TGx]'
@@ -117,6 +125,14 @@ describe('Network Detection Tests', () => {
     );
     expect(result.network).toBe('Prime Video');
     expect(result.title).toBe('Law and Order');
+  });
+
+  test('Prime Video after an episode title', () => {
+    const result = parseTorrentTitle(
+      'Fallout.S01E01.The.End.AMZN.WEB-DL.AAC2.0.H.264-BTW'
+    );
+    expect(result.network).toBe('Prime Video');
+    expect(result.episodeTitle).toBe('The End');
   });
 
   test('iTunes 1', () => {
@@ -254,6 +270,14 @@ describe('Network Detection Tests', () => {
     expect(result.network).toBe('Google TV');
     expect(result.title).toBe('The Invite');
   });
+
+  test('episode title starting with a tag word', () => {
+    const result = parseTorrentTitle(
+      'Suits - S01E07 - Play the Man - Bluray-720p'
+    );
+    expect(result.network).toBeUndefined();
+    expect(result.episodeTitle).toBe('Play the Man');
+  });
   
   test('Movies Anywhere', () => {
     const result = parseTorrentTitle(
@@ -345,6 +369,7 @@ describe('Network Detection Tests', () => {
         'Stan Against Evil'
       ],
       ['Crave.2012.1080p.BluRay.x264-SADPANDA', 'Crave'],
+      ['Ma.2019.1080p.BluRay.REMUX.AVC.DTS-HD.MA.5.1-EPSiLON', 'Ma'],
     ]) {
       const result = parseTorrentTitle(title);
       expect(result.network).toBeUndefined();

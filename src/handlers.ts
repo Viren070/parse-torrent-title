@@ -3213,7 +3213,7 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /(?<=\W{2})\b(?:AMZN|Amazon.?(?:HD)?)\b/i,
+    pattern: /\bAMZN\b|(?<=\W{2})\bAmazon(?:.?HD)?(?=\W{2})/i,
     transform: toValue('Prime Video'),
     remove: true,
     skipIfFirst: true
@@ -3233,16 +3233,17 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /(?<=\W{2})(?:\bDSN[YP]\b|\bDisney\+?)/i,
+    pattern: /\bDSNY?P?\b|(?<=\W{2})\bDisney\+?(?=\W{2})/i,
     transform: toValue('Disney+'),
     remove: true,
     skipIfFirst: true
   },
   {
     field: 'network',
-    pattern: /\bSHO\b/i,
+    pattern: /\bSHO\b|(?<=\W{2})\bSHOWTIME(?=\W{2})/i,
     transform: toValue('Showtime'),
-    remove: true
+    remove: true,
+    skipIfFirst: true
   },
   {
     field: 'network',
@@ -3258,21 +3259,21 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /(?<=\W{2})\b(?:PCOK|Peacock)\b/i,
+    pattern: /\bPCOK\b|(?<=\W{2})\bPeacock(?=\W{2})/i,
     transform: toValue('Peacock'),
     remove: true,
     skipIfFirst: true
   },
   {
     field: 'network',
-    pattern: /(?<=\W{2})\bCRAVE?\b/i,
+    pattern: /\bCRAV\b|(?<=\W{2})\bCRAVE(?=\W{2})/i,
     transform: toValue('Crave'),
     remove: true,
     skipIfFirst: true
   },
   {
     field: 'network',
-    pattern: /(?<=\W{2})\bB?CORE\b/i,
+    pattern: /\bBCORE\b|(?<=\W{2})\bCORE(?=\W{2})/i,
     transform: toValue('Sony Pictures Core'),
     remove: true,
     skipIfFirst: true
@@ -3389,16 +3390,17 @@ export const handlers: Handler[] = [
   },
   {
     field: 'network',
-    pattern: /(?<=\W{2})\bG?PLAY\b/i,
+    pattern: /(?<=\W{2})\bG?PLAY(?=\W{2})/i,
     transform: toValue('Google TV'),
     remove: true,
     skipIfFirst: true
   },
   {
     field: 'network',
-    pattern: /\b(?:MA|YKW)\b/i,
+    pattern: /(?<=\W{2})\b(?:MA|YKW)(?=\W{2})/i,
     transform: toValue('Movies Anywhere'),
-    remove: true
+    remove: true,
+    skipIfFirst: true
   },
   {
     field: 'network',
