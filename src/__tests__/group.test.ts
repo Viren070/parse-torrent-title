@@ -72,7 +72,7 @@ describe('Group Detection Tests', () => {
     expect(result.group).toBe('BladeBDP');
   });
 
-  test('group in parenthesis', () => {
+  test('raws group edge-case', () => {
     const result = parseTorrentTitle(
       'Jujutsu Kaisen S02E01 2160p WEB H.265 AAC -Tsundere-Raws (B-Global).mkv'
     );
@@ -107,7 +107,7 @@ describe('Group Detection Tests', () => {
     expect(result.group).toBe('TURG');
   });
 
-  test('results from other handlers are not a group name, e.g. languages or containers', () => {
+  test('results parsable as any other field are not a group name, e.g. languages or containers', () => {
     for (const filename of [
       "Western - L'homme qui n'a pas d'étoile-1955.Multi.DVD9",
       'Power (2014) - S02E03.mp4',
@@ -124,24 +124,12 @@ describe('Group Detection Tests', () => {
     }
   });
   
-  test('group names including digits', () => {
+  test('group names containing digits', () => {
     for (const [filename, group] of [
-      [
-        'Nocturnal Animals 2016 VFF 1080p BluRay DTS HEVC-HD2',
-        'HD2'
-      ],
-      [
-        '[H3] Hunter x Hunter - 38 [1280x720] [x264]',
-        'H3'
-      ],
-      [
-        'Andrey.Rublyov.1966.Directors.Cut.Hybrid.1080p.BluRay.FLAC1.0.x264-0BSiDiAN',
-        '0BSiDiAN'
-      ],
-      [
-        'The.Legend.of.Vox.Machina.S04E12.MULTi.1080p.AMZN.WEB-DL.H264.DDP5.1-K83.mkv',
-        'K83'
-      ]
+      ['Nocturnal Animals 2016 VFF 1080p BluRay DTS HEVC-HD2', 'HD2'],
+      ['[H3] Hunter x Hunter - 38 [1280x720] [x264]', 'H3'],
+      ['Andrey.Rublyov.1966.Directors.Cut.Hybrid.1080p.BluRay.FLAC1.0.x264-0BSiDiAN', '0BSiDiAN'],
+      ['The.Legend.of.Vox.Machina.S04E12.MULTi.1080p.AMZN.WEB-DL.H264.DDP5.1-K83.mkv', 'K83']
     ]) {
       const result = parseTorrentTitle(filename);
       expect(result.group).toBe(group);
