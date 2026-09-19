@@ -226,6 +226,12 @@ describe('Language Detection Tests', () => {
     ['House.S07E01.720p.HDTV.BGAUDIO.X264-DIMENSION', ['bg']],
     ['18_srp.srt', ['sr']],
     ['Aranyelet.S01.HUNGARIAN.1080p.WEBRip.DDP5.1.x264-SbR[rartv]', ['hu']],
+    ['Some.Movie.2020.EN.HU.DE.FR.1080p.WEB-DL.mkv', ['en', 'fr', 'de', 'hu']],
+    [
+      'Mommie Dearest [1981 PAL DVD][En.Hu.Fr.It.Es Multisubs[18]',
+      ['multi subs', 'en', 'fr', 'es', 'it', 'hu']
+    ],
+    ['12_hu.srt', ['hu']],
     [
       'Ponyo[2008]DvDrip-H264 Quad Audio[Eng Jap Fre Spa]AC3 5.1[DXO]',
       ['en', 'ja', 'fr', 'es']
@@ -550,6 +556,65 @@ describe('Language Detection Tests', () => {
         expect(result.languages).toEqual(expected);
       }
     });
+  });
+
+  // `hu` is a word in its own right, so a bare HU only counts as Hungarian
+  // when it sits in a run of language codes, the same rule `de` follows.
+  const notHungarian: string[] = [
+    'Beyblade.Metal.Masters.S02E17.We.Meet.Again.Wang.Hu.Zhong.1080p.ROKU.WEB-DL.AAC2.0.H.264.mp4',
+    'Beyblade Metal Masters - 17 - We Meet Again! Wang Hu Zhong.mkv',
+    'Hu.Jintao.Documentary.2010.1080p.WEB-DL.mkv',
+    '[www.Naruto-Kun.Hu] Dragon Ball Z - 001.mkv'
+  ];
+
+  notHungarian.forEach((title) => {
+    test(`does not read a bare Hu as Hungarian (${title})`, () => {
+      expect(parseTorrentTitle(title).languages).toBeUndefined();
+    });
+  });
+
+  // `Pt 2` abbreviates Part. Reading it as Portuguese also removed it from
+  // the episode title, so the part number was lost along with it.
+  const partNotPortuguese: [string, string][] = [
+    [
+      'The.Office.US.S02E10.Christmas.Party.Pt.2.1080p.WEB-DL.mkv',
+      'Christmas Party Pt 2'
+    ],
+    [
+      'Doctor.Who.S04E12.The.Stolen.Earth.Pt.2.720p.HDTV.x264.mkv',
+      'The Stolen Earth Pt 2'
+    ],
+    [
+      'Some.Show.S01E05.The.Reckoning.Pt.1.1080p.WEB-DL.mkv',
+      'The Reckoning Pt 1'
+    ]
+  ];
+
+  partNotPortuguese.forEach(([title, episodeTitle]) => {
+    test(`reads Pt before a number as Part, not Portuguese (${title})`, () => {
+      const result = parseTorrentTitle(title);
+      expect(result.languages).toBeUndefined();
+      expect(result.episodeTitle).toBe(episodeTitle);
+    });
+  });
+
+  // `nor` is an English conjunction, so the code is matched case-sensitively,
+  // the same rule `tha` follows.
+  const notNorwegian: string[] = [
+    'Some.Show.S01E05.Neither.Fish.Nor.Fowl.1080p.WEB-DL.mkv',
+    'Blackadder.S02E03.Nor.The.Years.Condemn.720p.WEB-DL.mkv'
+  ];
+
+  notNorwegian.forEach((title) => {
+    test(`does not read the conjunction Nor as Norwegian (${title})`, () => {
+      expect(parseTorrentTitle(title).languages).toBeUndefined();
+    });
+  });
+
+  test('still reads an uppercase NOR tag as Norwegian', () => {
+    expect(
+      parseTorrentTitle('Some.Movie.2019.NOR.1080p.BluRay.x264.mkv').languages
+    ).toEqual(['no']);
   });
 
   // Special test for title preservation
