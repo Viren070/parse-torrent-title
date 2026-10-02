@@ -628,6 +628,34 @@ describe('parseTorrentTitle - seasons', () => {
     expect(result.episodes).toBeUndefined();
   });
 
+  test('Игра престолов / Сезоны 1-8 / Game of Thrones', () => {
+    const result = parseTorrentTitle(
+      'Игра престолов / Сезоны 1-8 / Game of Thrones'
+    );
+    expect(result.seasons).toEqual(intRange(1, 8));
+    expect(result.episodes).toBeUndefined();
+  });
+
+  test('Игра престолов / Сезоны: 1-8', () => {
+    const result = parseTorrentTitle('Игра престолов / Сезоны: 1-8');
+    expect(result.seasons).toEqual(intRange(1, 8));
+    expect(result.episodes).toBeUndefined();
+  });
+
+  test('Игра престолов (Сезоны 1-8: 1-73 серии из 73)', () => {
+    const result = parseTorrentTitle(
+      'Игра престолов (Сезоны 1-8: 1-73 серии из 73)'
+    );
+    expect(result.seasons).toEqual(intRange(1, 8));
+    expect(result.episodes).toEqual(intRange(1, 73));
+  });
+
+  test('Игра престолов / Сезоны 1, 2, 3', () => {
+    const result = parseTorrentTitle('Игра престолов / Сезоны 1, 2, 3');
+    expect(result.seasons).toEqual([1, 2, 3]);
+    expect(result.episodes).toBeUndefined();
+  });
+
   test('House MD All Seasons (1-8) 720p Ultra-Compressed', () => {
     const result = parseTorrentTitle(
       'House MD All Seasons (1-8) 720p Ultra-Compressed'
