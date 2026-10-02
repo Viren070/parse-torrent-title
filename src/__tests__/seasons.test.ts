@@ -592,6 +592,42 @@ describe('parseTorrentTitle - seasons', () => {
     expect(result.seasons).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
   });
 
+  test('Игра Престолов 1 сезон (1-10 серии из 10) / Game of Thrones / 2011', () => {
+    const result = parseTorrentTitle(
+      'Игра Престолов 1 сезон (1-10 серии из 10) / Game of Thrones / 2011'
+    );
+    expect(result.seasons).toEqual([1]);
+    expect(result.episodes).toEqual(intRange(1, 10));
+  });
+
+  test('Игра престолов (2 сезон: 1-10 серии из 10)', () => {
+    const result = parseTorrentTitle(
+      'Игра престолов (2 сезон: 1-10 серии из 10)'
+    );
+    expect(result.seasons).toEqual([2]);
+    expect(result.episodes).toEqual(intRange(1, 10));
+  });
+
+  test('Игра Престолов 2 сезон 1-10 серия', () => {
+    const result = parseTorrentTitle('Игра Престолов 2 сезон 1-10 серия');
+    expect(result.seasons).toEqual([2]);
+    expect(result.episodes).toEqual(intRange(1, 10));
+  });
+
+  test('Во все тяжкие (5 сезон: 1-16 серии из 16)', () => {
+    const result = parseTorrentTitle(
+      'Во все тяжкие (5 сезон: 1-16 серии из 16)'
+    );
+    expect(result.seasons).toEqual([5]);
+    expect(result.episodes).toEqual(intRange(1, 16));
+  });
+
+  test('Игра престолов / Сезон: 1-8', () => {
+    const result = parseTorrentTitle('Игра престолов / Сезон: 1-8');
+    expect(result.seasons).toEqual(intRange(1, 8));
+    expect(result.episodes).toBeUndefined();
+  });
+
   test('House MD All Seasons (1-8) 720p Ultra-Compressed', () => {
     const result = parseTorrentTitle(
       'House MD All Seasons (1-8) 720p Ultra-Compressed'

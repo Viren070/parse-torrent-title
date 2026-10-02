@@ -1368,7 +1368,7 @@ export const handlers: Handler[] = [
   {
     field: 'seasons',
     pattern:
-      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons|[Сс]езони?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2}[. -]+)+0?[1-9]\d?\b)[)\]]?/i,
+      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons|[Сс]езони?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2}[. -]+)+0?[1-9]\d?\b)(?![. ]*(?:[Сс]ер|[Ээ]пиз))[)\]]?/i,
     transform: toIntRange(),
     remove: true
   },
