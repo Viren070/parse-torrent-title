@@ -1362,13 +1362,13 @@ export const handlers: Handler[] = [
   {
     field: 'seasons',
     pattern:
-      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons?|[Сс]езони?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2} ?(?:[,/\\&]+ ?)+)+\d{1,2}\b)[)\]]?/i,
+      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons?|[Сс]езон[иы]?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2} ?(?:[,/\\&]+ ?)+)+\d{1,2}\b)[)\]]?/i,
     transform: toIntRange()
   },
   {
     field: 'seasons',
     pattern:
-      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons|[Сс]езони?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2}[. -]+)+0?[1-9]\d?\b)[)\]]?/i,
+      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons|[Сс]езон[иы]?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2}[. -]+)+0?[1-9]\d?\b)(?![. ]*(?:[Сс]ер|[Ээ]пиз))[)\]]?/i,
     transform: toIntRange(),
     remove: true
   },
@@ -1666,9 +1666,9 @@ export const handlers: Handler[] = [
   {
     field: 'episodes',
     pattern:
-      /(?:(?:seasons?|[Сс]езони?)\P{L}*)?(?:[ .(\[-]|^)(\d{1,3}(?:[ .]?[,&+~][ .]?\d{1,3})+)(?:[ .)\]-]|$)/iu,
+      /(?:(?:seasons?|[Сс]езон[иы]?)\P{L}*)?(?:[ .(\[-]|^)(\d{1,3}(?:[ .]?[,&+~][ .]?\d{1,3})+)(?:[ .)\]-]|$)/iu,
     validateMatch: validateAnd(
-      validateNotMatch(/(?:(?:seasons?|[Сс]езони?)\P{L}*)/iu),
+      validateNotMatch(/(?:(?:seasons?|[Сс]езон[иы]?)\P{L}*)/iu),
       (input: string, idxs: number[]): boolean => {
         // Reject captures that are fragments of decimal figures
         const capStart = idxs[2];
@@ -1690,9 +1690,9 @@ export const handlers: Handler[] = [
   {
     field: 'episodes',
     pattern:
-      /(?:(?:seasons?|[Сс]езони?)\P{L}*)?(?:20-20)?(?:[ .(\[-]|^)(\d{1,4}(?:-\d{1,4})+)(?:[ .)(\]]|[+-]\D|$)/iu,
+      /(?:(?:seasons?|[Сс]езон[иы]?)\P{L}*)?(?:20-20)?(?:[ .(\[-]|^)(\d{1,4}(?:-\d{1,4})+)(?:[ .)(\]]|[+-]\D|$)/iu,
     validateMatch: validateAnd(
-      validateNotMatch(/(?:seasons?|[Сс]езони?)\P{L}*|^(?:20-20)/iu),
+      validateNotMatch(/(?:seasons?|[Сс]езон[иы]?)\P{L}*|^(?:20-20)/iu),
       validateOr(
         validateLookbehind('Tatsuki[\\s._-]Fujimoto', 'i', false),
         validateNotMatch(/\b17-26\b/)
