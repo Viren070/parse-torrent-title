@@ -1416,6 +1416,13 @@ export const handlers: Handler[] = [
   },
   {
     field: 'seasons',
+    pattern:
+      /(?<!\d)(\d{1,2} ?[-–] ?\d{1,2})[. _]?[Сс]езон(?:[иы]|ов)?(?:\P{L}?\D|$)/iu,
+    transform: toIntRange(),
+    remove: true
+  },
+  {
+    field: 'seasons',
     pattern: /(\d{1,2})(?:-?й)?[. _]?(?:[Сс]езон|sez(?:on)?)(?:\P{L}?\D|$)/iu,
     transform: toIntArray(),
     remove: true

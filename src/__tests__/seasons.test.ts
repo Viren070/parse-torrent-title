@@ -860,4 +860,47 @@ describe('parseTorrentTitle - seasons', () => {
     );
     expect(result.seasons).toBeUndefined();
   });
+
+  test('Игра престолов (1-8 сезон) / Game of Thrones', () => {
+    const result = parseTorrentTitle(
+      'Игра престолов (1-8 сезон) / Game of Thrones'
+    );
+    expect(result.seasons).toEqual(intRange(1, 8));
+    expect(result.episodes).toBeUndefined();
+    expect(result.title).toBe('Игра престолов');
+  });
+
+  test('Игра престолов (1-8 сезоны) / Game of Thrones', () => {
+    const result = parseTorrentTitle(
+      'Игра престолов (1-8 сезоны) / Game of Thrones'
+    );
+    expect(result.seasons).toEqual(intRange(1, 8));
+    expect(result.episodes).toBeUndefined();
+    expect(result.title).toBe('Игра престолов');
+  });
+
+  test('Игра престолов (1-8 сезонов) / Game of Thrones', () => {
+    const result = parseTorrentTitle(
+      'Игра престолов (1-8 сезонов) / Game of Thrones'
+    );
+    expect(result.seasons).toEqual(intRange(1, 8));
+    expect(result.episodes).toBeUndefined();
+    expect(result.title).toBe('Игра престолов');
+  });
+
+  test('Игра престолов 2 сезон', () => {
+    const result = parseTorrentTitle('Игра престолов 2 сезон');
+    expect(result.seasons).toEqual([2]);
+  });
+
+  test('5-й сезон 09-я серия', () => {
+    const result = parseTorrentTitle('5-й сезон 09-я серия');
+    expect(result.seasons).toEqual([5]);
+    expect(result.episodes).toEqual([9]);
+  });
+
+  test('Игра престолов (2008-2011)', () => {
+    const result = parseTorrentTitle('Игра престолов (2008-2011)');
+    expect(result.seasons).toBeUndefined();
+  });
 });
