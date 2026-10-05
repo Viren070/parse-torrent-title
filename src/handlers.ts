@@ -1566,7 +1566,7 @@ export const handlers: Handler[] = [
    */
   {
     field: 'seasons',
-    pattern: /[\[\(]ТВ-(\d{1,2})[\)\]]/i,
+    pattern: /[\[\(]ТВ-(\d{1,2})(?:[\)\]]|,(?!\s*(?:ТВ-|\d)))/i,
     transform: toIntArray()
   },
 
