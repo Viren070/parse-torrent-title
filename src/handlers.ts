@@ -1875,6 +1875,13 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
+    // An episode range with an em dash: "Магическая битва [ТВ-3] (1—5)", "One Piece (1—1160)"
+    pattern: /(?<!(?:specials?|ova|ona|sp)[ .]?)\((\d{1,4}[—–]\d{1,4})\)/i,
+    validateMatch: validateNotMatch(/\((?:19|20)\d{2}[—–](?:19|20)\d{2}\)/),
+    transform: toIntRange()
+  },
+  {
+    field: 'episodes',
     process: (title: string, m, result) => {
       if (m.value !== null && m.value !== undefined) {
         return m;
