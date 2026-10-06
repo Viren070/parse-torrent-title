@@ -1336,6 +1336,12 @@ export const handlers: Handler[] = [
   // Batch 7: Seasons handlers (lines 1727-1868 in handlers.go)
   {
     field: 'seasons',
+    // A season range before the episodes: "[01-04x01-75 из 87]", "[S01-02x01-78]"
+    pattern: /[\[(]S?(\d{1,2}[ .]?-[ .]?S?\d{1,2})[ .]?[xх][ .]?\d{1,4}/i,
+    transform: toIntRange()
+  },
+  {
+    field: 'seasons',
     pattern:
       /(?:complete\W|seasons?\W|\W|^)((?:s\d{1,2}[., +/\\&-]+)+s\d{1,2}\b)/i,
     transform: toIntRange(),
@@ -1462,7 +1468,11 @@ export const handlers: Handler[] = [
     field: 'seasons',
     pattern:
       /(?:(?:\bthe\W)?\bcomplete)?(?:\W|^)so?([01]?[0-5]?[1-9])(?:[\Wex]|\d{2}\b)/i,
-    validateMatch: validateNotStartSpaced(),
+    validateMatch: validateAnd(
+      validateNotStartSpaced(),
+      // the start of a season range "[S01-02x01-78]"
+      validateLookahead('\\d{1,2}[ .]?[xх]', 'i', false)
+    ),
     transform: toIntArray(),
     keepMatching: true
   },
@@ -1541,7 +1551,9 @@ export const handlers: Handler[] = [
       /(?:(?:\bthe\W)?\bcomplete)?(?:[a-z])?\bs(\d{1,3})(?:[\Wex]|\d{2}\b|$)/i,
     validateMatch: validateAnd(
       validateNotMatch(/(?:[a-z])\bs\d{1,3}/i),
-      validateNotStartSpaced()
+      validateNotStartSpaced(),
+      // the start of a season range "[S01-02x01-78]"
+      validateLookahead('\\d{1,2}[ .]?[xх]', 'i', false)
     ),
     transform: toIntArray(),
     keepMatching: true
