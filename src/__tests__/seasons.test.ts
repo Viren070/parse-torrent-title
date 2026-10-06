@@ -656,6 +656,73 @@ describe('parseTorrentTitle - seasons', () => {
     expect(result.episodes).toBeUndefined();
   });
 
+  test('Клан Сопрано 2 сезон (1-13 из 13) / The Sopranos (2000) WEB-DL', () => {
+    const result = parseTorrentTitle(
+      'Клан Сопрано 2 сезон (1-13 из 13) / The Sopranos (2000) WEB-DL'
+    );
+    expect(result.seasons).toEqual([2]);
+    expect(result.episodes).toEqual(intRange(1, 13));
+    expect(result.title).toBe('Клан Сопрано');
+  });
+
+  test('Симпсоны 10-й сезон (1-23 из 23) / The Simpsons', () => {
+    const result = parseTorrentTitle(
+      'Симпсоны 10-й сезон (1-23 из 23) / The Simpsons'
+    );
+    expect(result.seasons).toEqual([10]);
+    expect(result.episodes).toEqual(intRange(1, 23));
+  });
+
+  test('Ходячие мертвецы Сезоны 1-3 из 11', () => {
+    const result = parseTorrentTitle('Ходячие мертвецы Сезоны 1-3 из 11');
+    expect(result.seasons).toEqual([1, 2, 3]);
+    expect(result.episodes).toBeUndefined();
+  });
+
+  test('1923 Сезон 1-2', () => {
+    const result = parseTorrentTitle('1923 Сезон 1-2');
+    expect(result.seasons).toEqual([1, 2]);
+    expect(result.title).toBe('1923');
+  });
+
+  test('Реинкарнация безработного 1 сезон (1-11 из 11) / Isekai Ittara Honki Dasu (2021) WEBRip', () => {
+    const result = parseTorrentTitle(
+      'Реинкарнация безработного 1 сезон (1-11 из 11) / Isekai Ittara Honki Dasu (2021) WEBRip'
+    );
+    expect(result.seasons).toEqual([1]);
+    expect(result.episodes).toEqual(intRange(1, 11));
+  });
+
+  test('Игра престолов 1-8 сезон (1-73 из 73) / Game of Thrones', () => {
+    const result = parseTorrentTitle(
+      'Игра престолов 1-8 сезон (1-73 из 73) / Game of Thrones'
+    );
+    expect(result.seasons).toEqual(intRange(1, 8));
+    expect(result.episodes).toEqual(intRange(1, 73));
+  });
+
+  test('Игра престолов 1-7 сезон: (1-67 из 67) / Game of Thrones', () => {
+    const result = parseTorrentTitle(
+      'Игра престолов 1-7 сезон: (1-67 из 67) / Game of Thrones'
+    );
+    expect(result.seasons).toEqual(intRange(1, 7));
+    expect(result.episodes).toEqual(intRange(1, 67));
+  });
+
+  test('Игра Престолов (1-8 сезон: 1-73 серии из 73) / Game Of Thrones', () => {
+    const result = parseTorrentTitle(
+      'Игра Престолов (1-8 сезон: 1-73 серии из 73) / Game Of Thrones'
+    );
+    expect(result.seasons).toEqual(intRange(1, 8));
+    expect(result.episodes).toEqual(intRange(1, 73));
+  });
+
+  test('Сезон 2 (1-10 из 10)', () => {
+    const result = parseTorrentTitle('Сезон 2 (1-10 из 10)');
+    expect(result.seasons).toEqual([2]);
+    expect(result.episodes).toEqual(intRange(1, 10));
+  });
+
   test('House MD All Seasons (1-8) 720p Ultra-Compressed', () => {
     const result = parseTorrentTitle(
       'House MD All Seasons (1-8) 720p Ultra-Compressed'
