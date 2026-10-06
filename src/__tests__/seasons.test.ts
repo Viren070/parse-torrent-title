@@ -821,6 +821,34 @@ describe('parseTorrentTitle - seasons', () => {
     expect(result.seasons).toEqual([1]);
   });
 
+  test('Реинкарнация безработного (ТВ-1, часть 2) / Mushoku Tensei: Isekai Ittara Honki Dasu', () => {
+    const result = parseTorrentTitle(
+      'Реинкарнация безработного (ТВ-1, часть 2) / Mushoku Tensei: Isekai Ittara Honki Dasu'
+    );
+    expect(result.seasons).toEqual([1]);
+    expect(result.title).toBe('Реинкарнация безработного');
+  });
+
+  test('Mushoku Tensei II: Isekai Ittara Honki Dasu / Реинкарнация безработного [ТВ-2, часть 1] (12 из 12) Complete [1080p]', () => {
+    const result = parseTorrentTitle(
+      'Mushoku Tensei II: Isekai Ittara Honki Dasu / Реинкарнация безработного [ТВ-2, часть 1] (12 из 12) Complete [1080p]'
+    );
+    expect(result.seasons).toEqual([2]);
+    expect(result.episodes).toEqual(intRange(1, 12));
+  });
+
+  test('Аниме [ТВ-1, ТВ-2] / Anime', () => {
+    const result = parseTorrentTitle('Аниме [ТВ-1, ТВ-2] / Anime');
+    expect(result.seasons).toBeUndefined();
+  });
+
+  test('Mushoku Tensei III: Isekai Ittara Honki Dasu / Реинкарнация безработного [ТВ-3] (14 из 14) Complete [1080p]', () => {
+    const result = parseTorrentTitle(
+      'Mushoku Tensei III: Isekai Ittara Honki Dasu / Реинкарнация безработного [ТВ-3] (14 из 14) Complete [1080p]'
+    );
+    expect(result.seasons).toEqual([3]);
+  });
+
   test('Swamp People - Season 1 to 6 Plus Specials - 720P - HDTV - X265-HEVC - O69', () => {
     const result = parseTorrentTitle(
       'Swamp People - Season 1 to 6 Plus Specials - 720P - HDTV - X265-HEVC - O69'
