@@ -1727,9 +1727,45 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
+    // An episode count rather than an episode number: "(24 серии из 24)",
+    // "(16 серий)", "(8 выпусков из 8)"
+    pattern:
+      /(?<!\d[ .]?[-–—,+&][ .]?|(?:из|of)[ .]?)(?<!\d)([1-9]\d{0,3})[ .]?(?:(?:сери[йи]|выпуск(?:а|ов)|эпизод(?:а|ов))[ .]?из[ .]?(?:\d{1,4}|\?+)|(?:серий|выпусков|эпизодов)(?![а-яё]))/i,
+    transform: toIntRangeTill(),
+    // the number alone, so a count does not anchor an episode title
+    matchGroup: 1
+  },
+  {
+    field: 'episodes',
+    // A full season with its episode count: "Сезон 2 полный (10)", "Полный (23)"
+    pattern:
+      /(?<![а-яё])полн(?:ый|остью)[ .:]*\((\d{1,3})(?:[ .]?сери[йи])?\)/i,
+    transform: toIntRangeTill()
+  },
+  {
+    field: 'episodes',
+    // "[16/16]": all episodes of a season, as dorama releases write it
+    pattern: /[\[(](\d{1,3})\/(\d{1,3})[\])]/,
+    validateMatch: validateMatchedGroupsAreSame(1, 2),
+    transform: toIntRangeTill(),
+    matchGroup: 1
+  },
+  {
+    field: 'episodes',
+    // "Серии: 14 из ?": a count of an unfinished season
+    pattern: /(\d{1,3})[. ]?(?:of|из)[. ]?\?+/i,
+    validateMatch: validateLookbehind('(?:\\D|^)', 'i', true),
+    transform: toIntRangeTill(),
+    matchGroup: 1
+  },
+  {
+    field: 'episodes',
     pattern: /(\d{1,3})[. ]?(?:of|из|iz)[. ]?\d{1,3}/i,
     validateMatch: validateAnd(
       validateLookbehind('(?:\\D|^)', 'i', true),
+      // not "08х02 из 10" (one episode of ten) nor "Диск 3 из 6"
+      validateLookbehind('(?:^|\\D)\\d{1,2}[xх]', 'i', false),
+      validateLookbehind('(?:диск[а-я]*|dis[ck])[. ]?', 'i', false),
       validateLookahead('(?:\\D|$)', 'i', true)
     ),
     transform: toIntRangeTill()
