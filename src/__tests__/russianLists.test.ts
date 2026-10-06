@@ -84,4 +84,18 @@ describe('parseTorrentTitle - Russian episode and season lists', () => {
     );
     expect(result.seasons).toEqual(intRange(1, 6));
   });
+  test('Игра Престолов / Game of Thrones (2013) BDRemux [1080p] [Сезон 3, 10 серий из 10]', () => {
+    const result = parseTorrentTitle(
+      'Игра Престолов / Game of Thrones (2013) BDRemux [1080p] [Сезон 3, 10 серий из 10]'
+    );
+    expect(result.seasons).toEqual([3]);
+  });
+
+  test('Приключения Шерлока Холмса / The Adventures of Sherlock Holmes (Сезон 1, 6 серия) (John Hawkesworth) [1984, Великобритания, детектив, DVDRip]', () => {
+    const result = parseTorrentTitle(
+      'Приключения Шерлока Холмса / The Adventures of Sherlock Holmes (Сезон 1, 6 серия) (John Hawkesworth) [1984, Великобритания, детектив, DVDRip]'
+    );
+    expect(result.seasons).toEqual([1]);
+    expect(result.episodes).toEqual([6]);
+  });
 });
