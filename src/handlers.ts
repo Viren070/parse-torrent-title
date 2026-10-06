@@ -1363,8 +1363,19 @@ export const handlers: Handler[] = [
   {
     field: 'seasons',
     pattern:
-      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons?|series|[Сс]езон[иы]?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2} ?(?:[,/\\&]+ ?|и )+)+\d{1,2}\b)(?![. ]*(?:сери|эпизод))[)\]]?/i,
+      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons?|series|[Сс]езон[иы]?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2} ?(?:[,/\\&]+ ?)+)+\d{1,2}\b)(?![. ]*(?:сери|эпизод))[)\]]?/i,
     transform: toIntRange()
+  },
+  {
+    field: 'seasons',
+    // "Сезоны 1 и 2"; the name continues after it
+    pattern:
+      /[Сс]езоны?:?[. ]?(\d{1,2}(?: и \d{1,2})+)(?![. ]*(?:сери|эпизод))/,
+    transform: (title, m, result) => {
+      m.value = String(m.value).replace(/ и /g, ',');
+      toIntList()(title, m, result);
+    },
+    skipFromTitle: true
   },
   {
     field: 'seasons',

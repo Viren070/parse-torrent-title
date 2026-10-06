@@ -69,6 +69,7 @@ describe('parseTorrentTitle - Russian episode and season lists', () => {
       'Компьютершики (Сезоны 1 и 2) / The IT Crowd (Graham Linehan) [2006-2007, Великобритания, Комедия, DVD5 (сжатый)]'
     );
     expect(result.seasons).toEqual([1, 2]);
+    expect(result.title).toBe('The IT Crowd');
   });
 
   test('Компьютершики / The IT Crowd Series 1 & 2 & 3 Complete (Graham Linehan) [2006, Великобритания, Комедия, DVDRip]', () => {
