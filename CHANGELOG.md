@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.9.2](https://github.com/Viren070/parse-torrent-title/compare/v0.9.1...v0.9.2) (2026-10-06)
+
+
+### Bug Fixes
+
+* **languages:** stop matching HU, Pt and Nor against ordinary text ([#55](https://github.com/Viren070/parse-torrent-title/issues/55)) ([974aeea](https://github.com/Viren070/parse-torrent-title/commit/974aeea9ae3fb19b3ba7a302492723403a753088))
+* parse Russian "A-B сезон" as a season range ([#67](https://github.com/Viren070/parse-torrent-title/issues/67)) ([dc12b1c](https://github.com/Viren070/parse-torrent-title/commit/dc12b1c75d26c5de7e10c13ebc22a07c41b15d82))
+* parse Russian "N сезон (A-B из C)" as season N with an episode range ([#70](https://github.com/Viren070/parse-torrent-title/issues/70)) ([46bc6fe](https://github.com/Viren070/parse-torrent-title/commit/46bc6fef150649410d8d307a08e97ba3a3559eb6))
+* parse Russian "ТВ-N, часть M" season marker ([#71](https://github.com/Viren070/parse-torrent-title/issues/71)) ([20c287d](https://github.com/Viren070/parse-torrent-title/commit/20c287d0ea407e8e809f6c45c1bce66bef69c66b))
+* parse Russian season pack notation ("N сезон (A-B серии)", "Сезоны A-B") ([#66](https://github.com/Viren070/parse-torrent-title/issues/66)) ([55eddcb](https://github.com/Viren070/parse-torrent-title/commit/55eddcb3835163c27ce434b905f22883cdcb4d05))
+
 ## [0.9.1](https://github.com/Viren070/parse-torrent-title/compare/v0.9.0...v0.9.1) (2026-09-18)
 
 
