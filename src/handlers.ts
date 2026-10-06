@@ -1702,6 +1702,15 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
+    // A range right before the word for episodes is always episodes, also after
+    // "сезоны:" or a number range in the name: "(Все сезоны: 1-250 серии из 250)",
+    // "Бруклин 9-9 (7 сезон: 1-13 серии из 13)"
+    pattern:
+      /(?<!(?:[\d.,-]|\sи)[ .]?)(\d{1,4}[ .]?[-–][ .]?\d{1,4})[ .]?(?:сери[ийя]|эпизод(?:ы|ов))(?![а-яё])/i,
+    transform: toIntRange()
+  },
+  {
+    field: 'episodes',
     // "Season 3-01" is season 3 episode 1
     pattern: /\bseason[. ]?\d{1,2}[. ]?-[. ]?(\d{1,3})(?:\D|$)/i,
     transform: (title, m, result) => {
