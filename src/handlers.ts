@@ -1842,6 +1842,13 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
+    // AniLiberty ends the name with the episodes: "/ 2026 / [WEB-DL 1080p][AVC][1]",
+    // "[WEBRip 1080p][HEVC][1-23]"
+    pattern: /\]\[(\d{1,4}(?:-\d{1,4})?)\]$/,
+    transform: toIntRange()
+  },
+  {
+    field: 'episodes',
     pattern: /\bodc[. ]+(\d{1,3})\b/i,
     transform: toIntArray()
   },
