@@ -23,7 +23,8 @@ import {
   toValueSetWithTransform,
   toValueSetMultiWithTransform,
   toIntArray,
-  toIntRangeTill
+  toIntRangeTill,
+  toIntList
 } from './transforms.js';
 import {
   validateAnd,
@@ -1362,7 +1363,7 @@ export const handlers: Handler[] = [
   {
     field: 'seasons',
     pattern:
-      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons?|[Сс]езон[иы]?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2} ?(?:[,/\\&]+ ?)+)+\d{1,2}\b)[)\]]?/i,
+      /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons?|series|[Сс]езон[иы]?|sezon|temporadas?|stagioni)[. ]?[-:]?[. ]?[(\[]?((?:\d{1,2} ?(?:[,/\\&]+ ?|и )+)+\d{1,2}\b)[)\]]?/i,
     transform: toIntRange()
   },
   {
@@ -1413,6 +1414,21 @@ export const handlers: Handler[] = [
     pattern:
       /\bseason\b[ .-]?(\d{1,2}[ .-]?(?:to|thru|and|\+)[ .-]?\bseason\b[ .-]?\d{1,2})/i,
     transform: toIntRange()
+  },
+  {
+    field: 'seasons',
+    // A list of seasons before the word: "(1-2, 4-7 сезоны: …)", "(1-9, 14 сезоны: …)"
+    pattern:
+      /(?<![\dxх-])((?:\d{1,2}(?:[ .]?[-–][ .]?\d{1,2})?[ .]?,[ .]?)+\d{1,2}(?:[ .]?[-–][ .]?\d{1,2})?)[. _]?[Сс]езон(?:ы|ов|а)?(?![а-яё])/i,
+    transform: toIntList(),
+    remove: true
+  },
+  {
+    field: 'seasons',
+    // "Все 6 сезонов": every season up to N
+    pattern: /[Вв]се[ .](\d{1,2})[ .][Сс]езон(?:а|ов)/,
+    transform: toIntRangeTill(),
+    remove: true
   },
   {
     field: 'seasons',
@@ -1588,6 +1604,13 @@ export const handlers: Handler[] = [
     pattern:
       /(?:[\W\d]|^)\d+[xх][ .]?[(\[]?(\d{1,3}(?:[ .]?[xх][ .]?\d{1,3})+)(?:\W|$)/i,
     transform: toIntRange()
+  },
+  {
+    field: 'episodes',
+    // A list with gaps: "серии 1-4, 6-10", "Серии: 1-3,5,8-10", "[15x01-13, 15-17, 19]"
+    pattern:
+      /(?:[Сс]ери[ияй]|[Ээ]пизоды|episodes|\d{1,2}[xх])[ .:]*[(\[]?(\d{1,4}(?:[ .]?[-–][ .]?\d{1,4})?(?:[ .]?,[ .]?\d{1,4}(?:[ .]?[-–][ .]?\d{1,4})?(?![\d.]|[pi]\b))+)/i,
+    transform: toIntList()
   },
   {
     field: 'episodes',
