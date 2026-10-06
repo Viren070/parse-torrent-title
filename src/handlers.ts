@@ -1566,8 +1566,27 @@ export const handlers: Handler[] = [
    */
   {
     field: 'seasons',
-    pattern: /[\[\(]ТВ-(\d{1,2})(?:[\)\]]|,(?!\s*(?:ТВ-|\d)))/i,
+    // not the TV-3 channel in a voice-over credit: "ДБ (ТВ-3)"
+    pattern:
+      /(?<!(?<![\p{L}\d])(?:ДБ|ПМ|ПД|ПО|АП|ЛМ|ЛД|ЛО|MVO|DVO|AVO|VO|Dub)[ .]?)[\[\(]ТВ-(\d{1,2})(?:[\)\]]|,(?!\s*(?:ТВ-|\d)))/iu,
     transform: toIntArray()
+  },
+  {
+    field: 'seasons',
+    // "(ТВ 2, часть 1)" with a space, Latin "[TV-1]"
+    pattern:
+      /(?<!(?<![\p{L}\d])(?:ДБ|ПМ|ПД|ПО|АП|ЛМ|ЛД|ЛО|MVO|DVO|AVO|VO|Dub)[ .]?)[\[\(](?:ТВ[- ]|TV-)(\d{1,2})(?:[\)\]]|,(?!\s*(?:ТВ|TV|\d)))/iu,
+    transform: toIntArray()
+  },
+  {
+    field: 'seasons',
+    // "ТВ-2" after the name, before its brackets: "Стальной Алхимик ТВ-2 (64 из 64)",
+    // "Gintama TV-1 [01-201]"
+    pattern:
+      /(?<=[\p{L}\d.!?:] )(?:ТВ|TV(?=-\d(?!\d)))-(\d{1,2})(?=\s*(?:[\[(/|]|$))/u,
+    transform: toIntArray(),
+    // a season marker inside the name, not its end
+    skipFromTitle: true
   },
 
   // Batch 8: Episodes handlers (lines 1870-2125 in handlers.go)
