@@ -1665,6 +1665,16 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
+    // "[TV+Special] [25+9 из 25+9]", "[01-10+3 из 10+3]", "6+1 доп": the series'
+    // own episodes plus specials; only the first term numbers episodes. An airing
+    // season gives a lower bound for the total: "[1-90+0 из >115+1]"
+    pattern:
+      /(?<![\d+])((?:\d{1,4}[ .]?[-–][ .]?)?\d{1,4})[ .]?\+[ .]?\d{1,4}[ .]?(?:из[ .]?>?\d{1,4}[ .]?\+[ .]?\d{1,4}|доп)/i,
+    transform: (title, m, result) =>
+      (/[-–]/.test(m.value) ? toIntRange() : toIntRangeTill())(title, m, result)
+  },
+  {
+    field: 'episodes',
     pattern:
       /(?:(?:seasons?|[Сс]езон[иы]?)\P{L}*)?(?:[ .(\[-]|^)(\d{1,3}(?:[ .]?[,&+~][ .]?\d{1,3})+)(?:[ .)\]-]|$)/iu,
     validateMatch: validateAnd(
