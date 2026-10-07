@@ -42,6 +42,14 @@ function hasValueSet(field: string): boolean {
 
 const letterRegex = /\p{L}/u;
 
+/**
+ * Russian filler-free cuts count story arcs, not episodes: "(2 главы из 11)",
+ * "(1-18 глав из 45)". The count says nothing about seasons or episodes, so it
+ * is dropped before the handlers run.
+ */
+const arcCount =
+  /[(\[]\s*(?:\d{1,3}\s*-\s*)?\d{1,3}\s*глав[аы]?\s*из\s*\d{1,3}\s*[)\]]\s*/gi;
+
 const globalTwins = new Map<RegExp, RegExp>();
 /** A `g` copy of a handler pattern, so a match can be resumed past an index. */
 function globalTwin(re: RegExp): RegExp {
@@ -63,6 +71,9 @@ export function parse(
 ): ParsedResult {
   const result = new Map<string, ParseMeta>();
 
+  if (title.indexOf('глав') !== -1) {
+    title = title.replace(arcCount, '');
+  }
   // The replace rewrites the whole string even when every run is already a
   // single space, which is the usual case.
   if (needsWhitespaceCollapse.test(title)) {
