@@ -1787,6 +1787,12 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
+    // "[+8 серия]" marks an updated pack that now holds episodes 1-8
+    pattern: /\[\+(\d{1,4})[ .]?сери[яи]\]/i,
+    transform: toIntRangeTill()
+  },
+  {
+    field: 'episodes',
     pattern:
       /\b(\d{1,3})(?:-?я)?[ ._-]*(?:ser(?:i?[iyj]a|\b)|[Сс]ер(?:ии|ия|\.)?)/i,
     transform: toIntArray()
