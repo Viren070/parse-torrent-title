@@ -1480,6 +1480,33 @@ export const handlers: Handler[] = [
   },
   {
     field: 'seasons',
+    // A season number in words: "(второй сезон)", "(первый, второй сезоны)"
+    pattern:
+      /(?<![а-яё]|(?:ТВ|TV)-\d{1,2}, ?)((?:перв|втор|трет|четв[её]рт|пят|шест|седьм|восьм|девят|десят)(?:ый|ой|ий)(?:(?:, ?| и )(?:перв|втор|трет|четв[её]рт|пят|шест|седьм|восьм|девят|десят)(?:ый|ой|ий))*) сезоны?(?![а-яё])/i,
+    transform: (title, m) => {
+      const stems = [
+        'перв',
+        'втор',
+        'трет',
+        'четв',
+        'пят',
+        'шест',
+        'седьм',
+        'восьм',
+        'девят',
+        'десят'
+      ];
+      m.value = String(m.value)
+        .toLowerCase()
+        .split(/, ?| и /)
+        .map((word) => stems.findIndex((stem) => word.startsWith(stem)) + 1);
+    },
+    remove: true,
+    // a season marker inside the name, not its end
+    skipFromTitle: true
+  },
+  {
+    field: 'seasons',
     pattern: /(?:\D|^)(\d{1,2})[Xxх]\d{1,3}(?:\D|$)/,
     validateMatch: (input: string, idxs: number[]): boolean => {
       // Reject matches that begin inside a decimal figure (e.g. the ".0x3" of "2.0x3")
