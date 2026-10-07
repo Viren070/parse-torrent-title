@@ -303,3 +303,38 @@ export function toIntRangeTill(): HandlerTransformer {
     m.value = null;
   };
 }
+
+/**
+ * A comma list of numbers and ranges, possibly with gaps: "1-4, 6-10" ->
+ * [1,2,3,4,6,7,8,9,10]. Each part must come after the previous one.
+ */
+export function toIntList(): HandlerTransformer {
+  return (title: string, m: ParseMeta): void => {
+    if (typeof m.value !== 'string') {
+      m.value = null;
+      return;
+    }
+
+    const nums: number[] = [];
+    for (const part of m.value.split(',')) {
+      const bounds = part
+        .split(/[-–]/)
+        .map((p) => parseInt(p.trim(), 10))
+        .filter((n) => !isNaN(n));
+      if (bounds.length < 1 || bounds.length > 2) {
+        m.value = null;
+        return;
+      }
+      const start = bounds[0];
+      const end = bounds.length === 2 ? bounds[1] : bounds[0];
+      if (end < start || (nums.length > 0 && start <= nums[nums.length - 1])) {
+        m.value = null;
+        return;
+      }
+      for (let i = start; i <= end; i++) {
+        nums.push(i);
+      }
+    }
+    m.value = nums.length > 0 ? nums : null;
+  };
+}
