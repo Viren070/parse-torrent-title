@@ -44,6 +44,14 @@ import { removeFromValue } from './processors.js';
  *
  * Start porting from line 284 of handlers.go
  */
+// "2x2" is a Russian TV channel and dubbing studio ("ПМ (2x2)", "kubik&ko, 2x2"):
+// in a name with Cyrillic letters an unpadded "2x2" is not season 2 episode 2
+const studio2x2Match = /^\D?2[. ]?[Xxх][. ]?2(?:\D|$)/;
+const cyrillicLetter = /[а-яё]/i;
+const isStudio2x2 = (input: string, idxs: number[]): boolean =>
+  studio2x2Match.test(input.substring(idxs[0], idxs[1])) &&
+  cyrillicLetter.test(input);
+
 export const handlers: Handler[] = [
   // Title handlers (lines 285-292 in handlers.go)
   {
@@ -1483,10 +1491,13 @@ export const handlers: Handler[] = [
     pattern: /(?:\D|^)(\d{1,2})[Xxх]\d{1,3}(?:\D|$)/,
     validateMatch: (input: string, idxs: number[]): boolean => {
       // Reject matches that begin inside a decimal figure (e.g. the ".0x3" of "2.0x3")
-      return !(
-        input[idxs[0]] === '.' &&
-        idxs[0] > 0 &&
-        /\d/.test(input[idxs[0] - 1])
+      // and the Russian dubbing studio "2x2" ("ПМ (2x2)")
+      return (
+        !(
+          input[idxs[0]] === '.' &&
+          idxs[0] > 0 &&
+          /\d/.test(input[idxs[0] - 1])
+        ) && !isStudio2x2(input, idxs)
       );
     },
     transform: toIntArray()
@@ -1796,10 +1807,13 @@ export const handlers: Handler[] = [
     pattern: /(?:\D|^)\d{1,2}[. ]?[Xxх][. ]?(\d{1,3})(?:[abc]|v0?[1-4]|\D|$)/i,
     validateMatch: (input: string, idxs: number[]): boolean => {
       // Reject matches that begin inside a decimal figure (e.g. the ".0x3" of "2.0x3")
-      return !(
-        input[idxs[0]] === '.' &&
-        idxs[0] > 0 &&
-        /\d/.test(input[idxs[0] - 1])
+      // and the Russian dubbing studio "2x2" ("ПМ (2x2)")
+      return (
+        !(
+          input[idxs[0]] === '.' &&
+          idxs[0] > 0 &&
+          /\d/.test(input[idxs[0] - 1])
+        ) && !isStudio2x2(input, idxs)
       );
     },
     transform: toIntArray()
