@@ -22,6 +22,14 @@ const grams = new GramSet();
 /** Whitespace that `\s+` -> " " would actually change: a run, or a non-space. */
 const needsWhitespaceCollapse = /\s\s|[^\S ]/;
 
+/**
+ * Latin letters typed in place of their Cyrillic look-alikes, which no handler
+ * can see: a Latin "C" in "Сезон" and a Cyrillic "р" in a resolution, "720р".
+ */
+const lookalikes = /[Cc]езон|(?:480|576|720|1080|2160)р(?![а-яё])/;
+const latinCInSeason = /([Cc])(?=езон)/g;
+const cyrillicPInResolution = /(?<!\d)(480|576|720|1080|2160)р(?![а-яё])/g;
+
 const OPEN_SQUARE_BRACKET = 91;
 
 /**
@@ -70,6 +78,11 @@ export function parse(
   }
   if (title.indexOf('_') !== -1) {
     title = title.replace(underscoresRegex, ' ');
+  }
+  if (lookalikes.test(title)) {
+    title = title
+      .replace(latinCInSeason, (c) => (c === 'C' ? 'С' : 'с'))
+      .replace(cyrillicPInResolution, '$1p');
   }
 
   let endOfTitle = title.length;
