@@ -1788,6 +1788,12 @@ export const handlers: Handler[] = [
   },
   {
     field: 'episodes',
+    // Turkish "17.Blm" / "07. Bölüm" / "7 Bolum"
+    pattern: /\b(\d{1,4})[ ._-]*(?:b[oö]l[uü]m|blm)(?![a-zçğıöşü\d])/i,
+    transform: toIntArray()
+  },
+  {
+    field: 'episodes',
     pattern: /(?:\D|^)\d{1,2}[. ]?[Xxх][. ]?(\d{1,3})(?:[abc]|v0?[1-4]|\D|$)/i,
     validateMatch: (input: string, idxs: number[]): boolean => {
       // Reject matches that begin inside a decimal figure (e.g. the ".0x3" of "2.0x3")

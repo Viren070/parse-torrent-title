@@ -706,6 +706,66 @@ describe('Episode Detection Tests', () => {
     expect(result.episodes).toEqual([12]);
   });
 
+  test('episode with turkish "Blm" marker', () => {
+    const result = parseTorrentTitle(
+      'Alti Ustu Istanbul 17.Blm (19.10.2026) 1080p Web-DL AAC H.264 - TURG'
+    );
+    expect(result.episodes).toEqual([17]);
+    expect(result.seasons).toBeUndefined();
+    expect(result.title).toBe('Alti Ustu Istanbul');
+    expect(result.date).toBe('2026-10-19');
+    expect(result.resolution).toBe('1080p');
+    expect(result.group).toBe('TURG');
+  });
+
+  test('episode with turkish "Blm" marker and leading zero', () => {
+    const result = parseTorrentTitle(
+      'Evlilik Guzeldir 07.Blm (19.10.2026) 1080p Web-DL AAC H.264 -TURG'
+    );
+    expect(result.episodes).toEqual([7]);
+    expect(result.title).toBe('Evlilik Guzeldir');
+  });
+
+  test('episode with uppercase turkish "BLM" marker and 3 digits', () => {
+    const result = parseTorrentTitle(
+      'Kizilcik Serbeti 143.BLM (16.10.2026) 1080p Web-DL AAC H.264 - TURG'
+    );
+    expect(result.episodes).toEqual([143]);
+    expect(result.title).toBe('Kizilcik Serbeti');
+    expect(result.date).toBe('2026-10-16');
+  });
+
+  test('episode with turkish "BLM" marker in a dotted name', () => {
+    const result = parseTorrentTitle(
+      'Kizilcik.Serbeti.143.BLM.16.10.2026.1080p.Web-DL.AAC.H.264-TURG'
+    );
+    expect(result.episodes).toEqual([143]);
+    expect(result.title).toBe('Kizilcik Serbeti');
+  });
+
+  test('episode with turkish "Blm" marker after a space', () => {
+    const result = parseTorrentTitle('Tuzlu Kahve 07 Blm (13 10 2026)');
+    expect(result.episodes).toEqual([7]);
+    expect(result.title).toBe('Tuzlu Kahve');
+  });
+
+  test('episode with full turkish "Bölüm" marker', () => {
+    const result = parseTorrentTitle('Tuzlu Kahve 07. Bölüm 1080p WEB-DL');
+    expect(result.episodes).toEqual([7]);
+    expect(result.title).toBe('Tuzlu Kahve');
+  });
+
+  test('episode with ascii turkish "Bolum" marker', () => {
+    const result = parseTorrentTitle('Tuzlu.Kahve.7.Bolum.1080p.WEB-DL');
+    expect(result.episodes).toEqual([7]);
+    expect(result.title).toBe('Tuzlu Kahve');
+  });
+
+  test('no episode from a word starting with "bolum"', () => {
+    const result = parseTorrentTitle('Bolumsuz 2019 1080p WEB-DL');
+    expect(result.episodes).toBeUndefined();
+  });
+
   test('episodes with russian x separator', () => {
     const result = parseTorrentTitle(
       'Discovery. Парни с Юкона / Yokon Men [06х01-08] (2017) HDTVRip от GeneralFilm | P1'
