@@ -1312,3 +1312,78 @@ describe('Episode Detection Tests', () => {
     expect(result.episodes).toBeUndefined();
   });
 });
+
+describe('XVID 3-digit season/episode scheme', () => {
+  test('parses the 3-digit scheme as season + episode', () => {
+    const result = parseTorrentTitle('Yes.Dear.103.dsr.xvid-saints.avi');
+    expect(result.seasons).toEqual([1]);
+    expect(result.episodes).toEqual([3]);
+    expect(result.title).toEqual('Yes Dear');
+  });
+
+  test('parses the 3-digit scheme with an episode title in the name', () => {
+    const result = parseTorrentTitle(
+      "Yes.Dear.106.Gregs.Big.Day.DSRip.XviD-SAiNT.avi"
+    );
+    expect(result.seasons).toEqual([1]);
+    expect(result.episodes).toEqual([6]);
+    expect(result.title).toEqual('Yes Dear');
+  });
+
+  test('parses season 3 episodes (301 = S03E01)', () => {
+    const result = parseTorrentTitle(
+      'Yes.Dear.301.Spanks.But.No.Spanks.SDTV.avi'
+    );
+    expect(result.seasons).toEqual([3]);
+    expect(result.episodes).toEqual([1]);
+  });
+
+  test('parses two-digit episodes (110 = S01E10)', () => {
+    const result = parseTorrentTitle(
+      'Yes.Dear.110.Talk.Time.DSRip.XviD-SAiNT.avi'
+    );
+    expect(result.seasons).toEqual([1]);
+    expect(result.episodes).toEqual([10]);
+  });
+
+  test('parses late seasons (615 = S06E15)', () => {
+    const result = parseTorrentTitle(
+      'Yes.Dear.615.Should.I.Bring.A.Jacket.avi'
+    );
+    expect(result.seasons).toEqual([6]);
+    expect(result.episodes).toEqual([15]);
+  });
+
+  test('does not disturb structured SxxExx markers', () => {
+    const result = parseTorrentTitle(
+      'The Simpsons S28E21 720p HDTV x264-AVS'
+    );
+    expect(result.seasons).toEqual([28]);
+    expect(result.episodes).toEqual([21]);
+  });
+
+  test('does not parse codec numbers (H.264 / H.265) as episodes', () => {
+    const result = parseTorrentTitle('Show.103.H.264.DSRip.avi');
+    expect(result.seasons).toEqual([1]);
+    expect(result.episodes).toEqual([3]);
+  });
+
+  test('does not parse years or resolutions as episodes', () => {
+    const result = parseTorrentTitle('Movie.2019.1080p.BluRay.x264-GROUP');
+    expect(result.episodes).toBeUndefined();
+  });
+
+  test('does not parse 100/200 (episode 0) as episodes', () => {
+    const result = parseTorrentTitle('Show.100.avi');
+    expect(result.seasons).toBeUndefined();
+    expect(result.episodes).toBeUndefined();
+  });
+
+  test('does not parse season packs (S01-S06) as episodes', () => {
+    const result = parseTorrentTitle(
+      'Yes.Dear.S01-S06.DVDRIP.480P.XVID.MPEG.2.0'
+    );
+    expect(result.seasons).toEqual(intRange(1, 6));
+    expect(result.episodes).toBeUndefined();
+  });
+});
